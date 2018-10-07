@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1718555876364106}
+  m_IsPrefabAsset: 1
+--- !u!1 &1718555876364106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4869927173918828}
+  - component: {fileID: 114111319608652276}
+  m_Layer: 0
+  m_Name: Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4869927173918828
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1718555876364106}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114111319608652276
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1718555876364106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8e0a98eb6970449920c9865fd6a563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeSprites:
+  - {fileID: 21300034, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300046, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300044, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300000, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300024, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300036, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300002, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300020, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300030, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  SwitchSprites:
+  - {fileID: 21300040, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300026, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300042, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300032, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300028, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  BarrierSprites:
+  - {fileID: 21300016, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300008, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300018, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300012, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  - {fileID: 21300010, guid: 01e08e7803c101e478056089de5443d3, type: 3}
+  nodeImagePrefab: {fileID: 1508307331540324, guid: cd1f97d2c7c4a8a42b194781905e89ac,
+    type: 2}
+  nodeLinkerPrefab: {fileID: 1304595094327186, guid: 76a986227b5df4c4388ce96b99ef7831,
+    type: 2}
+  generationParams:
+  - Mean: 2
+    StandardDeviation: 0.75
+  - Mean: 2
+    StandardDeviation: 0.75
+  - Mean: 3
+    StandardDeviation: 1
+  - Mean: 6
+    StandardDeviation: 2
+  - Mean: 0
+    StandardDeviation: 1
+  - Mean: 0
+    StandardDeviation: 0.75
+  displayOffset: {x: -1.35, y: -2}
+  seed: 0
+  randomSeed: 1
+  complexity: 1
+  graphTransform: {fileID: 0}
