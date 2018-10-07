@@ -10,11 +10,13 @@ namespace Overworld {
         [HideInInspector]
         public SpriteRenderer HexRenderer;
 
-        GameObject fog;
-        GameObject blight;
-        GameObject smoke;
-        GameObject mountainClouds;
-        GameObject birds;
+        Transform[] tileEffects;
+        // 1 - Fog of War
+        // 2 - Civilization Smoke
+        // 3 - Mountain Clouds
+        // 4 - Birds
+        // 5 - Blight
+        // 6 - Water Glint
 
         [ReadOnly]
         public HexData Data;
@@ -34,9 +36,9 @@ namespace Overworld {
         public float BlightLevel {
             get { return blightLevel; }
             set {
-                blightLevel = Mathf.Clamp(blightLevel + value, 0f, 0.5f);
-                if(blight) {
-                    SetBlight(blightLevel);
+                blightLevel = Mathf.Clamp(blightLevel + value, 0f, 0.75f);
+                if(tileEffects[5]) {
+                    SetTileEffectState(5, true, blightLevel);
                 }
             }
         }
@@ -65,49 +67,29 @@ namespace Overworld {
         private void Awake() {
             HexRenderer = GetComponent<SpriteRenderer>();
 
-            Transform[] ch = GetComponentsInChildren<Transform>();
+            tileEffects = GetComponentsInChildren<Transform>(true);
 
-            fog = ch[1].gameObject;
-            smoke = ch[2].gameObject;
-            mountainClouds = ch[3].gameObject;
-            birds = ch[4].gameObject;
-            blight = ch[5].gameObject;
-
-            SetSmoke(false);
-            mountainClouds.SetActive(false);
-            blight.SetActive(false);
-            birds.SetActive(false);
+            obscured = true;
         }
 
-        private void OnMouseDown() {
-            Camera.main.GetComponent<OverworldCamera>().Cursor.SetTarget(this);
-        }
+        public void SetTileEffectState(int index, bool enabled = true, params float[] parameters) {
+            if (index >= tileEffects.Length || index <= 0) return;
 
-        public void RemoveFog() {
-            if (obscured)
-            {
-                obscured = false;
-                fog.SetActive(false);
+            tileEffects[index].gameObject.SetActive(enabled);
 
-                HexRenderer.enabled = true;
+            switch(index) {
+                case 1: // Fog of war
+                    if (obscured && !enabled) {
+                        obscured = false;
+                        tileEffects[index].gameObject.SetActive(false);
+
+                        HexRenderer.enabled = true;
+                    }
+                    break;
+                case 5: // Blight
+                    tileEffects[index].GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, parameters[0]);
+                    break;
             }
-        }
-
-        public void SetSmoke(bool enabled = true) {
-            smoke.SetActive(enabled);
-        }
-
-        public void SetBlight(float intensity, bool enabled = true) {
-            blight.SetActive(enabled);
-            blight.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, intensity);
-        }
-
-        public void SetMountainClouds() {
-            mountainClouds.SetActive(true);
-        }
-
-        public void SetBirds() {
-            birds.SetActive(true);
         }
     }
 }

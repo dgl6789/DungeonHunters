@@ -231,4 +231,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa2608ba793e8c4fb90397339ce03c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnitude: 0.0045
+  yMagnitude: 0.0045
+  xMagnitude: 0.125

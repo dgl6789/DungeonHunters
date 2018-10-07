@@ -53,7 +53,7 @@ namespace Overworld {
         }
 
         public float DisplacementX(HexTile tile) {
-            return tile.Address.ToUnity.x + (Math.Map(Cam.transform.position.x, Cam.PanBoundsX.x, Cam.PanBoundsX.y, -1f, 1f) * tile.Address.Y * xMagnitude) * Math.Map(Cam.Zoom, Cam.ZoomBounds.x, Cam.ZoomBounds.y, 0f, 1f);
+            return tile.Address.ToUnity.x + ((Math.Map(Cam.transform.position.x, Cam.PanBoundsX.x, Cam.PanBoundsX.y, -1f, 1f) * tile.Address.Y * xMagnitude) * Math.Map(Cam.Zoom, Cam.ZoomBounds.x, Cam.ZoomBounds.y, 0f, 1f));
         }
     }
 }

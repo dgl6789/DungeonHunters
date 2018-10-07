@@ -366,21 +366,21 @@ namespace Overworld {
                 Sprite s = null;
                 switch (kvp.Value.Type) {
                     case TileType.STRONGHOLD:
-                        Tiles[kvp.Key].SetSmoke();
+                        Tiles[kvp.Key].SetTileEffectState(2, true);
                         kvp.Value.HexRenderer.sortingOrder = 1;
 
                         DeobfuscateRadius(3, kvp.Value);
                         TileSelector.Instance.SetTarget(kvp.Value);
-                        kvp.Value.SetBirds();
+                        kvp.Value.SetTileEffectState(4, true);
                         break;
                     case TileType.VILLAGE:
-                        kvp.Value.SetBirds();
+                        kvp.Value.SetTileEffectState(2, true);
                         break;
                     case TileType.DUNGEON:
                         BlightRadius(2, kvp.Value);
                         break;
                     case TileType.OCEAN:
-                        kvp.Value.RemoveFog();
+                        kvp.Value.SetTileEffectState(1, false);
 
                         // Change ocean tiles adjacent to land into water tiles.
                         List<HexAddress> toWater = new List<HexAddress>();
@@ -389,12 +389,15 @@ namespace Overworld {
 
                         foreach(HexAddress a in toWater) {
                             Tiles[a].Type = Random.Range(0f, 1.0f) < IslandRate ? TileType.ISLAND : TileType.WATER;
-                            if (Tiles[a].Type == TileType.ISLAND) Tiles[a].SetBirds();
+                            if (Tiles[a].Type == TileType.ISLAND) Tiles[a].SetTileEffectState(4, true);
+                            else if (Random.Range(0f, 1f) < 0.075f) kvp.Value.SetTileEffectState(6, true);
                         }
+
+                        if (kvp.Value.Type == TileType.OCEAN) if (Random.Range(0f, 1f) < 0.075f) kvp.Value.SetTileEffectState(6, true);
                         break;
 
                     case TileType.OCEAN_ISLAND:
-                        if (HexFunctions.Instance.AdjacentLandTiles(kvp.Key) > 0) { kvp.Value.Type = TileType.ISLAND; kvp.Value.SetBirds(); }
+                        if (HexFunctions.Instance.AdjacentLandTiles(kvp.Key) > 0) { kvp.Value.Type = TileType.ISLAND; kvp.Value.SetTileEffectState(4, true); }
                         break;
 
                     case TileType.MOUNTAIN:
@@ -420,19 +423,19 @@ namespace Overworld {
                             s = HexFunctions.Instance.AlternateSpriteLibrary[3].GetSprite();
                         }
 
-                        kvp.Value.SetMountainClouds();
-                        kvp.Value.RemoveFog();
+                        kvp.Value.SetTileEffectState(3, true);
+                        kvp.Value.SetTileEffectState(1, false);
                         break;
                     case TileType.NULL:
-                        kvp.Value.RemoveFog();
+                        kvp.Value.SetTileEffectState(1, false);
                         break;
                 }
 
-                if (deobfuscateOnGeneration) kvp.Value.RemoveFog();
+                if (deobfuscateOnGeneration) kvp.Value.SetTileEffectState(1, false);
 
                 if(s) kvp.Value.HexRenderer.sprite = s;
 
-                if (Random.Range(0f, 1f) < birdSpawnRate) kvp.Value.SetBirds();
+                if (Random.Range(0f, 1f) < birdSpawnRate) kvp.Value.SetTileEffectState(4, true);
             }
 
             yield return StartCoroutine(UpdateProgress(1.0f, "Done."));
@@ -519,7 +522,7 @@ namespace Overworld {
         void DeobfuscateRadius(int radius, HexTile origin) {
             foreach(HexTile tile in Tiles.Values.ToList()) {
                 if(Vector2.Distance(tile.DisplayPosition, origin.DisplayPosition) < radius) {
-                    tile.RemoveFog();
+                    tile.SetTileEffectState(1, false);
                 }
             }
         }
