@@ -306,6 +306,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &954840167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 954840169}
+  - component: {fileID: 954840168}
+  m_Layer: 0
+  m_Name: MonsterTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &954840168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 954840167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a768d39f9fdbf6841a5144c723d7a319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridPosition: {x: 0, y: 0}
+  Health: 0
+  Stamina: 0
+  Morale: 0
+  pointBuy: 20
+  MaxHealth: 100
+  MaxStamina: 50
+  MaxMorale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
+  defenseQuality: {x: 0, y: 0, z: 0}
+  offenseQuality: {x: 0, y: 0, z: 0}
+  Skills: {x: 0, y: 0, z: 0}
+  isTemplate: 1
+  CombatTest: 0
+  weaponType: 0
+  Style: 0
+--- !u!4 &954840169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 954840167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.456404, y: 20.498137, z: -14.060695}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1346797663
 GameObject:
   m_ObjectHideFlags: 0

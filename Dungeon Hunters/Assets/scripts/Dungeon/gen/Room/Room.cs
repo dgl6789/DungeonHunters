@@ -403,6 +403,7 @@ public class Room : MonoBehaviour
     }
     void AssignOres()
     {
+        OreTiles.Clear();
         int orePoints = pointsForBuy, maxPoints =9, currentVein, index;//make some local variables
 
         while(orePoints > 0)//while we have points left to spend
