@@ -393,7 +393,7 @@ public class Room : MonoBehaviour
         HasGenerated = true;
     }
 
-    void RebuildCave()
+   public void RebuildCave()
     {
         foreach(Vector3Int tile in CaveTiles)
         {
@@ -441,10 +441,7 @@ public class Room : MonoBehaviour
         {
             DefineCave();
             reGen = false;
-            foreach (Vector3Int tile in CaveTiles)
-            {
-                AllCells[tile.x, tile.y].Reset();
-            }
+            ClearRoom();
             LinesTiles.Clear();
             GeneratePrelim();
             LiftTiles();
@@ -453,19 +450,13 @@ public class Room : MonoBehaviour
         else if (reCon)
         {
             reCon = false;
-            foreach (Vector3Int tile in CaveTiles)
-            {
-                AllCells[tile.x, tile.y].Reset();
-            }
+            ClearRoom();
             RebuildCave();
             
         }
         else if (forward)
         {
-            foreach (Vector3Int tile in CaveTiles)
-            {
-                AllCells[tile.x, tile.y].Reset();
-            }
+            ClearRoom();
             forward = false;
             LinesTiles.Clear();
             ExtendCave();
@@ -474,10 +465,7 @@ public class Room : MonoBehaviour
         {
             if (previousRoom != null)
             {
-                foreach (Vector3Int tile in CaveTiles)
-                {
-                    AllCells[tile.x, tile.y].Reset();
-                }
+                ClearRoom();
                 previousRoom.RebuildCave();
                 
             }
@@ -485,7 +473,15 @@ public class Room : MonoBehaviour
         }
     }
 
-    void ExtendCave()
+    public void ClearRoom()
+    {
+        foreach (Vector3Int tile in CaveTiles)
+        {
+            AllCells[tile.x, tile.y].Reset();
+        }
+    }
+
+    public void ExtendCave()
     {//Move to the next cave        
         if(nextRoom != null)
         {//You know, if we're allowed to
