@@ -28,7 +28,7 @@ namespace App.UI {
         private void Update() {
             if (TargetTile) transform.position = TargetTile.transform.position;
 
-            if(Input.GetButtonDown("LeftClick")) {
+            if (Input.GetButtonDown("LeftClick")) {
                 HexTile h = CheckTileClick();
 
                 if (h) SetTarget(h);
@@ -37,8 +37,8 @@ namespace App.UI {
 
         public void SetTarget(HexTile tile) {
             TargetTile = tile;
-            
-            Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(TargetTile.transform.position);
+
+            Refocus();
 
             transform.position = TargetTile.transform.position;
 
@@ -48,7 +48,7 @@ namespace App.UI {
             targetedTileDescription.text = tile.Data.Details;
 
             // If the stronghold is clicked, open the stronghold management panel.
-            if(tile.Type == TileType.STRONGHOLD) { if(AppUI.Instance.lastPageOpened != 3) AppUI.Instance.SwitchPage(3); }
+            if (tile.Type == TileType.STRONGHOLD) { if (AppUI.Instance.lastPageOpened != 3) AppUI.Instance.SwitchPage(3); }
 
             anim.SetBool("Selection", true);
         }
@@ -63,6 +63,25 @@ namespace App.UI {
             Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
 
             return HexFunctions.Instance.WasTileClickedAt(clickPosition);
+        }
+
+        public void Refocus()
+        {
+            if (TargetTile)
+            {
+                if (!AppUI.Instance.leftPanelOpen)
+                    Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(TargetTile.transform.position);
+                else
+                {
+                    float height = Camera.main.orthographicSize * 2.0f;
+                    float width = height * Camera.main.aspect;
+
+                    Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(new Vector3(
+                        TargetTile.transform.position.x - (width / 4),
+                        TargetTile.transform.position.y,
+                        TargetTile.transform.position.z));
+                }
+            }
         }
     }
 }

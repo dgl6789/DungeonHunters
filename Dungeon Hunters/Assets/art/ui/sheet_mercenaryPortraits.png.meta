@@ -3,6 +3,15 @@ guid: 4de05c947ddb451468488c32899b1376
 TextureImporter:
   fileIDToRecycleName:
     21300000: sheet_mercenaryPortraits_0
+    21300002: sheet_mercenaryPortraits_1
+    21300004: sheet_mercenaryPortraits_2
+    21300006: sheet_mercenaryPortraits_3
+    21300008: sheet_mercenaryPortraits_4
+    21300010: sheet_mercenaryPortraits_5
+    21300012: sheet_mercenaryPortraits_6
+    21300014: sheet_mercenaryPortraits_7
+    21300016: sheet_mercenaryPortraits_8
+    21300018: sheet_mercenaryPortraits_9
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -61,7 +70,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 128
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -72,7 +81,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 128
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -94,7 +103,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Android
-    maxTextureSize: 128
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -122,7 +131,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 41
+        y: 207
         width: 23
         height: 23
       alignment: 0
@@ -132,7 +141,187 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da05d4c351288fb4fbe0ece6bcfa44c2
+      spriteID: abc94e55611c99b4291da72854893f2b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_1
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4e8e8ed1c206d64d9327849e943bf20
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_2
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a2aa6f746fd0a747bd1890e11c00b84
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_3
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 902ab62048536a145bc6a723374d7d7b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_4
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c65b578c8f69314d821414ebd22a7d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_5
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce78a042652cc1a4ea20300496c71e81
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_6
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7172bf610b654214795093e25219717a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_7
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc72af5a7b167394f85ac95865e85865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_8
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62229198b6a9fc34194c6f6006e1afc8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_mercenaryPortraits_9
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 207
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 843aeeaf0bc5f2943a9edba5c751e42c
       vertices: []
       indices: 
       edges: []

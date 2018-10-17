@@ -9,15 +9,13 @@ namespace App.UI {
     public class AppUI : MonoBehaviour {
 
         [SerializeField] Image BookImage;
-
-        [SerializeField] Sprite[] BookSprites;
+        
         [SerializeField] RectTransform[] Pages;
         [HideInInspector] public int lastPageOpened;
-
-        [SerializeField] RectTransform RightMenuPanel;
+        
         [SerializeField] RectTransform LeftMenuPanel;
 
-        bool rightPanelOpen, leftPanelOpen;
+        [HideInInspector] public bool leftPanelOpen;
 
         [SerializeField, ReadOnly] bool AcceptingKeyInput = true;
 
@@ -27,7 +25,6 @@ namespace App.UI {
             if (Instance == null) Instance = this;
             else if (Instance != this) Destroy(gameObject);
 
-            rightPanelOpen = leftPanelOpen = false;
             AcceptingKeyInput = true;
         }
 
@@ -36,11 +33,10 @@ namespace App.UI {
             if(AcceptingKeyInput)
             {
                 if (Input.GetButtonDown("LeftMenu")) ToggleLeftMenu();
-                if (Input.GetButtonDown("RightMenu")) ToggleRightMenu();
 
-                if (Input.GetButtonDown("AreaReportMenu")) SwitchPage(0);
-                if (Input.GetButtonDown("MercenaryManagementMenu")) SwitchPage(1);
-                if (Input.GetButtonDown("TasksMenu")) SwitchPage(2);
+                if (Input.GetButtonDown("NotificationMenu")) SwitchPage(0);
+                if (Input.GetButtonDown("AreaReportMenu")) SwitchPage(1);
+                if (Input.GetButtonDown("MercenaryManagementMenu")) SwitchPage(2);
                 if (Input.GetButtonDown("StrongholdManagementMenu")) SwitchPage(3);
                 if (Input.GetButtonDown("OptionsMenu")) SwitchPage(4);
             }
@@ -50,13 +46,6 @@ namespace App.UI {
             if (LeftMenuPanel) {
                 leftPanelOpen = !leftPanelOpen;
                 LeftMenuPanel.GetComponent<Animator>().SetBool("Open", leftPanelOpen);
-            }
-        }
-
-        public void ToggleRightMenu() {
-            if (RightMenuPanel) {
-                rightPanelOpen = !rightPanelOpen;
-                RightMenuPanel.GetComponent<Animator>().SetBool("Open", rightPanelOpen);
             }
         }
 
@@ -73,8 +62,6 @@ namespace App.UI {
                     Pages[p].gameObject.SetActive(false);
                 }
             }
-
-            BookImage.sprite = BookSprites[index];
 
             if (!leftPanelOpen) ToggleLeftMenu();
 
