@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WholeDungeon : MonoBehaviour {
     public GameObject RoomPrefab;
@@ -8,7 +9,7 @@ public class WholeDungeon : MonoBehaviour {
     public Room activeRoom;
     public bool forTesting;
     public bool forwardBack;
-    
+    public Button [] NavigationButtons;
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +26,7 @@ public class WholeDungeon : MonoBehaviour {
         }
 	}
 
-    void TraverseRooms(bool isFoward)
+    public void TraverseRooms(bool isFoward)
     {//Code to move from room to room
         //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
         //Not sure how to do it though, probably for DOM
@@ -48,5 +49,46 @@ public class WholeDungeon : MonoBehaviour {
             }
         }
 
+        for(int i = 0; i<8; i++)
+        {
+            NavigationButtons[i].gameObject.SetActive(false); 
+        }
+
+        switch (activeRoom.sourceDir)
+        {
+            case 0:
+                NavigationButtons[0].gameObject.SetActive(true);
+                break;
+            case 1:
+                NavigationButtons[1].gameObject.SetActive(true);
+                break;
+            case 2:
+                NavigationButtons[2].gameObject.SetActive(true);
+                break;
+            case 3:
+                NavigationButtons[3].gameObject.SetActive(true);
+                break;
+
+        }
+
+        switch (activeRoom.destinationDir)
+        {
+            case 0:
+                NavigationButtons[4].gameObject.SetActive(true);
+                break;
+            case 1:
+                NavigationButtons[5].gameObject.SetActive(true);
+                break;
+            case 2:
+                NavigationButtons[6].gameObject.SetActive(true);
+                break;
+            case 3:
+                NavigationButtons[7].gameObject.SetActive(true);
+                break;
+
+        }
+
     }
+
+   
 }
