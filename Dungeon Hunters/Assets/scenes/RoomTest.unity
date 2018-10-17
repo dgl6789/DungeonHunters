@@ -320,8 +320,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 729476805}
   - {fileID: 995303521}
+  - {fileID: 729476805}
   - {fileID: 1445716903}
   - {fileID: 1781710953}
   - {fileID: 2119221726}
@@ -566,7 +566,7 @@ RectTransform:
   m_LocalScale: {x: 0.44999, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 275637407}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -799,7 +799,7 @@ RectTransform:
   m_LocalScale: {x: 0.44265324, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 275637407}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1000,6 +1000,15 @@ MonoBehaviour:
   activeRoom: {fileID: 2126094828}
   forTesting: 0
   forwardBack: 0
+  NavigationButtons:
+  - {fileID: 1781710954}
+  - {fileID: 995303522}
+  - {fileID: 1852195134}
+  - {fileID: 108155033}
+  - {fileID: 1445716904}
+  - {fileID: 729476806}
+  - {fileID: 2119221727}
+  - {fileID: 1958286213}
 --- !u!4 &1417395317
 Transform:
   m_ObjectHideFlags: 0
