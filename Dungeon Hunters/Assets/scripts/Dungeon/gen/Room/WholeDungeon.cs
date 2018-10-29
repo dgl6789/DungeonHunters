@@ -13,11 +13,15 @@ public class WholeDungeon : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        CalcDirections();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void Awake()
+    {
+        CalcDirections();
+    }
+    // Update is called once per frame
+    void Update () {
 
         if (forTesting)
         {
@@ -49,29 +53,17 @@ public class WholeDungeon : MonoBehaviour {
             }
         }
 
-        for(int i = 0; i<8; i++)
-        {
-            NavigationButtons[i].gameObject.SetActive(false); 
-        }
+        CalcDirections();
 
+    }
+
+   void CalcDirections()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            NavigationButtons[i].gameObject.SetActive(false);
+        }
         switch (activeRoom.sourceDir)
-        {
-            case 0:
-                NavigationButtons[0].gameObject.SetActive(true);
-                break;
-            case 1:
-                NavigationButtons[1].gameObject.SetActive(true);
-                break;
-            case 2:
-                NavigationButtons[2].gameObject.SetActive(true);
-                break;
-            case 3:
-                NavigationButtons[3].gameObject.SetActive(true);
-                break;
-
-        }
-
-        switch (activeRoom.destinationDir)
         {
             case 0:
                 NavigationButtons[4].gameObject.SetActive(true);
@@ -88,7 +80,21 @@ public class WholeDungeon : MonoBehaviour {
 
         }
 
-    }
+        switch (activeRoom.destinationDir)
+        {
+            case 0:
+                NavigationButtons[0].gameObject.SetActive(true);
+                break;
+            case 1:
+                NavigationButtons[1].gameObject.SetActive(true);
+                break;
+            case 2:
+                NavigationButtons[2].gameObject.SetActive(true);
+                break;
+            case 3:
+                NavigationButtons[3].gameObject.SetActive(true);
+                break;
 
-   
+        }
+    }
 }

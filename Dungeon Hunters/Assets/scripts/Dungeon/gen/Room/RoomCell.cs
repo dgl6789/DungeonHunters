@@ -10,16 +10,27 @@ public class RoomCell : MonoBehaviour {
     public int LootType = 0;    
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
+    public DungeonCamera DGcam;
+    [SerializeField] private BoxCollider tileCollider;
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        tileCollider = gameObject.GetComponent<BoxCollider>();
+        
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    private void OnMouseDown()
+    {
+        //Add enums here for movement and attack. This is gonna be the basis for selecting options.
+
+        DGcam.SetTargetPosition(gameObject.transform.position);
+    }
 
     public void IncrimentHieght(int deltaHeight, int incColor)
     {
