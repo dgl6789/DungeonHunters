@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TileState {None, Enemy, Ally, MovementSelector, AttackSelector }
+
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.
     public bool Passable;// used for navigation
@@ -11,6 +13,7 @@ public class RoomCell : MonoBehaviour {
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
     public DungeonCamera DGcam;
+    public TileState Mystate;
     [SerializeField] private BoxCollider2D tileCollider;
 
 	// Use this for initialization
@@ -22,6 +25,25 @@ public class RoomCell : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        switch (Mystate)
+        {
+            case TileState.None:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
+                break;
+            case TileState.Enemy:
+                cubeTemp.GetComponent<SpriteRenderer>().color = Color.magenta;
+                break;
+            case TileState.Ally:
+                cubeTemp.GetComponent<SpriteRenderer>().color = Color.blue;
+                break;
+            case TileState.MovementSelector:
+                cubeTemp.GetComponent<SpriteRenderer>().color = Color.green;
+                break;
+            case TileState.AttackSelector:
+                cubeTemp.GetComponent<SpriteRenderer>().color = Color.red;
+                break;
+
+        }
 		
 	}
 
@@ -31,6 +53,15 @@ public class RoomCell : MonoBehaviour {
 
         DGcam.SetTargetPosition(gameObject.transform.position);
     }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {//If there is a right click
+            
+        }
+    }
+    
 
     public void IncrimentHieght(int deltaHeight, int incColor)
     {
