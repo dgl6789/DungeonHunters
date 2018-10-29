@@ -11,16 +11,18 @@ public class Room : MonoBehaviour
     private Vector2[] Locations;                     //useless post-gen
     private List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
     public List<Vector3Int> CaveTiles;              //efficient storage of data. useful for reconstruction
-    public List<Vector4> OreTiles;              //efficient storage of data. useful for reconstruction
+    public List<Vector4> OreTiles;                  //efficient storage of data. useful for reconstruction
+    public GameObject[,] AllGameObjects;            //just really used to shut the consol up
     public RoomCell[,] AllCells;                    //Simple container of other objects. Might be better off as a pointer to a single re-used group.
     public int sourceDir;                           //Mildly important for map linking.    
     public int destinationDir;                      //0-3, 0 being up, 1 being right, 2, being down, 3 being left
     private bool HasGenerated = false;              //Required for start logic
     public bool displayFrameTime;                   //use largely in debugging
-    public bool reGen = false, forward = false, backward = false;//Temp variables to use in "map Navigation"                      
+    public bool reGen = false;                      //Temp variables to use in "map Navigation"                      
     public bool reCon = false;                      //use to Recontruct a map
     private Vector2Int minBound, maxBound;          //useless post-gen
-    public Room nextRoom, previousRoom;    
+    public Room nextRoom, previousRoom;
+    [SerializeField] DungeonCamera DGcam;
 
     // Use this for initialization
     void Start()
@@ -33,17 +35,15 @@ public class Room : MonoBehaviour
         if (primaryRoom)
         {
             AllCells = new RoomCell[80, 80];//instantiates all cubes
+            AllGameObjects = new GameObject[80, 80];//instantiates all cubes
             for (int i = 0; i < 80; i++)
             {
                 for (int j = 0; j < 80; j++)
                 {
-                    AllCells[i, j] = new RoomCell
-                    {
-                        cubeTemp = Instantiate(LinePrefab, new Vector3(i / 2.0f, j / 2.0f, 0), Quaternion.identity, gameObject.transform),
-                        Gridlocation = new Vector2Int(i, j)
-                    };
+                    AllGameObjects[i, j] = Instantiate(LinePrefab, new Vector3(i / 2.0f, j / 2.0f, 0), Quaternion.identity, gameObject.transform);
+                    AllCells[i, j] = AllGameObjects[i, j].GetComponent<RoomCell>();
+                    AllCells[i, j].Gridlocation = new Vector2Int(i, j);                    
                 }
-
             }
             if (nextRoom != null) { 
                 Room temproom;
@@ -454,23 +454,7 @@ public class Room : MonoBehaviour
             RebuildCave();
             
         }
-        else if (forward)
-        {
-            ClearRoom();
-            forward = false;
-            LinesTiles.Clear();
-            ExtendCave();
-        }
-        else if (backward)
-        {
-            if (previousRoom != null)
-            {
-                ClearRoom();
-                previousRoom.RebuildCave();
-                
-            }
-            backward = false;
-        }
+       
     }
 
     public void ClearRoom()
@@ -551,6 +535,38 @@ public class Room : MonoBehaviour
 
 
         
+    }
+
+    public void OnRoomSwitch(bool isMovingForward)
+    { // this will handle any things to be changed on a room switch using the forward or backward buttons.
+         Vector2Int temp = new Vector2Int(0,0);
+
+        if (isMovingForward)//if we are moving foward, move the camera to the center of the "starting" positions.
+        {           
+            foreach(List<Vector2Int> river in LinesTiles)
+            {
+                temp += river[0];
+            }
+            temp = new Vector2Int(temp.x / 3, temp.y / 3);
+            Debug.Log(temp);
+            DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
+            
+
+        }
+        else
+        {            
+            foreach (List<Vector2Int> river in LinesTiles)
+            {
+                temp += river[river.Count-1];
+            }
+            temp = new Vector2Int(temp.x / 3, temp.y / 3);
+            DGcam.SetTargetPosition(new Vector3(temp.x/2, temp.y/2 , 0));
+        }
+
+
+
+
+
     }
 
  

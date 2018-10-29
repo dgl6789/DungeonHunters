@@ -11,11 +11,11 @@ public class RoomCell : MonoBehaviour {
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
     public DungeonCamera DGcam;
-    [SerializeField] private BoxCollider tileCollider;
+    [SerializeField] private BoxCollider2D tileCollider;
 
 	// Use this for initialization
 	void Start () {
-        tileCollider = gameObject.GetComponent<BoxCollider>();
+        tileCollider = gameObject.GetComponent<BoxCollider2D>();
         
 
     }
@@ -37,7 +37,7 @@ public class RoomCell : MonoBehaviour {
         Height = deltaHeight;
         Passable = true;
         cubeTemp.transform.Translate(new Vector3(0, 0, deltaHeight));
-        cubeTemp.GetComponent<Renderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
+        cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
     }
 
     public void RaiseTo(int deltaHeight, int incColor)
@@ -46,7 +46,7 @@ public class RoomCell : MonoBehaviour {
         {
             Passable = true;
             Height = deltaHeight;
-            cubeTemp.GetComponent<Renderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
+            cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
             cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
         }
     }
@@ -56,41 +56,41 @@ public class RoomCell : MonoBehaviour {
         Passable = false;
         Height = 0;
         cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
-        cubeTemp.GetComponent<Renderer>().material.color = Color.black;
+        cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.black;
     }
 
     public void AssignOreValue(int incValue){
         switch (incValue)
         {
             case 1://Copper?
-                cubeTemp.GetComponent<Renderer>().material.color = Color.green;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.green;
                 break;
             case 2://Tin?
-                cubeTemp.GetComponent<Renderer>().material.color = Color.white;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.white;
                 break;
             case 3://Strengthening Agent?
-                cubeTemp.GetComponent<Renderer>().material.color = Color.magenta;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.magenta;
                 break;
             case 4://Hardening Agent?
-                cubeTemp.GetComponent<Renderer>().material.color = Color.magenta;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.magenta;
                 break;
             case 5://Firmening Agent?
-                cubeTemp.GetComponent<Renderer>().material.color = Color.magenta;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.magenta;
                 break;
             case 6://Iron
-                cubeTemp.GetComponent<Renderer>().material.color = Color.grey;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.grey;
                 break; 
             case 7://Silver
-                cubeTemp.GetComponent<Renderer>().material.color = Color.clear;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.clear;
                 break;
             case 8://Gold
-                cubeTemp.GetComponent<Renderer>().material.color = Color.yellow;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.yellow;
                 break;
             case 9://Gem
-                cubeTemp.GetComponent<Renderer>().material.color = Color.cyan;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.cyan;
                 break;
             case 10://Aluminum?
-                cubeTemp.GetComponent<Renderer>().material.color = Color.red;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.red;
                 break;
         }
     }

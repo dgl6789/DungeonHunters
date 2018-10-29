@@ -40,16 +40,19 @@ public class WholeDungeon : MonoBehaviour {
             if(activeRoom.nextRoom != null)
             {//if we have forward to move to
                 activeRoom.ClearRoom();
-                activeRoom.ExtendCave();
-                activeRoom = activeRoom.nextRoom; 
+                activeRoom.ExtendCave();                
+                activeRoom = activeRoom.nextRoom;
+                activeRoom.OnRoomSwitch(true);
+
             }
         }
         else{
             if (activeRoom.previousRoom != null)
             {//if we have forward to move to
-                activeRoom.ClearRoom();               
+                activeRoom.ClearRoom();                
                 activeRoom = activeRoom.previousRoom;
                 activeRoom.RebuildCave();
+                activeRoom.OnRoomSwitch(false);
             }
         }
 
