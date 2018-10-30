@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Mercenary : MonoBehaviour {
     public Overworld.HexTile overworldLocation;    
-    public Vector2 gridPosition;//Position in the grid
-    public int Health, Stamina, Morale, WeaponCohesion, ArmourCohesion;
+    public Vector2Int gridPosition;//Position in the grid
+    public int Health, Stamina, Morale, WeaponCohesion, ArmourCohesion, Movement;
     public int MaxHealth, MaxStamina, MaxMorale, Body, Mind, Spirit, DTier, OTier;
     public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein
     public WeaponType weaponType;

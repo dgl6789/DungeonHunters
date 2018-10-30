@@ -569,6 +569,107 @@ public class Room : MonoBehaviour
 
     }
 
+    public void HighLightZones(int zoneType, Vector2Int startingLoc, int minDistance, int maxDistance)
+    {
+        if(maxDistance == 0)
+        {
+            AllCells[startingLoc.x, startingLoc.y].Mystate = (TileState)zoneType;
+            return;
+        }
+        List<Vector2Int> upEdge = new List<Vector2Int>(), leftEdge = new List<Vector2Int>(), rightEdge = new List<Vector2Int>(), downEdge = new List<Vector2Int>(), temp = new List<Vector2Int>();
+        temp.Add(startingLoc);
+        upEdge.Add(new Vector2Int(startingLoc.x, startingLoc.y + 1));
+        leftEdge.Add(new Vector2Int(startingLoc.x-1, startingLoc.y ));
+        downEdge.Add(new Vector2Int(startingLoc.x, startingLoc.y - 1));
+        rightEdge.Add(new Vector2Int(startingLoc.x+1, startingLoc.y));
+        int index = 1;
+        while (index <= maxDistance)
+        {
+
+            //Upward Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(upEdge[0].x - 1, upEdge[0].y));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in upEdge)
+            {
+                temp.Add(new Vector2Int(loc.x, loc.y + 1));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(upEdge[upEdge.Count - 1].x + 1, upEdge[upEdge.Count - 1].y));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in upEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    Debug.Log(loc);
+                }
+            }
+            upEdge.Clear();
+            upEdge.AddRange(temp);
+
+            //Right Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(rightEdge[0].x , rightEdge[0].y-1));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in rightEdge)
+            {
+                temp.Add(new Vector2Int(loc.x+1, loc.y));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(rightEdge[rightEdge.Count - 1].x , rightEdge[rightEdge.Count - 1].y-1));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in rightEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    Debug.Log(loc);
+                }
+            }
+            rightEdge.Clear();
+            rightEdge.AddRange(temp);
+
+            //Down Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(downEdge[0].x-1, downEdge[0].y));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in downEdge)
+            {
+                temp.Add(new Vector2Int(loc.x, loc.y-1));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(downEdge[downEdge.Count - 1].x+1, downEdge[downEdge.Count- 1].y ));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in downEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    Debug.Log(loc);
+                }
+            }
+            downEdge.Clear();
+            downEdge.AddRange(temp);
+
+
+            //Left Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(leftEdge[0].x, leftEdge[0].y-1));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in leftEdge)
+            {
+                temp.Add(new Vector2Int(loc.x-1, loc.y));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(leftEdge[leftEdge.Count - 1].x , leftEdge[leftEdge.Count - 1].y+1));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in leftEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    Debug.Log(loc);
+                }
+            }
+            leftEdge.Clear();
+            leftEdge.AddRange(temp);
+
+
+            index++;
+        }
+
+
+    }
+
  
 }
 

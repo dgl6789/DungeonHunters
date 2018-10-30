@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileState {None, Enemy, Ally, MovementSelector, AttackSelector }
+public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy }
 
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.

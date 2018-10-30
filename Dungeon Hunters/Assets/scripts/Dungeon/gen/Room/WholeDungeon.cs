@@ -10,6 +10,10 @@ public class WholeDungeon : MonoBehaviour {
     public bool forTesting;
     public bool forwardBack;
     public Button [] NavigationButtons;
+    public List<Mercenary> AllActiveMercenaries;
+    public bool AdvanceTurn= false;
+    public bool debugging = false;
+    public bool debuggingRange = false;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +32,26 @@ public class WholeDungeon : MonoBehaviour {
             forTesting = false;
             TraverseRooms(forwardBack);
         }
-	}
+        if (AdvanceTurn)
+        {
+            //Code for enemy turn here.
+        }
+        if (debugging)
+        {
+            RangeTick(false);
+            MovementTick(true);
+            CharacterTick();
+            debugging = false;
+        }
+        if (debuggingRange)
+        {
+            MovementTick(false);
+            RangeTick(true);
+            CharacterTick();
+            debuggingRange = false;
+        }
+
+    }
 
     public void TraverseRooms(bool isFoward)
     {//Code to move from room to room
@@ -60,7 +83,7 @@ public class WholeDungeon : MonoBehaviour {
 
     }
 
-   void CalcDirections()
+    void CalcDirections()
     {
         for (int i = 0; i < 8; i++)
         {
@@ -100,4 +123,49 @@ public class WholeDungeon : MonoBehaviour {
 
         }
     }
+
+    void CharacterTick()
+    {
+        foreach(Mercenary merc in AllActiveMercenaries)
+        {
+            activeRoom.HighLightZones(1, merc.gridPosition,0,0);
+        }
+    }
+
+    void MovementTick(bool activating)
+    {
+        if (activating)
+        {
+            foreach (Mercenary merc in AllActiveMercenaries)
+            {
+                activeRoom.HighLightZones(2, merc.gridPosition, 1, merc.Movement);
+            }
+        }
+        else
+        {
+            foreach (Mercenary merc in AllActiveMercenaries)
+            {
+                activeRoom.HighLightZones(0, merc.gridPosition, 1, merc.Movement);
+            }
+        }
+    }
+
+    void RangeTick(bool activating)
+    {
+        if (activating)
+        {
+            foreach (Mercenary merc in AllActiveMercenaries)
+            {
+                activeRoom.HighLightZones(3, merc.gridPosition, 3, merc.Movement);
+            }
+        }
+        else
+        {
+            foreach (Mercenary merc in AllActiveMercenaries)
+            {
+                activeRoom.HighLightZones(0, merc.gridPosition, 3, merc.Movement);
+            }
+        }
+    }
+
 }
