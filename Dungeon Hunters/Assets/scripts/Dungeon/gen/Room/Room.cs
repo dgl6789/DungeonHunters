@@ -547,8 +547,7 @@ public class Room : MonoBehaviour
             {
                 temp += river[0];
             }
-            temp = new Vector2Int(temp.x / 3, temp.y / 3);
-            Debug.Log(temp);
+            temp = new Vector2Int(temp.x / 3, temp.y / 3);           
             DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
             
 
@@ -599,7 +598,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in upEdge)
                 {
                     AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    Debug.Log(loc);
+                    
                 }
             }
             upEdge.Clear();
@@ -618,7 +617,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in rightEdge)
                 {
                     AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    Debug.Log(loc);
+                    
                 }
             }
             rightEdge.Clear();
@@ -637,7 +636,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in downEdge)
                 {
                     AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    Debug.Log(loc);
+                    
                 }
             }
             downEdge.Clear();
@@ -657,7 +656,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in leftEdge)
                 {
                     AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    Debug.Log(loc);
+                    
                 }
             }
             leftEdge.Clear();

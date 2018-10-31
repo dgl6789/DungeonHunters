@@ -11,7 +11,7 @@ public class WholeDungeon : MonoBehaviour {
     public bool forwardBack;
     public Button [] NavigationButtons;
     public List<Mercenary> AllActiveMercenaries;
-    public bool AdvanceTurn= false;
+    public int ActiveMerc;   
     public bool debugging = false;
     public bool debuggingRange = false;
 
@@ -31,11 +31,7 @@ public class WholeDungeon : MonoBehaviour {
         {
             forTesting = false;
             TraverseRooms(forwardBack);
-        }
-        if (AdvanceTurn)
-        {
-            //Code for enemy turn here.
-        }
+        }        
         if (debugging)
         {
             RangeTick(false);
@@ -51,8 +47,37 @@ public class WholeDungeon : MonoBehaviour {
             debuggingRange = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            MovementTick(false);
+            RangeTick(false);
+            ActiveMerc--;
+            if (ActiveMerc < 0)
+                ActiveMerc = AllActiveMercenaries.Count - 1;
+
+            MovementTick(true);
+            CharacterTick();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            MovementTick(false);
+            RangeTick(false);
+            ActiveMerc++;
+            ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
+
+            MovementTick(true);
+            CharacterTick();
+        }
+
     }
 
+    public void AdvanceTurn()
+    {
+        foreach (Mercenary merc in AllActiveMercenaries)
+        {
+            merc.Movement = 5;
+        }
+    }
     public void TraverseRooms(bool isFoward)
     {//Code to move from room to room
         //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
@@ -132,21 +157,26 @@ public class WholeDungeon : MonoBehaviour {
         }
     }
 
-    void MovementTick(bool activating)
+    void CharacterTick(int Index, bool Active)
     {
-        if (activating)
+        if (Active)
         {
-            foreach (Mercenary merc in AllActiveMercenaries)
-            {
-                activeRoom.HighLightZones(2, merc.gridPosition, 1, merc.Movement);
-            }
+            activeRoom.HighLightZones(1, AllActiveMercenaries[Index].gridPosition, 0, 0);
         }
         else
         {
-            foreach (Mercenary merc in AllActiveMercenaries)
-            {
-                activeRoom.HighLightZones(0, merc.gridPosition, 1, merc.Movement);
-            }
+            activeRoom.HighLightZones(0, AllActiveMercenaries[Index].gridPosition, 0, 0);
+        }
+    }
+    void MovementTick(bool activating)
+    {//Draws or removes the movement selector
+        if (activating)
+        {
+            activeRoom.HighLightZones(2, AllActiveMercenaries[ActiveMerc].gridPosition, 1, AllActiveMercenaries[ActiveMerc].Movement);           
+        }
+        else
+        {            
+           activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 0, AllActiveMercenaries[ActiveMerc].Movement);            
         }
     }
 
@@ -165,6 +195,21 @@ public class WholeDungeon : MonoBehaviour {
             {
                 activeRoom.HighLightZones(0, merc.gridPosition, 3, merc.Movement);
             }
+        }
+    }
+
+    public void MoveActiveMerc(Vector2Int index)
+    {
+        if(ActiveMerc != -1)
+        {//ensure that we aren't moving a character that can't be moved
+            MovementTick(false);
+            CharacterTick(ActiveMerc, false);
+            int totalMovement = (Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.x - index.x) + Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.y - index.y));
+            AllActiveMercenaries[ActiveMerc].gridPosition = index;
+            AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
+            MovementTick(true);
+            CharacterTick(ActiveMerc, true);
+            
         }
     }
 

@@ -13,6 +13,7 @@ public class RoomCell : MonoBehaviour {
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
     public DungeonCamera DGcam;
+    [SerializeField] private WholeDungeon myDungeon;
     public TileState Mystate;
     [SerializeField] private BoxCollider2D tileCollider;
 
@@ -58,7 +59,14 @@ public class RoomCell : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(1))
         {//If there is a right click
-            
+            switch (Mystate)
+            {
+                case TileState.MovementSelector:
+                    myDungeon.MoveActiveMerc(Gridlocation);
+                    break;
+                default:
+                    break;
+            }
         }
     }
     
