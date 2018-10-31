@@ -10,6 +10,8 @@ namespace Overworld {
         
         public Resource[] resources;
 
+        public HexPathNode PathNode;
+
         public HexData(Sprite sketch, string name, Resource[] resources) {
             this.resources = resources;
 

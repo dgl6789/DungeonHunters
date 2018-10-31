@@ -8,7 +8,10 @@ using Overworld;
 namespace App.UI {
     public class TileSelector : MonoBehaviour {
 
-        HexTile TargetTile;
+        HexTile targetTile;
+        public HexTile TargetTile {
+            get { return targetTile; }
+        }
         Animator anim;
 
         [SerializeField] TextMeshProUGUI targetedTileText;
@@ -26,9 +29,9 @@ namespace App.UI {
         }
 
         private void Update() {
-            if (TargetTile) transform.position = TargetTile.transform.position;
+            if (targetTile) transform.position = targetTile.transform.position;
 
-            if (Input.GetButtonDown("LeftClick")) {
+            if (Input.GetButtonDown("RightClick")) {
                 HexTile h = CheckTileClick();
 
                 if (h) SetTarget(h);
@@ -36,11 +39,11 @@ namespace App.UI {
         }
 
         public void SetTarget(HexTile tile) {
-            TargetTile = tile;
+            targetTile = tile;
 
             Refocus();
 
-            transform.position = TargetTile.transform.position;
+            transform.position = targetTile.transform.position;
 
             // When the target is set, open the tile in the report section of the book based on its data.
             targetedTileText.text = tile.Data.Name;
@@ -54,7 +57,7 @@ namespace App.UI {
         }
 
         public void Deselect() {
-            TargetTile = null;
+            targetTile = null;
 
             anim.SetBool("Selection", false);
         }
@@ -67,19 +70,19 @@ namespace App.UI {
 
         public void Refocus()
         {
-            if (TargetTile)
+            if (targetTile)
             {
                 if (!AppUI.Instance.leftPanelOpen)
-                    Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(TargetTile.transform.position);
+                    Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(targetTile.transform.position);
                 else
                 {
                     float height = Camera.main.orthographicSize * 2.0f;
                     float width = height * Camera.main.aspect;
 
                     Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(new Vector3(
-                        TargetTile.transform.position.x - (width / 4),
-                        TargetTile.transform.position.y,
-                        TargetTile.transform.position.z));
+                        targetTile.transform.position.x - (width / 4),
+                        targetTile.transform.position.y,
+                        targetTile.transform.position.z));
                 }
             }
         }

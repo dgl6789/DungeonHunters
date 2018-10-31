@@ -134,6 +134,77 @@ namespace Overworld
             return h;
         }
 
+        public List<HexPathNode> GetPathFromTo(HexPathNode pStart, HexPathNode pEnd) {
+            List<HexPathNode> openSet = new List<HexPathNode>();
+            List<HexPathNode> closedSet = new List<HexPathNode>();
+
+            openSet.Add(pStart);
+
+            while (openSet.Count > 0) {
+                HexPathNode current = openSet[0];
+                for (int i = 1; i < openSet.Count; i++) {
+                    if (openSet[i].F < current.F || (openSet[i].F == current.F && openSet[i].H < current.H)) {
+                        current = openSet[i];
+                    }
+                }
+            
+                openSet.Remove(current);
+                closedSet.Add(current);
+
+                // Found a path
+                if (current == pEnd) {
+                    List<HexPathNode> path = new List<HexPathNode>();
+            
+                    HexPathNode c = pEnd;
+                    while (c != pStart) {
+                        path.Add(c);
+                        c = current.Parent;
+                    }
+            
+                    path.Reverse();
+            
+                    return path;
+                }
+            
+                foreach (HexPathNode n in GetAdjacentPathNodes(current)) {
+                    if (closedSet.Contains(n)) continue;
+            
+                    int costToNeighbor = current.G + DistanceFromTo(current, n) + n.BaseCost;
+                    if (costToNeighbor < n.G || !openSet.Contains(n)) {
+                        n.G = costToNeighbor;
+                        n.H = DistanceFromTo(n, pEnd);
+            
+                        n.Parent = current;
+            
+                        if (!openSet.Contains(n)) openSet.Add(n);
+                        n.Tile.HexRenderer.color = new Color(1, 1, 0);
+                    }
+                }
+            }
+
+            // Failed to find a path
+            return new List<HexPathNode>();
+        }
+
+        public List<HexPathNode> GetAdjacentPathNodes(HexPathNode pOrigin) {
+            List<HexPathNode> neighbors = new List<HexPathNode>();
+
+            foreach (Vector2Int i in NeighborIndices) {
+                if (!HexMap.Instance.Tiles.ContainsKey(i + pOrigin.Address)) continue;
+                
+                neighbors.Add(HexMap.Instance.Tiles[i + pOrigin.Address].Data.PathNode);
+            }
+
+            return neighbors;
+        }
+
+        public int DistanceFromTo(HexPathNode a, HexPathNode b) {
+            int dX = Mathf.Abs(a.Address.X - b.Address.X);
+            int dY = Mathf.Abs(a.Address.Y - b.Address.Y);
+
+            return 10 * (dX > dY ? dX : dY);
+        }
+
         public Sprite GetDungeonSprite(TileType type) {
             foreach(HexSprite s in HexSpriteLibrary) {
                 if(s.Type == TileType.DUNGEON) {
@@ -186,6 +257,33 @@ namespace Overworld
                     return "Dungeon";
                 case TileType.STRONGHOLD:
                     return "Stronghold";
+            }
+        }
+
+        public int GetRoughTerrainFactor(TileType type) {
+            switch (type) {
+                default:
+                case TileType.NULL:
+                case TileType.ISLAND:
+                case TileType.OCEAN_ISLAND:
+                case TileType.VILLAGE:
+                case TileType.FARMLAND:
+                case TileType.STRONGHOLD:
+                case TileType.GRASSLAND:
+                    return 1;
+                case TileType.FOREST:
+                case TileType.SPARSE_FOREST:
+                case TileType.DENSE_FOREST:
+                case TileType.HIGHLAND:
+                case TileType.DUNGEON:
+                    return 2;
+                case TileType.TALL_MOUNTAIN:
+                case TileType.MOUNTAIN:
+                    return 3;
+                case TileType.WATER:
+                    return 4;
+                case TileType.OCEAN:
+                    return 5;
             }
         }
 

@@ -357,6 +357,7 @@ namespace Overworld {
                 }
 
                 kvp.Value.Data = new HexData(s, HexFunctions.Instance.TileTypeToString(kvp.Value.Type), new Resource[0]);
+                kvp.Value.Data.PathNode = new HexPathNode(kvp.Value);
             }
 
             yield return StartCoroutine(UpdateProgress(0.9f, "Prettyifying..."));
@@ -441,6 +442,13 @@ namespace Overworld {
             yield return StartCoroutine(UpdateProgress(1.0f, "Done."));
 
             GetComponent<MapScrollEffect>().GetTileList();
+
+            // Test the pathfinding
+            // List<HexTile> ts = Enumerable.ToList(Tiles.Values);
+            // 
+            // foreach(HexPathNode node in HexFunctions.Instance.GetPathFromTo(ts[Random.Range(0, ts.Count)].Data.PathNode, ts[Random.Range(0, ts.Count)].Data.PathNode)) {
+            //     node.Tile.HexRenderer.color = new Color(1, 0, 0);
+            // }
 
             yield return null;
         }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Numeralien.Utilities;
-using System.Linq;
+using TMPro;
 
 namespace App.UI {
     public class AppUI : MonoBehaviour {
 
         [SerializeField] Image BookImage;
+        public GameObject NotificationObject;
         
         [SerializeField] RectTransform[] Pages;
         [HideInInspector] public int lastPageOpened;
@@ -20,6 +21,14 @@ namespace App.UI {
         [SerializeField, ReadOnly] bool AcceptingKeyInput = true;
 
         public static AppUI Instance;
+
+        [HideInInspector] public MercenaryData selectedMercenary;
+
+        [Header("Text Fields")]
+
+        public TextMeshProUGUI DateText;
+        public TextMeshProUGUI SelectTile;
+        public TextMeshProUGUI NotificationBadge;
 
         public void Awake() {
             if (Instance == null) Instance = this;
@@ -46,6 +55,15 @@ namespace App.UI {
             if (LeftMenuPanel) {
                 leftPanelOpen = !leftPanelOpen;
                 LeftMenuPanel.GetComponent<Animator>().SetBool("Open", leftPanelOpen);
+            }
+        }
+
+        public void ToggleSelectTileText(string mercenaryName = "") {
+            if (!SelectTile.gameObject.activeSelf) {
+                SelectTile.text = "Select the tile to send " + mercenaryName + " to.\nPress ENTER to confirm.";
+                SelectTile.gameObject.SetActive(true);
+            } else {
+                SelectTile.gameObject.SetActive(false);
             }
         }
 
