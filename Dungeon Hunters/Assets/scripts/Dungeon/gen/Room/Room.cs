@@ -11,16 +11,18 @@ public class Room : MonoBehaviour
     private Vector2[] Locations;                     //useless post-gen
     private List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
     public List<Vector3Int> CaveTiles;              //efficient storage of data. useful for reconstruction
-    public List<Vector4> OreTiles;              //efficient storage of data. useful for reconstruction
+    public List<Vector4> OreTiles;                  //efficient storage of data. useful for reconstruction
+    public GameObject[,] AllGameObjects;            //just really used to shut the consol up
     public RoomCell[,] AllCells;                    //Simple container of other objects. Might be better off as a pointer to a single re-used group.
     public int sourceDir;                           //Mildly important for map linking.    
     public int destinationDir;                      //0-3, 0 being up, 1 being right, 2, being down, 3 being left
     private bool HasGenerated = false;              //Required for start logic
     public bool displayFrameTime;                   //use largely in debugging
-    public bool reGen = false, forward = false, backward = false;//Temp variables to use in "map Navigation"                      
+    public bool reGen = false;                      //Temp variables to use in "map Navigation"                      
     public bool reCon = false;                      //use to Recontruct a map
     private Vector2Int minBound, maxBound;          //useless post-gen
-    public Room nextRoom, previousRoom;    
+    public Room nextRoom, previousRoom;
+    [SerializeField] DungeonCamera DGcam;
 
     // Use this for initialization
     void Start()
@@ -33,17 +35,15 @@ public class Room : MonoBehaviour
         if (primaryRoom)
         {
             AllCells = new RoomCell[80, 80];//instantiates all cubes
+            AllGameObjects = new GameObject[80, 80];//instantiates all cubes
             for (int i = 0; i < 80; i++)
             {
                 for (int j = 0; j < 80; j++)
                 {
-                    AllCells[i, j] = new RoomCell
-                    {
-                        cubeTemp = Instantiate(LinePrefab, new Vector3(i / 2.0f, j / 2.0f, 0), Quaternion.identity, gameObject.transform),
-                        Gridlocation = new Vector2Int(i, j)
-                    };
+                    AllGameObjects[i, j] = Instantiate(LinePrefab, new Vector3(i / 2.0f, j / 2.0f, 0), Quaternion.identity, gameObject.transform);
+                    AllCells[i, j] = AllGameObjects[i, j].GetComponent<RoomCell>();
+                    AllCells[i, j].Gridlocation = new Vector2Int(i, j);                    
                 }
-
             }
             if (nextRoom != null) { 
                 Room temproom;
@@ -454,23 +454,7 @@ public class Room : MonoBehaviour
             RebuildCave();
             
         }
-        else if (forward)
-        {
-            ClearRoom();
-            forward = false;
-            LinesTiles.Clear();
-            ExtendCave();
-        }
-        else if (backward)
-        {
-            if (previousRoom != null)
-            {
-                ClearRoom();
-                previousRoom.RebuildCave();
-                
-            }
-            backward = false;
-        }
+       
     }
 
     public void ClearRoom()
@@ -552,4 +536,139 @@ public class Room : MonoBehaviour
 
         
     }
+
+    public void OnRoomSwitch(bool isMovingForward)
+    { // this will handle any things to be changed on a room switch using the forward or backward buttons.
+         Vector2Int temp = new Vector2Int(0,0);
+
+        if (isMovingForward)//if we are moving foward, move the camera to the center of the "starting" positions.
+        {           
+            foreach(List<Vector2Int> river in LinesTiles)
+            {
+                temp += river[0];
+            }
+            temp = new Vector2Int(temp.x / 3, temp.y / 3);           
+            DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
+            
+
+        }
+        else
+        {            
+            foreach (List<Vector2Int> river in LinesTiles)
+            {
+                temp += river[river.Count-1];
+            }
+            temp = new Vector2Int(temp.x / 3, temp.y / 3);
+            DGcam.SetTargetPosition(new Vector3(temp.x/2, temp.y/2 , 0));
+        }
+
+
+
+
+
+    }
+
+    public void HighLightZones(int zoneType, Vector2Int startingLoc, int minDistance, int maxDistance)
+    {
+        if(maxDistance == 0)
+        {
+            AllCells[startingLoc.x, startingLoc.y].Mystate = (TileState)zoneType;
+            return;
+        }
+        List<Vector2Int> upEdge = new List<Vector2Int>(), leftEdge = new List<Vector2Int>(), rightEdge = new List<Vector2Int>(), downEdge = new List<Vector2Int>(), temp = new List<Vector2Int>();
+        temp.Add(startingLoc);
+        upEdge.Add(new Vector2Int(startingLoc.x, startingLoc.y + 1));
+        leftEdge.Add(new Vector2Int(startingLoc.x-1, startingLoc.y ));
+        downEdge.Add(new Vector2Int(startingLoc.x, startingLoc.y - 1));
+        rightEdge.Add(new Vector2Int(startingLoc.x+1, startingLoc.y));
+        int index = 1;
+        while (index <= maxDistance)
+        {
+
+            //Upward Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(upEdge[0].x - 1, upEdge[0].y));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in upEdge)
+            {
+                temp.Add(new Vector2Int(loc.x, loc.y + 1));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(upEdge[upEdge.Count - 1].x + 1, upEdge[upEdge.Count - 1].y));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in upEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    
+                }
+            }
+            upEdge.Clear();
+            upEdge.AddRange(temp);
+
+            //Right Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(rightEdge[0].x , rightEdge[0].y-1));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in rightEdge)
+            {
+                temp.Add(new Vector2Int(loc.x+1, loc.y));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(rightEdge[rightEdge.Count - 1].x , rightEdge[rightEdge.Count - 1].y-1));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in rightEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    
+                }
+            }
+            rightEdge.Clear();
+            rightEdge.AddRange(temp);
+
+            //Down Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(downEdge[0].x-1, downEdge[0].y));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in downEdge)
+            {
+                temp.Add(new Vector2Int(loc.x, loc.y-1));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(downEdge[downEdge.Count - 1].x+1, downEdge[downEdge.Count- 1].y ));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in downEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    
+                }
+            }
+            downEdge.Clear();
+            downEdge.AddRange(temp);
+
+
+            //Left Zone 
+            temp.Clear();
+            temp.Add(new Vector2Int(leftEdge[0].x, leftEdge[0].y-1));//Add the "left" edge of the existing zone.
+            foreach (Vector2Int loc in leftEdge)
+            {
+                temp.Add(new Vector2Int(loc.x-1, loc.y));//advance all non-edge in the zone
+            }
+            temp.Add(new Vector2Int(leftEdge[leftEdge.Count - 1].x , leftEdge[leftEdge.Count - 1].y+1));//Add the "right" edge of the existing zone.
+            if (index >= minDistance)
+            {
+                foreach (Vector2Int loc in leftEdge)
+                {
+                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    
+                }
+            }
+            leftEdge.Clear();
+            leftEdge.AddRange(temp);
+
+
+            index++;
+        }
+
+
+    }
+
+ 
 }
+

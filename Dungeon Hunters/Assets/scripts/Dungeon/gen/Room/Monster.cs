@@ -13,7 +13,7 @@ public enum WeaponType { Slash, Pierce, Crush}
 public enum Stance { Offensive, Standard, Parry}
 
 public class Monster : MonoBehaviour {
-    public Vector2 gridPosition;//Position in the grid
+    public Vector2Int gridPosition;//Position in the grid
     public int Health, Stamina, Morale; // Basic stats- Health bounds the other 2, low stamina reduces combat effectiveness, and Low Morale leads to unit control loss
     public int pointBuy, MaxHealth=100, MaxStamina=50, MaxMorale=20, WeaponCohesion=100, ArmourCohesion=100;
     public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein    
