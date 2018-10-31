@@ -11,6 +11,7 @@ public class WholeDungeon : MonoBehaviour {
     public bool forwardBack;
     public Button [] NavigationButtons;
     public List<Mercenary> AllActiveMercenaries;
+    public List<Monster> AllActiveMonsters;
     public int ActiveMerc;   
     public bool debugging = false;
     public bool debuggingRange = false;
@@ -68,13 +69,14 @@ public class WholeDungeon : MonoBehaviour {
             MovementTick(true);
             CharacterTick();
         }
+        MobTick();
 
     }
 
     public void AdvanceTurn()
     {
         foreach (Mercenary merc in AllActiveMercenaries)
-        {
+        {//reset merc data on every turn
             merc.Movement = 5;
         }
     }
@@ -91,7 +93,6 @@ public class WholeDungeon : MonoBehaviour {
                 activeRoom.ExtendCave();                
                 activeRoom = activeRoom.nextRoom;
                 activeRoom.OnRoomSwitch(true);
-
             }
         }
         else{
@@ -158,7 +159,7 @@ public class WholeDungeon : MonoBehaviour {
     }
 
     void CharacterTick(int Index, bool Active)
-    {
+    {//Draws or undraws a single character
         if (Active)
         {
             activeRoom.HighLightZones(1, AllActiveMercenaries[Index].gridPosition, 0, 0);
@@ -181,7 +182,7 @@ public class WholeDungeon : MonoBehaviour {
     }
 
     void RangeTick(bool activating)
-    {
+    {//draws a character's weapon range- to be used to select targets.
         if (activating)
         {
             foreach (Mercenary merc in AllActiveMercenaries)
@@ -210,6 +211,14 @@ public class WholeDungeon : MonoBehaviour {
             MovementTick(true);
             CharacterTick(ActiveMerc, true);
             
+        }
+    }
+
+    void MobTick()
+    {
+        foreach(Monster mob in AllActiveMonsters)
+        {
+            activeRoom.HighLightZones(4, mob.gridPosition, 0, 0);
         }
     }
 
