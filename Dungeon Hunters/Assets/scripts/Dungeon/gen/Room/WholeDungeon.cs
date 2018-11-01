@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Dungeon;
 
 public class WholeDungeon : MonoBehaviour {
     public GameObject RoomPrefab;
