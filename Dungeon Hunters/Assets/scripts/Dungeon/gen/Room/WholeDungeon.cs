@@ -4,7 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Dungeon;
 
+
+
 public class WholeDungeon : MonoBehaviour {
+    enum DisplayState {None, Attack, Walk, Stance, Data }
+    private DisplayState myDisplayState = 0;
     public GameObject RoomPrefab;
     public List<List<GameObject>> allRooms; // Pontentially not needed. Possibly a good idea to have though.
     public Room activeRoom;
@@ -13,9 +17,8 @@ public class WholeDungeon : MonoBehaviour {
     public Button [] NavigationButtons;
     public List<Mercenary> AllActiveMercenaries;
     public List<Monster> AllActiveMonsters;
-    public int ActiveMerc;   
-    public bool debugging = false;
-    public bool debuggingRange = false;
+    public int ActiveMerc;
+    public bool dirty;
 
 	// Use this for initialization
 	void Start () {
@@ -33,45 +36,52 @@ public class WholeDungeon : MonoBehaviour {
         {
             forTesting = false;
             TraverseRooms(forwardBack);
-        }        
-        if (debugging)
-        {
-            RangeTick(false);
-            MovementTick(true);
-            CharacterTick();
-            debugging = false;
         }
-        if (debuggingRange)
+        if (dirty)
         {
-            MovementTick(false);
-            RangeTick(true);
-            CharacterTick();
-            debuggingRange = false;
+            DrawTick();
+            dirty = false;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            MovementTick(false);
-            RangeTick(false);
+            UndrawTick();
             ActiveMerc--;
             if (ActiveMerc < 0)
                 ActiveMerc = AllActiveMercenaries.Count - 1;
-
-            MovementTick(true);
-            CharacterTick();
+            dirty = true;          
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
-            MovementTick(false);
-            RangeTick(false);
+            UndrawTick();
             ActiveMerc++;
             ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
-
-            MovementTick(true);
-            CharacterTick();
+            dirty = true;
         }
-        MobTick();
-
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            UndrawTick();
+            myDisplayState = DisplayState.Walk;
+            dirty = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            UndrawTick();
+            myDisplayState = DisplayState.Attack;
+            dirty = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            UndrawTick();
+            myDisplayState = DisplayState.Stance;
+            dirty = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            UndrawTick();
+            myDisplayState = DisplayState.Data;
+            dirty = true;
+        }
     }
 
     public void AdvanceTurn()
@@ -186,17 +196,11 @@ public class WholeDungeon : MonoBehaviour {
     {//draws a character's weapon range- to be used to select targets.
         if (activating)
         {
-            foreach (Mercenary merc in AllActiveMercenaries)
-            {
-                activeRoom.HighLightZones(3, merc.gridPosition, 3, merc.Movement);
-            }
+            activeRoom.HighLightZones(3, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement);
         }
         else
         {
-            foreach (Mercenary merc in AllActiveMercenaries)
-            {
-                activeRoom.HighLightZones(0, merc.gridPosition, 3, merc.Movement);
-            }
+            activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement);
         }
     }
 
@@ -223,4 +227,41 @@ public class WholeDungeon : MonoBehaviour {
         }
     }
 
+    void DrawTick()
+    {
+        switch (myDisplayState)
+        {
+            case DisplayState.None:                
+                break;
+            case DisplayState.Walk:
+                MovementTick(true);                
+                break;
+            case DisplayState.Attack:
+                RangeTick(true);               
+                break;
+
+        }
+        CharacterTick();
+        MobTick();
+    }
+
+
+
+    void UndrawTick()
+    {
+        switch (myDisplayState)
+        {
+            case DisplayState.None:
+                break;
+            case DisplayState.Walk:
+                MovementTick(false);
+                break;
+            case DisplayState.Attack:
+                RangeTick(false);
+                break;
+
+        }
+        CharacterTick();
+        MobTick();
+    }
 }
