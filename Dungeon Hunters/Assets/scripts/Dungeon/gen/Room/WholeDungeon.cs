@@ -18,7 +18,7 @@ public class WholeDungeon : MonoBehaviour {
     public List<Mercenary> AllActiveMercenaries;
     public List<Monster> AllActiveMonsters;
     public int ActiveMerc;
-    public bool dirty;
+    public bool dirty= true;
 
 	// Use this for initialization
 	void Start () {
@@ -91,6 +91,7 @@ public class WholeDungeon : MonoBehaviour {
             merc.Movement = 5;
         }
     }
+
     public void TraverseRooms(bool isFoward)
     {//Code to move from room to room
         //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
@@ -180,6 +181,7 @@ public class WholeDungeon : MonoBehaviour {
             activeRoom.HighLightZones(0, AllActiveMercenaries[Index].gridPosition, 0, 0);
         }
     }
+
     void MovementTick(bool activating)
     {//Draws or removes the movement selector
         if (activating)
@@ -191,7 +193,7 @@ public class WholeDungeon : MonoBehaviour {
            activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 0, AllActiveMercenaries[ActiveMerc].Movement);            
         }
     }
-
+    
     void RangeTick(bool activating)
     {//draws a character's weapon range- to be used to select targets.
         if (activating)
@@ -215,11 +217,11 @@ public class WholeDungeon : MonoBehaviour {
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
             MovementTick(true);
             CharacterTick(ActiveMerc, true);
-            
+            MobTick();
         }
     }
 
-    void MobTick()
+    public void MobTick()
     {
         foreach(Monster mob in AllActiveMonsters)
         {
@@ -231,18 +233,26 @@ public class WholeDungeon : MonoBehaviour {
     {
         switch (myDisplayState)
         {
-            case DisplayState.None:                
+            case DisplayState.None:
+                CharacterTick();
+                MobTick();
                 break;
             case DisplayState.Walk:
-                MovementTick(true);                
+                MovementTick(true);
+                CharacterTick();
+                MobTick();
                 break;
             case DisplayState.Attack:
-                RangeTick(true);               
+                CharacterTick();
+                MobTick();
+                activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2,5);      
                 break;
-
+            default:
+               
+                MobTick();
+                break;
         }
         CharacterTick();
-        MobTick();
     }
 
 

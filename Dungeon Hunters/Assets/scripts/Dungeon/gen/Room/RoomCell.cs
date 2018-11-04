@@ -61,8 +61,13 @@ public class RoomCell : MonoBehaviour {
         {//If there is a right click
             switch (Mystate)
             {
-                case TileState.MovementSelector:
+                case TileState.MovementSelector://if we are moving, run the code to move stuff
                     myDungeon.MoveActiveMerc(Gridlocation);
+                    break;
+                case TileState.AttackSelector://if we are doing an attack, first turn off the color for here, and then call the attack script, then redraw all monsters.
+                    Mystate = TileState.None;
+                    Debug.Log("This is where an attack should be");
+                    myDungeon.MobTick();
                     break;
                 default:
                     break;

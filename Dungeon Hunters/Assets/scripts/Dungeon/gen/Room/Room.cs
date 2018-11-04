@@ -12,6 +12,7 @@ public class Room : MonoBehaviour
     private List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
     public List<Vector3Int> CaveTiles;              //efficient storage of data. useful for reconstruction
     public List<Vector4> OreTiles;                  //efficient storage of data. useful for reconstruction
+    public List<Monster> ActiveMonsters;
     public GameObject[,] AllGameObjects;            //just really used to shut the consol up
     public RoomCell[,] AllCells;                    //Simple container of other objects. Might be better off as a pointer to a single re-used group.
     public int sourceDir;                           //Mildly important for map linking.    
@@ -669,6 +670,17 @@ public class Room : MonoBehaviour
 
     }
 
- 
+    public void HighLightTargets( Vector2Int startingLoc, int minDistance, int maxDistance)
+    {//Draws or Undraws all monster markings in range (placeholder, currently allows wallhacks, basically)
+      
+            foreach (Monster mob in ActiveMonsters)
+            {
+                if (minDistance < Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y) && maxDistance >= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y))
+                {
+                    AllCells[mob.gridPosition.x, mob.gridPosition.y].Mystate = TileState.AttackSelector;
+                }
+            }
+      
+    }
 }
 
