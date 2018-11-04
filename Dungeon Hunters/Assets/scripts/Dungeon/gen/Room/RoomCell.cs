@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy }
+public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend }
 
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.
@@ -43,7 +43,15 @@ public class RoomCell : MonoBehaviour {
             case TileState.AttackSelector:
                 cubeTemp.GetComponent<SpriteRenderer>().color = Color.red;
                 break;
-
+            case TileState.AttackRange:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(1,.45f,.45f);
+                break;
+            case TileState.ThreatenedByFoe:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(.70f, .4f, 1);
+                break;
+            case TileState.ThreatenedByFriend:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(.4f, .76f, 1);
+                break;
         }
 		
 	}
@@ -66,8 +74,7 @@ public class RoomCell : MonoBehaviour {
                     break;
                 case TileState.AttackSelector://if we are doing an attack, first turn off the color for here, and then call the attack script, then redraw all monsters.
                     Mystate = TileState.None;
-                    Debug.Log("This is where an attack should be");
-                    myDungeon.MobTick();
+                    Debug.Log("This is where an attack should be");                   
                     break;
                 default:
                     break;

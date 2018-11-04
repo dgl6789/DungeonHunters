@@ -245,7 +245,19 @@ public class WholeDungeon : MonoBehaviour {
             case DisplayState.Attack:
                 CharacterTick();
                 MobTick();
-                activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2,5);      
+                activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2,5, true);      
+                break;
+            case DisplayState.Stance:                
+                foreach (Mercenary Merc in AllActiveMercenaries)
+                {
+                    activeRoom.HighLightZones(7, Merc.gridPosition, 1, 2);
+                }
+                foreach (Monster Mob in AllActiveMonsters)
+                {
+                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2);
+                }
+                CharacterTick();
+                MobTick();
                 break;
             default:
                
@@ -254,8 +266,6 @@ public class WholeDungeon : MonoBehaviour {
         }
         CharacterTick();
     }
-
-
 
     void UndrawTick()
     {
@@ -267,7 +277,21 @@ public class WholeDungeon : MonoBehaviour {
                 MovementTick(false);
                 break;
             case DisplayState.Attack:
-                RangeTick(false);
+                activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2, 5, false);
+                CharacterTick();
+                MobTick();
+                break;
+            case DisplayState.Stance:
+                foreach (Mercenary Merc in AllActiveMercenaries)
+                {
+                    activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2);
+                }
+                foreach (Monster Mob in AllActiveMonsters)
+                {
+                    activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
+                }
+                CharacterTick();
+                MobTick();
                 break;
 
         }

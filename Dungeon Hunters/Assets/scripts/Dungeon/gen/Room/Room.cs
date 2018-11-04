@@ -670,9 +670,13 @@ public class Room : MonoBehaviour
 
     }
 
-    public void HighLightTargets( Vector2Int startingLoc, int minDistance, int maxDistance)
+    public void HighLightTargets( Vector2Int startingLoc, int minDistance, int maxDistance, bool activating)
     {//Draws or Undraws all monster markings in range (placeholder, currently allows wallhacks, basically)
-      
+
+        if (activating)
+        {
+            HighLightZones(5, startingLoc, minDistance, maxDistance);
+
             foreach (Monster mob in ActiveMonsters)
             {
                 if (minDistance < Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y) && maxDistance >= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y))
@@ -680,6 +684,11 @@ public class Room : MonoBehaviour
                     AllCells[mob.gridPosition.x, mob.gridPosition.y].Mystate = TileState.AttackSelector;
                 }
             }
+        }
+        else
+        {
+            HighLightZones(0, startingLoc, minDistance, maxDistance);
+        }
       
     }
 }
