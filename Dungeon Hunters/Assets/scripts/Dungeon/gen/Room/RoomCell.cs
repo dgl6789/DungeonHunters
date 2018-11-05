@@ -74,6 +74,8 @@ public class RoomCell : MonoBehaviour {
                     break;
                 case TileState.AttackSelector://if we are doing an attack, first turn off the color for here, and then call the attack script, then redraw all monsters.
                     Mystate = TileState.None;
+                    Monster temp = myDungeon.GetMobFromLoc(Gridlocation);
+                    myDungeon.RunAttack(myDungeon.AllActiveMercenaries[myDungeon.ActiveMerc], temp, true);
                     Debug.Log("This is where an attack should be");                   
                     break;
                 default:
@@ -110,8 +112,9 @@ public class RoomCell : MonoBehaviour {
         cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.black;
     }
 
+    //Temporarily disabled for new sprites
     public void AssignOreValue(int incValue){
-        switch (incValue)
+       /* switch (incValue)
         {
             case 1://Copper?
                 cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.green;
@@ -143,6 +146,6 @@ public class RoomCell : MonoBehaviour {
             case 10://Aluminum?
                 cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.red;
                 break;
-        }
+        }*/
     }
 }

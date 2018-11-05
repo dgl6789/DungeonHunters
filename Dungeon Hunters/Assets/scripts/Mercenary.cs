@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Dungeon {
+
     public class Mercenary : MonoBehaviour {
 
         /// Dungeon Members
@@ -12,12 +12,13 @@ namespace Dungeon {
         public int Health, Stamina, Morale, WeaponCohesion, ArmourCohesion, Movement;
         public int MaxHealth, MaxStamina, MaxMorale, Body, Mind, Spirit, DTier, OTier;
         public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein
-        public WeaponType weaponType;
+        public DamageType weaponType;
         public Stance Style;
         public bool Recalc;
         // Use this for initialization
         void Start() {
-
+        RecalcStats();
+        RecalcSkills();
 
 
             
@@ -33,27 +34,34 @@ namespace Dungeon {
 
         }
 
-        Attack GenerateAttack() {
+        public Attack GenerateAttack()
+        {
             Attack temp;
             temp.Rating = Skills.x + (Stamina - 25);//Combine offensive skill with basic Stamina Bonus
             temp.WeaponStats = offenseQuality;
             temp.attackType = weaponType;
             temp.Cohesion = WeaponCohesion;
+            temp.baseDamage = 5;
             return temp;
         }
 
-        void RecieveAttack(Attack incAttack) {//This is being kept exceedingly simple for now - but realistically there should be a quality modifier on weapons and armour.
-                                              //differences in these ratings should decrease damage - regardless of what deforms - but decrease the quality of the artifact for its subsequent uses
+        public void RecieveAttack(Attack incAttack)
+        {//This is being kept exceedingly simple for now - but realistically there should be a quality modifier on weapons and armour.
+         //differences in these ratings should decrease damage - regardless of what deforms - but decrease the quality of the artifact for its subsequent uses
             int IncDamage = incAttack.Rating - (Skills.y + (Stamina - 25));//Decrease the attack by our defense rating and stamina bonus
             IncDamage += (incAttack.WeaponStats.x - defenseQuality.x);//hardness difference- ability to not erode
             IncDamage += (incAttack.WeaponStats.y - defenseQuality.y);//Strength difference- ability for artifacts to not deform
             IncDamage += (incAttack.WeaponStats.z - defenseQuality.z);//toughness difference - ability for artifacts to not shatter
 
-            IncDamage = (int)(IncDamage * (incAttack.Cohesion / 100.0f));//should probably switch to parabolic method later
+            if (IncDamage > 0)
+            {
+                IncDamage = (int)(incAttack.baseDamage * (incAttack.Cohesion / 100.0f));//should probably switch to parabolic method later
 
-            Debug.Log(IncDamage);
-            if (IncDamage > 0) {
-                Health -= IncDamage / 10;
+                Debug.Log(IncDamage);
+                if (IncDamage > 0)
+                {
+                    Health -= IncDamage;
+                }
             }
         }
 
@@ -194,4 +202,4 @@ namespace Dungeon {
 
         }
     }
-}
+

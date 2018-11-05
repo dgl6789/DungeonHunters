@@ -493,6 +493,10 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
+  ActiveMonsters:
+  - {fileID: 954840168}
+  - {fileID: 1911745938}
+  - {fileID: 469991856}
   sourceDir: 0
   destinationDir: 0
   displayFrameTime: 0
@@ -555,11 +559,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPosition: {x: 40, y: 30}
-  Health: 0
-  Stamina: 0
-  Morale: 0
-  WeaponCohesion: 0
-  ArmourCohesion: 0
+  Health: 20
+  Stamina: 20
+  Morale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
   Movement: 5
   MaxHealth: 0
   MaxStamina: 0
@@ -567,8 +571,8 @@ MonoBehaviour:
   Body: 4
   Mind: 4
   Spirit: 5
-  DTier: 3
-  OTier: 3
+  DTier: 6
+  OTier: 6
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -606,7 +610,7 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
-  pointBuy: 20
+  pointBuy: 15
   MaxHealth: 100
   MaxStamina: 50
   MaxMorale: 20
@@ -618,6 +622,8 @@ MonoBehaviour:
   isTemplate: 1
   CombatTest: 0
   weaponType: 0
+  MinRange: 0
+  MaxRange: 0
   Style: 0
 --- !u!4 &469991857
 Transform:
@@ -879,6 +885,10 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
+  ActiveMonsters:
+  - {fileID: 954840168}
+  - {fileID: 1911745938}
+  - {fileID: 469991856}
   sourceDir: 0
   destinationDir: 0
   displayFrameTime: 0
@@ -962,7 +972,7 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
-  pointBuy: 20
+  pointBuy: 5
   MaxHealth: 100
   MaxStamina: 50
   MaxMorale: 20
@@ -974,6 +984,8 @@ MonoBehaviour:
   isTemplate: 1
   CombatTest: 0
   weaponType: 0
+  MinRange: 0
+  MaxRange: 0
   Style: 0
 --- !u!4 &954840169
 Transform:
@@ -1151,11 +1163,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPosition: {x: 30, y: 40}
-  Health: 0
-  Stamina: 0
-  Morale: 0
-  WeaponCohesion: 0
-  ArmourCohesion: 0
+  Health: 20
+  Stamina: 20
+  Morale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
   Movement: 5
   MaxHealth: 0
   MaxStamina: 0
@@ -1163,8 +1175,8 @@ MonoBehaviour:
   Body: 4
   Mind: 4
   Spirit: 5
-  DTier: 3
-  OTier: 3
+  DTier: 6
+  OTier: 6
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -1315,8 +1327,7 @@ MonoBehaviour:
   - {fileID: 1911745938}
   - {fileID: 469991856}
   ActiveMerc: 0
-  debugging: 0
-  debuggingRange: 0
+  dirty: 0
 --- !u!4 &1417395317
 Transform:
   m_ObjectHideFlags: 0
@@ -1727,11 +1738,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPosition: {x: 40, y: 40}
-  Health: 0
-  Stamina: 0
-  Morale: 0
-  WeaponCohesion: 0
-  ArmourCohesion: 0
+  Health: 20
+  Stamina: 20
+  Morale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
   Movement: 5
   MaxHealth: 0
   MaxStamina: 0
@@ -1739,8 +1750,8 @@ MonoBehaviour:
   Body: 4
   Mind: 4
   Spirit: 5
-  DTier: 3
-  OTier: 3
+  DTier: 6
+  OTier: 6
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -1804,7 +1815,7 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
-  pointBuy: 20
+  pointBuy: 10
   MaxHealth: 100
   MaxStamina: 50
   MaxMorale: 20
@@ -1816,6 +1827,8 @@ MonoBehaviour:
   isTemplate: 1
   CombatTest: 0
   weaponType: 0
+  MinRange: 0
+  MaxRange: 0
   Style: 0
 --- !u!1 &1958286211
 GameObject:
@@ -2215,6 +2228,10 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
+  ActiveMonsters:
+  - {fileID: 954840168}
+  - {fileID: 1911745938}
+  - {fileID: 469991856}
   sourceDir: 0
   destinationDir: 3
   displayFrameTime: 0

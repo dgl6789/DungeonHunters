@@ -298,4 +298,48 @@ public class WholeDungeon : MonoBehaviour {
         CharacterTick();
         MobTick();
     }
+    
+    public Monster GetMobFromLoc(Vector2Int incPos)
+    {//get a monster at a particular location
+        
+        foreach(Monster mob in AllActiveMonsters)
+        {
+            if(mob.gridPosition == incPos)
+            {
+                return mob;
+            }
+        }
+
+        return null;
+    }
+
+    public Mercenary GetMercFromLoc(Vector2Int incPos)
+    {//get a Mercenary at a particular location
+
+        foreach (Mercenary merc in AllActiveMercenaries)
+        {
+            if (merc.gridPosition == incPos)
+            {
+                return merc;
+            }
+        }
+
+        return null;
+    }
+
+    public void RunAttack(Mercenary merc, Monster mob, bool PlayerTurn)
+    {
+        if (PlayerTurn)
+        {
+            Attack holding = merc.GenerateAttack();
+            mob.RecieveAttack(holding);
+            merc.Movement -= 3;
+        }
+        else
+        {
+            Attack holding = mob.GenerateAttack();
+            merc.RecieveAttack(holding);
+            mob.Stamina -= 3;
+        }
+    }
 }
