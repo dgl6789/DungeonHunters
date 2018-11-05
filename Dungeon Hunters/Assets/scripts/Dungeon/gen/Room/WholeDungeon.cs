@@ -101,20 +101,24 @@ public class WholeDungeon : MonoBehaviour {
         {// if we are moving forward
             if(activeRoom.nextRoom != null)
             {//if we have forward to move to
+                UndrawTick();                
                 activeRoom.ClearRoom();
-                activeRoom.ExtendCave();                
+                activeRoom.ExtendCave(AllActiveMonsters);                
                 activeRoom = activeRoom.nextRoom;
-                activeRoom.AssignMonsters(AllActiveMonsters);
+                
                 activeRoom.OnRoomSwitch(true);
+                DrawTick();
             }
         }
         else{
             if (activeRoom.previousRoom != null)
             {//if we have forward to move to
+                UndrawTick();
                 activeRoom.ClearRoom();                
                 activeRoom = activeRoom.previousRoom;
                 activeRoom.RebuildCave();
                 activeRoom.OnRoomSwitch(false);
+                DrawTick();
             }
         }
 
@@ -218,15 +222,26 @@ public class WholeDungeon : MonoBehaviour {
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
             MovementTick(true);
             CharacterTick(ActiveMerc, true);
-            MobTick();
+            MobTick(true);
         }
     }
 
-    public void MobTick()
+    public void MobTick(bool activating)
     {
-        foreach(Monster mob in activeRoom.ActiveMonsters)
+        if (activating)
         {
-            activeRoom.HighLightZones(4, mob.gridPosition, 0, 0);
+            foreach (Monster mob in activeRoom.ActiveMonsters)
+            {
+                activeRoom.HighLightZones(4, mob.gridPosition, 0, 0);
+            }
+        }
+        else
+        {
+            foreach (Monster mob in activeRoom.ActiveMonsters)
+            {
+                activeRoom.HighLightZones(0, mob.gridPosition, 0, 0);
+            }
+
         }
     }
 
@@ -236,16 +251,16 @@ public class WholeDungeon : MonoBehaviour {
         {
             case DisplayState.None:
                 CharacterTick();
-                MobTick();
+                MobTick(true);
                 break;
             case DisplayState.Walk:
                 MovementTick(true);
                 CharacterTick();
-                MobTick();
+                MobTick(true);
                 break;
             case DisplayState.Attack:
                 CharacterTick();
-                MobTick();
+                MobTick(true);
                 activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2,5, true);      
                 break;
             case DisplayState.Stance:                
@@ -258,11 +273,11 @@ public class WholeDungeon : MonoBehaviour {
                     activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2);
                 }
                 CharacterTick();
-                MobTick();
+                MobTick(true);
                 break;
             default:
                
-                MobTick();
+                MobTick(true);
                 break;
         }
         CharacterTick();
@@ -279,8 +294,7 @@ public class WholeDungeon : MonoBehaviour {
                 break;
             case DisplayState.Attack:
                 activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2, 5, false);
-                CharacterTick();
-                MobTick();
+                
                 break;
             case DisplayState.Stance:
                 foreach (Mercenary Merc in AllActiveMercenaries)
@@ -290,14 +304,11 @@ public class WholeDungeon : MonoBehaviour {
                 foreach (Monster Mob in activeRoom.ActiveMonsters)
                 {
                     activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
-                }
-                CharacterTick();
-                MobTick();
+                }              
                 break;
-
         }
-        CharacterTick();
-        MobTick();
+        MobTick(false);
+        
     }
     
     public Monster GetMobFromLoc(Vector2Int incPos)
@@ -331,13 +342,21 @@ public class WholeDungeon : MonoBehaviour {
     public void RunAttack(Mercenary merc, Monster mob, bool PlayerTurn)
     {
         if (PlayerTurn)
-        {
+        {//This is an attack on an enemy
             Attack holding = merc.GenerateAttack();
             mob.RecieveAttack(holding);
             merc.Movement -= 3;
+
+            //See if the enemy is dead
+            if(mob.Health <= 0)
+            {
+                activeRoom.ActiveMonsters.Remove(mob);
+                Destroy(mob.gameObject);
+            }
+
         }
         else
-        {
+        {//This is not an attack on an enemy
             Attack holding = mob.GenerateAttack();
             merc.RecieveAttack(holding);
             mob.Stamina -= 3;

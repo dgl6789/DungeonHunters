@@ -193,6 +193,7 @@ public class Monster : MonoBehaviour {
         Health = MaxHealth;
         Stamina = MaxStamina;
         Morale = MaxMorale;
+        model = gameObject;
 	}
 	
 	// Update is called once per frame
@@ -228,6 +229,7 @@ public class Monster : MonoBehaviour {
             if (IncDamage > 0)
             {
                 Health -= IncDamage;
+                Debug.Log("Monster at Grid Position " + gridPosition + "  took " + IncDamage + " Damage, lowering their health to:" + Health);
             }
         }
     }

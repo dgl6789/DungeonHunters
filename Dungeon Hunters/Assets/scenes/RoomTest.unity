@@ -608,9 +608,9 @@ MonoBehaviour:
   Stamina: 0
   Morale: 0
   pointBuy: 15
-  MaxHealth: 100
-  MaxStamina: 50
-  MaxMorale: 20
+  MaxHealth: 10
+  MaxStamina: 10
+  MaxMorale: 10
   WeaponCohesion: 100
   ArmourCohesion: 100
   defenseQuality: {x: 0, y: 0, z: 0}
@@ -966,9 +966,9 @@ MonoBehaviour:
   Stamina: 0
   Morale: 0
   pointBuy: 5
-  MaxHealth: 100
-  MaxStamina: 50
-  MaxMorale: 20
+  MaxHealth: 10
+  MaxStamina: 10
+  MaxMorale: 10
   WeaponCohesion: 100
   ArmourCohesion: 100
   defenseQuality: {x: 0, y: 0, z: 0}
@@ -1808,9 +1808,9 @@ MonoBehaviour:
   Stamina: 0
   Morale: 0
   pointBuy: 10
-  MaxHealth: 100
-  MaxStamina: 50
-  MaxMorale: 20
+  MaxHealth: 10
+  MaxStamina: 10
+  MaxMorale: 10
   WeaponCohesion: 100
   ArmourCohesion: 100
   defenseQuality: {x: 0, y: 0, z: 0}

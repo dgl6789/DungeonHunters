@@ -17,7 +17,7 @@ public class Room : MonoBehaviour
     public RoomCell[,] AllCells;                    //Simple container of other objects. Might be better off as a pointer to a single re-used group.
     public int sourceDir;                           //Mildly important for map linking.    
     public int destinationDir;                      //0-3, 0 being up, 1 being right, 2, being down, 3 being left
-    private bool HasGenerated = false;              //Required for start logic
+    public bool HasGenerated = false;              //Required for start logic
     public bool displayFrameTime;                   //use largely in debugging
     public bool reGen = false;                      //Temp variables to use in "map Navigation"                      
     public bool reCon = false;                      //use to Recontruct a map
@@ -376,7 +376,8 @@ public class Room : MonoBehaviour
             tier--;
         }       
         DefineCave();
-        AssignOres();        
+        AssignOres();
+        
     }
     
     void DefineCave() {//Determine what tiles have been altered, and to what depth   
@@ -390,7 +391,7 @@ public class Room : MonoBehaviour
                     CaveTiles.Add(new Vector3Int(i, j, AllCells[i, j].Height));
                 }
             }
-        }
+        }        
         HasGenerated = true;
     }
 
@@ -439,7 +440,9 @@ public class Room : MonoBehaviour
 
         while(mobPoints > minPoints)
         {//add monsters till we run out of 
-            Monster temp = new Monster();
+            GameObject tempObj = new GameObject();
+            tempObj.AddComponent<Monster>();
+            Monster temp = tempObj.GetComponent<Monster>();
             templateIndex = Random.Range(0, Templates.Count);
             gridIndex = Random.Range(0, CaveTiles.Count - 1);
             temp.SetStats( Templates[templateIndex]);            
@@ -449,7 +452,9 @@ public class Room : MonoBehaviour
         }
         if (mobPoints > 0)
         {
-            Monster temp = new Monster(); 
+            GameObject tempObj = new GameObject();
+            tempObj.AddComponent<Monster>();
+            Monster temp = tempObj.GetComponent<Monster>();
             templateIndex = Random.Range(0, Templates.Count);
             gridIndex = Random.Range(0, CaveTiles.Count - 1);
             temp.SetStats(Templates[templateIndex]);
@@ -505,7 +510,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    public void ExtendCave()
+    public void ExtendCave(List<Monster> incMobList)
     {//Move to the next cave        
         if(nextRoom != null)
         {//You know, if we're allowed to
@@ -521,6 +526,7 @@ public class Room : MonoBehaviour
                 nextRoom.ConvertFromExtend();
                 nextRoom.DrawLines();
                 nextRoom.LiftTiles();
+                nextRoom.AssignMonsters(incMobList);
             }
         }
     }
@@ -637,7 +643,8 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in upEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0,Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
                     
                 }
             }
@@ -656,8 +663,8 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in rightEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
                 }
             }
             rightEdge.Clear();
@@ -675,8 +682,9 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in downEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+
                 }
             }
             downEdge.Clear();
@@ -695,8 +703,9 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in leftEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+
                 }
             }
             leftEdge.Clear();
@@ -718,7 +727,7 @@ public class Room : MonoBehaviour
 
             foreach (Monster mob in ActiveMonsters)
             {
-                if (minDistance < Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y) && maxDistance >= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y))
+                if (minDistance <= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y) && maxDistance >= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y))
                 {
                     AllCells[mob.gridPosition.x, mob.gridPosition.y].Mystate = TileState.AttackSelector;
                 }
