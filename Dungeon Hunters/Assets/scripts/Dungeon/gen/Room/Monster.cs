@@ -15,10 +15,9 @@ public enum Stance { Offensive, Standard, Parry}
 public class Monster : MonoBehaviour {
     public Vector2Int gridPosition;//Position in the grid
     public int Health, Stamina, Morale; // Basic stats- Health bounds the other 2, low stamina reduces combat effectiveness, and Low Morale leads to unit control loss
-    public int pointBuy, MaxHealth=100, MaxStamina=50, MaxMorale=20, WeaponCohesion=100, ArmourCohesion=100;
+    public int pointBuy, MaxHealth=10, MaxStamina=10, MaxMorale=10, WeaponCohesion=100, ArmourCohesion=100;
     public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein    
     public bool isTemplate;//if this is a template creature, generate it, and if its not
-    public bool CombatTest;
     public DamageType weaponType;
     public int MinRange, MaxRange;
     public Stance Style;
@@ -33,17 +32,17 @@ public class Monster : MonoBehaviour {
                 temp = Random.Range(0, Mathf.Min(3, pointBuy));//pick a random number between 0 and either 3, or the points left
                 weaponTier += temp;//Add it to the relevant 
                 pointBuy -= temp;//decriment the amout of points left, and then do this process again for the other 2 stats
-                MaxHealth += temp * 10;
+                MaxHealth += temp;
 
                 temp = Random.Range(0, Mathf.Min(3, pointBuy));
                 armourTier += temp;
                 pointBuy -= temp;
-                MaxStamina += temp * 5;
+                MaxStamina += temp;
 
                 temp = Random.Range(0, Mathf.Min(3, pointBuy));
                 highestSkill += temp;
                 pointBuy -= temp;
-                MaxMorale += temp * 2;
+                MaxMorale += temp;
             }
             //All of our points have been allocated, time to interprit them.
 
@@ -189,7 +188,7 @@ public class Monster : MonoBehaviour {
                     break;
             }
 
-
+            isTemplate = false;//Make sure this only generates once, if copied.
         }
         Health = MaxHealth;
         Stamina = MaxStamina;
@@ -197,14 +196,7 @@ public class Monster : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (CombatTest)
-        {
-            CombatTest = false;
-            Attack temp = GenerateAttack();
-            Debug.Log(temp);
-            RecieveAttack(temp);
-        }
+	void Update () {        
 
 	}
 
@@ -238,6 +230,25 @@ public class Monster : MonoBehaviour {
                 Health -= IncDamage;
             }
         }
+    }
+
+    public void SetStats(Monster incMonster)
+    {
+        //just a simple copy operator for now.
+        Health = incMonster.Health;
+        MaxHealth = incMonster.MaxHealth;
+        pointBuy = incMonster.pointBuy;
+        Stamina = incMonster.Stamina;
+        MaxStamina = incMonster.MaxStamina;
+        Morale = incMonster.MaxStamina;
+        MaxMorale = incMonster.MaxMorale;
+        defenseQuality = incMonster.defenseQuality;
+        offenseQuality = incMonster.offenseQuality;
+        Skills = incMonster.Skills;
+        weaponType = incMonster.weaponType;
+        Style = incMonster.Style;
+        MinRange = incMonster.MinRange;
+        MaxRange = incMonster.MaxRange;
     }
 
 }

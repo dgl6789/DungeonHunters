@@ -493,10 +493,7 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
-  ActiveMonsters:
-  - {fileID: 954840168}
-  - {fileID: 1911745938}
-  - {fileID: 469991856}
+  ActiveMonsters: []
   sourceDir: 0
   destinationDir: 0
   displayFrameTime: 0
@@ -620,7 +617,6 @@ MonoBehaviour:
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
   isTemplate: 1
-  CombatTest: 0
   weaponType: 0
   MinRange: 0
   MaxRange: 0
@@ -885,10 +881,7 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
-  ActiveMonsters:
-  - {fileID: 954840168}
-  - {fileID: 1911745938}
-  - {fileID: 469991856}
+  ActiveMonsters: []
   sourceDir: 0
   destinationDir: 0
   displayFrameTime: 0
@@ -982,7 +975,6 @@ MonoBehaviour:
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
   isTemplate: 1
-  CombatTest: 0
   weaponType: 0
   MinRange: 0
   MaxRange: 0
@@ -1825,7 +1817,6 @@ MonoBehaviour:
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
   isTemplate: 1
-  CombatTest: 0
   weaponType: 0
   MinRange: 0
   MaxRange: 0
@@ -2228,10 +2219,7 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
-  ActiveMonsters:
-  - {fileID: 954840168}
-  - {fileID: 1911745938}
-  - {fileID: 469991856}
+  ActiveMonsters: []
   sourceDir: 0
   destinationDir: 3
   displayFrameTime: 0

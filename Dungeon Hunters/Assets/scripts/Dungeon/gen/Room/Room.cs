@@ -376,7 +376,7 @@ public class Room : MonoBehaviour
             tier--;
         }       
         DefineCave();
-        AssignOres();
+        AssignOres();        
     }
     
     void DefineCave() {//Determine what tiles have been altered, and to what depth   
@@ -422,6 +422,45 @@ public class Room : MonoBehaviour
         }
         BuildOres();
     }
+
+    public void AssignMonsters(List<Monster> Templates)
+    {
+        int mobPoints = pointsForBuy, gridIndex, templateIndex ;
+        int maxPoints = 0, minPoints = 100;
+      
+        foreach (Monster mob in Templates)
+        {//Know the bounds of what we can spend
+            if (mob.pointBuy > maxPoints)
+                maxPoints = mob.pointBuy;
+
+            if (mob.pointBuy < minPoints)
+                minPoints = mob.pointBuy;
+        }
+
+        while(mobPoints > minPoints)
+        {//add monsters till we run out of 
+            Monster temp = new Monster();
+            templateIndex = Random.Range(0, Templates.Count);
+            gridIndex = Random.Range(0, CaveTiles.Count - 1);
+            temp.SetStats( Templates[templateIndex]);            
+            temp.gridPosition = new Vector2Int(CaveTiles[gridIndex].x, CaveTiles[gridIndex].y);
+            mobPoints -= temp.pointBuy;
+            ActiveMonsters.Add(temp);
+        }
+        if (mobPoints > 0)
+        {
+            Monster temp = new Monster(); 
+            templateIndex = Random.Range(0, Templates.Count);
+            gridIndex = Random.Range(0, CaveTiles.Count - 1);
+            temp.SetStats(Templates[templateIndex]);
+            temp.isTemplate = false;
+            temp.gridPosition = new Vector2Int(CaveTiles[gridIndex].x, CaveTiles[gridIndex].y);
+            mobPoints -= temp.pointBuy;
+            ActiveMonsters.Add(temp);
+        }
+                
+    }
+
     void BuildOres()
     {
         foreach (Vector4 tile in OreTiles)

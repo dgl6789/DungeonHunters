@@ -104,6 +104,7 @@ public class WholeDungeon : MonoBehaviour {
                 activeRoom.ClearRoom();
                 activeRoom.ExtendCave();                
                 activeRoom = activeRoom.nextRoom;
+                activeRoom.AssignMonsters(AllActiveMonsters);
                 activeRoom.OnRoomSwitch(true);
             }
         }
@@ -223,7 +224,7 @@ public class WholeDungeon : MonoBehaviour {
 
     public void MobTick()
     {
-        foreach(Monster mob in AllActiveMonsters)
+        foreach(Monster mob in activeRoom.ActiveMonsters)
         {
             activeRoom.HighLightZones(4, mob.gridPosition, 0, 0);
         }
@@ -252,7 +253,7 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     activeRoom.HighLightZones(7, Merc.gridPosition, 1, 2);
                 }
-                foreach (Monster Mob in AllActiveMonsters)
+                foreach (Monster Mob in activeRoom.ActiveMonsters)
                 {
                     activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2);
                 }
@@ -286,7 +287,7 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2);
                 }
-                foreach (Monster Mob in AllActiveMonsters)
+                foreach (Monster Mob in activeRoom.ActiveMonsters)
                 {
                     activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
                 }
@@ -302,7 +303,7 @@ public class WholeDungeon : MonoBehaviour {
     public Monster GetMobFromLoc(Vector2Int incPos)
     {//get a monster at a particular location
         
-        foreach(Monster mob in AllActiveMonsters)
+        foreach(Monster mob in activeRoom.ActiveMonsters)
         {
             if(mob.gridPosition == incPos)
             {

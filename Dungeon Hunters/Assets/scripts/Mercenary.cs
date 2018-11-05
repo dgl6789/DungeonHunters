@@ -5,9 +5,6 @@ using UnityEngine;
 
     public class Mercenary : MonoBehaviour {
 
-        /// Dungeon Members
-        /// 
-
         public Vector2Int gridPosition;//Position in the grid
         public int Health, Stamina, Morale, WeaponCohesion, ArmourCohesion, Movement;
         public int MaxHealth, MaxStamina, MaxMorale, Body, Mind, Spirit, DTier, OTier;
@@ -17,11 +14,9 @@ using UnityEngine;
         public bool Recalc;
         // Use this for initialization
         void Start() {
+
         RecalcStats();
         RecalcSkills();
-
-
-            
 
         }
 
