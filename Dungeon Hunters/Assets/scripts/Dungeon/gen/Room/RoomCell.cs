@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend }
+public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend, PlacementSelector }
 
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.
@@ -38,6 +38,7 @@ public class RoomCell : MonoBehaviour {
                 cubeTemp.GetComponent<SpriteRenderer>().color = Color.blue;
                 break;
             case TileState.MovementSelector:
+            case TileState.PlacementSelector:
                 cubeTemp.GetComponent<SpriteRenderer>().color = Color.green;
                 break;
             case TileState.AttackSelector:
@@ -77,6 +78,9 @@ public class RoomCell : MonoBehaviour {
                     Monster temp = myDungeon.GetMobFromLoc(Gridlocation);
                     myDungeon.RunAttack(myDungeon.AllActiveMercenaries[myDungeon.ActiveMerc], temp, true);
                     Debug.Log("This is where an attack should be");                   
+                    break;
+                case TileState.PlacementSelector://if we are Placeing mercs, place em down. This is different from moving, becasue there are no penalties.
+                    myDungeon.PlaceActiveMerc(Gridlocation);
                     break;
                 default:
                     break;

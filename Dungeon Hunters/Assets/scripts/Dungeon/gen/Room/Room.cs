@@ -643,7 +643,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in upEdge)
                 {
-                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0,Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0,Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
                     AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
                     
                 }
@@ -663,7 +663,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in rightEdge)
                 {
-                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
                     AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
                 }
             }
@@ -682,7 +682,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in downEdge)
                 {
-                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
                     AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
 
                 }
@@ -703,7 +703,7 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in leftEdge)
                 {
-                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(80, loc.x)), Mathf.Max(0, Mathf.Min(80, loc.y)));
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
                     AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
 
                 }
@@ -738,6 +738,159 @@ public class Room : MonoBehaviour
             HighLightZones(0, startingLoc, minDistance, maxDistance);
         }
       
+    }
+
+    public void PlaceMercs(bool Advancing, bool Activating)
+    {
+        if (Advancing) {
+            if (Activating)
+            {
+                switch (sourceDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (sourceDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                }
+            }
+        }
+        else
+        {
+            if (Activating)
+            {
+                switch (destinationDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (destinationDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                }
+            }
+        }
     }
 }
 

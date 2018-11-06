@@ -496,6 +496,7 @@ MonoBehaviour:
   ActiveMonsters: []
   sourceDir: 0
   destinationDir: 0
+  HasGenerated: 0
   displayFrameTime: 0
   reGen: 0
   reCon: 0
@@ -884,6 +885,7 @@ MonoBehaviour:
   ActiveMonsters: []
   sourceDir: 0
   destinationDir: 0
+  HasGenerated: 0
   displayFrameTime: 0
   reGen: 0
   reCon: 0
@@ -2220,8 +2222,9 @@ MonoBehaviour:
   CaveTiles: []
   OreTiles: []
   ActiveMonsters: []
-  sourceDir: 0
-  destinationDir: 3
+  sourceDir: 3
+  destinationDir: 1
+  HasGenerated: 0
   displayFrameTime: 0
   reGen: 0
   reCon: 0
