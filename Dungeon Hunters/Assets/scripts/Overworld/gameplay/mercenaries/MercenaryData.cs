@@ -8,20 +8,17 @@ namespace App {
 
     public class MercenaryData {
 
+        public GameObject LocationMarker;
+
         private HexTile location;
         public HexTile Location {
             get { return location; }
             set { location = value; }
         }
-
-        private HexTile destination;
-        public HexTile Destination {
-            get { return destination; }
-            set { destination = value; }
-        }
-
-        private List<HexTile> CurrentPath;
+        
+        public List<HexTile> CurrentPath;
         private int PathIndex;
+        private int PathTerrainCounter;
 
         private string name;
         public string Name { get { return name; } }
@@ -45,6 +42,33 @@ namespace App {
 
             Skills = new List<MercenarySkills>();
             Skills.AddRange(pSkills);
+        }
+
+        public void SetPath(List<HexTile> pPath) {
+            CurrentPath = pPath;
+            PathIndex = 0;
+            PathTerrainCounter = 0;
+        }
+
+        public void SetLocation(HexTile pTile) {
+            location = pTile;
+        }
+
+        public void UpdateLocation() {
+            if (CurrentPath != null) {
+                PathTerrainCounter++;
+
+                if (PathTerrainCounter == HexFunctions.Instance.GetRoughTerrainFactor(Location.Type)) {
+                    PathIndex++;
+                    PathTerrainCounter = 0;
+
+                    Location = CurrentPath[PathIndex];
+
+                    if (PathIndex == CurrentPath.Count - 1) {
+                        CurrentPath = null;
+                    }
+                }
+            }
         }
     }
 }

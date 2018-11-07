@@ -49,15 +49,15 @@ namespace App {
             label = pLabel;
         }
 
-        public GameObject NotificationObject() {
-            return GameObject.Instantiate(AppUI.Instance.NotificationObject);
-        }
-
         public void Advance() {
             dayLimit--;
             if(dayLimit < 0) {
                 NotificationController.Instance.Notifications.Remove(this);
             }
+        }
+
+        public void Resolve() {
+            Debug.Log("Resolved.");
         }
     }
 }

@@ -1,13 +1,9 @@
 fileFormatVersion: 2
-guid: f94f314530de7754b9e6462d4086c094
+guid: 52b680261aae9b941b463c55b2cf9d3c
 TextureImporter:
   fileIDToRecycleName:
-    21300000: overworld_markers_0
-    21300002: overworld_markers_1
-    21300004: overworld_markers_2
-    21300006: overworld_markers_3
-    21300008: overworld_markers_4
-    21300010: overworld_markers_5
+    21300000: button_embark_0
+    21300002: button_embark_1
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -51,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 23
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,33 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: overworld_markers_0
+      name: button_embark_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 50
-        width: 11
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 50bcecc7c0ee65f429283265a4dae43c
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: overworld_markers_1
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 50
-        width: 11
-        height: 14
+        y: 0
+        width: 65
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,19 +133,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 993653906bcc4c94d811f4fdb9a1bcd6
+      spriteID: 865daf293d393874b85da4be6207c2de
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: overworld_markers_2
+      name: button_embark_1
       rect:
         serializedVersion: 2
-        x: 22
-        y: 50
-        width: 11
-        height: 14
+        x: 66
+        y: 0
+        width: 65
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,67 +153,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c87d38f323bb7cf4b907d7796f2c4055
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: overworld_markers_3
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 50
-        width: 11
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4b29f567df1135d469b344ff13246d38
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: overworld_markers_4
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 50
-        width: 11
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5f02fb083b3c4ac47ba067d86b5ebcef
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: overworld_markers_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 36
-        width: 11
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 91dc6dc68743a3c4fb0eeb631d35d395
+      spriteID: bb011138a1cd8bc449492bbcbaf01fa9
       vertices: []
       indices: 
       edges: []
@@ -245,7 +161,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 082e37dc10645fe43832af372ffb6d55
+    spriteID: c9eb70e7214c91642b6f561504a9a742
     vertices: []
     indices: 
     edges: []

@@ -6,6 +6,7 @@ using App.UI;
 using System.Linq;
 using App.Data;
 using UnityEngine.EventSystems;
+using Overworld;
 
 namespace App {
     public class MercenaryController : MonoBehaviour {
@@ -38,7 +39,7 @@ namespace App {
         }
 
         public void SetSelectedMercenary(MercenaryData pMercenary) {
-            AppUI.Instance.SelectedMercenary = pMercenary;
+            AppUI.Instance.SetSelectedMercenary(pMercenary);
 
             // Set the tab sprites to indicate the selected mercenary
             foreach (RectTransform tab in mercenaryUIContainer.GetComponentsInChildren<RectTransform>()) {
@@ -74,9 +75,71 @@ namespace App {
                 RectTransform rect = n.GetComponent<RectTransform>();
 
                 rect.anchoredPosition = new Vector2(rect.localPosition.x, 
-                    (mercenaryUIContainer.rect.yMax - mercenaryUIObject.GetComponent<RectTransform>().rect.height / 2) - i * rect.rect.height);
+                    (mercenaryUIContainer.rect.yMax - mercenaryUIObject.GetComponent<RectTransform>().rect.height / 2) - i * (rect.rect.height + 3));
 
                 n.GetComponent<Button>().onClick.AddListener(() => { SetSelectedMercenary(n.GetComponent<MercenaryUI>().Data); });
+            }
+        }
+
+        /// <summary>
+        /// Compute the path that a mercenary will follow to reach a destination.
+        /// </summary>
+        /// <param name="pStart"></param>
+        /// <param name="pEnd"></param>
+        /// <returns></returns>
+        public List<HexTile> GetTaskPath(HexTile pStart, HexTile pEnd) {
+            List<HexTile> path = new List<HexTile>();
+            HexAddress currentAddress = pStart.Address;
+            HexAddress targetAddress = pEnd.Address;
+
+            path.Add(pStart);
+
+            // While the range is not complete...
+            while (currentAddress != targetAddress) {
+                // Get the desired direction toward the address of currentRange[1].
+                Vector2Int d = new Vector2Int();
+
+                // If the end tile is above this one, add 1 to y, if it is below subtract 1 from y, else do nothing.
+                if (targetAddress.X > currentAddress.X) d.x++;
+                else if (targetAddress.X < currentAddress.X) d.x--;
+
+                // If the end tile is to the right of this one, add 1 to x, if it is to the left subrtact 1, else do nothing.
+                if (targetAddress.Y > currentAddress.Y) d.y++;
+                else if (targetAddress.Y < currentAddress.Y) d.y--;
+
+                // Make sure we stay adjacent to the current address
+                if (d.y == d.x && d.x + d.y != 0) {
+                    if (Random.Range(0f, 1.0f) >= 0.5f) d.y = 0;
+                    else d.x = 0;
+                }
+                
+                currentAddress += new HexAddress(d.x, d.y);
+
+                if (currentAddress.Equals(targetAddress)) break;
+                
+                // Add the tile to the path.
+                path.Add(HexMap.Instance.Tiles[currentAddress]);
+            }
+
+            path.Add(pEnd);
+
+            return path;
+        }
+
+        public void UpdateLocationPins() {
+            foreach(MercenaryData mercenary in Mercenaries) {
+                GameObject pin;
+
+                if(mercenary.LocationMarker == null) {
+                    // Instantiate a marker and set the reference in the mercenary data
+                    pin = Instantiate(AppUI.Instance.MercenaryLocationPin, AppUI.Instance.MapOverlayParent);
+                    mercenary.LocationMarker = pin;
+                } else {
+                    pin = mercenary.LocationMarker;
+                }
+
+                pin.transform.parent = mercenary.Location.transform;
+                pin.transform.localPosition = Vector3.zero;
             }
         }
 
@@ -130,7 +193,10 @@ namespace App {
             string s = "";
 
             foreach(MercenarySkills skill in pData.Skills) {
-                s += skill.ToString() + "\t" + CalculateSkill(pData, skill) + "\n";
+                if(skill.ToString().Length < 8)
+                    s += skill.ToString() + "\t\t" + CalculateSkill(pData, skill) + "\n";
+                else
+                    s += skill.ToString() + "\t" + CalculateSkill(pData, skill) + "\n";
             }
 
             if (s != "") return s;
