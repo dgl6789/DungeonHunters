@@ -14,9 +14,13 @@ namespace App.UI {
 
         public void AssignData(Notification pData) {
             LabelField.text = pData.Label;
-            DaysField.text = pData.DayLimit + " Days Remaining";
+            
+            DaysField.text = pData.DayLimit == 0 ? "Ready!" : pData.DayLimit + " Days Remaining";
+            
             // Portrait.sprite = pData.Mercenary.Portrait;
             TileImage.sprite = pData.Tile.Data.DrawnSprite;
+
+            GetComponent<Button>().onClick.AddListener(() => NotificationController.Instance.ClickNotification(NotificationController.Instance.Notifications.IndexOf(pData)));
         }
     }
 }

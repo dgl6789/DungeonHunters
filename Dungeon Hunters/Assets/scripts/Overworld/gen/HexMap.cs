@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Numeralien.Utilities;
 using System.Linq;
 using App.UI;
+using App;
 
 namespace Overworld {
     /// <summary>
@@ -302,8 +303,14 @@ namespace Overworld {
                 if (HexFunctions.Instance.IsViableForFarm(kvp.Value.Address)) {
                     // Spawn the stronghold, farms, and break
                     kvp.Value.Type = TileType.STRONGHOLD;
+                    
+                    foreach(MercenaryData merc in MercenaryController.Instance.Mercenaries) {
+                        merc.SetLocation(kvp.Value);
+                    }
 
-                    foreach(Vector2Int n in HexFunctions.Instance.NeighborIndices) {
+                    MercenaryController.Instance.UpdateLocationPins();
+
+                    foreach (Vector2Int n in HexFunctions.Instance.NeighborIndices) {
                         if(farmlandRate > Random.Range(0f, 1f) && Tiles.ContainsKey(n + kvp.Value.Address) && HexFunctions.Instance.IsViableForFarm(n + kvp.Value.Address)) {
                             Tiles[n + kvp.Value.Address].Type = TileType.FARMLAND;
                         }
@@ -378,7 +385,7 @@ namespace Overworld {
                         kvp.Value.SetTileEffectState(2, true);
                         break;
                     case TileType.DUNGEON:
-                        BlightRadius(2, kvp.Value);
+                        // BlightRadius(2, kvp.Value);
                         break;
                     case TileType.OCEAN:
                         kvp.Value.SetTileEffectState(1, false);

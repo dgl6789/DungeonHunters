@@ -16,6 +16,8 @@ namespace App {
 
         public EncounterManifest EncountersManifest;
 
+        [SerializeField] RectTransform TaskTray;
+
         private TaskType selectedTask;
 
         // Use this for initialization
@@ -49,8 +51,12 @@ namespace App {
             // Get the event from the manifest.
             EncounterEvent e = EncountersManifest.Encounters[Random.Range(0, EncountersManifest.Encounters.Length)];
 
-            // Calculate the day limit based on how long it will take the mercenary to get there from its current tile.
-            int lDayLimit = 0 + e.ExtraDayTimer;
+            // Calculate the day limit based on how long it will take the mercenary to get there from its current tile
+            int lDayLimit = e.ExtraDayTimer;
+
+            foreach(HexTile t in pMercenary.CurrentPath) {
+                lDayLimit += HexFunctions.Instance.GetRoughTerrainFactor(t.Type);
+            }
 
             // Return the generated notification.
             return new Notification(pType, e, ParseNotificationLabel(pType, pMercenary), lDayLimit, e.IsRequired, pMercenary, pTile);
@@ -64,10 +70,10 @@ namespace App {
             string s = pMerc.Name;
 
             switch(pType) {
-                case TaskType.DUNGEONEER: s += " travels to a dungeon."; break;
-                case TaskType.FORAGE: s += " forages for materials."; break;
-                case TaskType.SCOUT: s += " scouts a new area."; break;
-                case TaskType.TRAIN: s += " trains in the wild."; break;
+                case TaskType.DUNGEONEER: s += " is traveling to a dungeon."; break;
+                case TaskType.FORAGE: s += " is foraging for materials."; break;
+                case TaskType.SCOUT: s += " is scouting a new area."; break;
+                case TaskType.TRAIN: s += " is training in the wild."; break;
             }
 
             return s;
@@ -101,6 +107,7 @@ namespace App {
 
         private IEnumerator SetMission() {
             // Get the selected mercenary
+            selectedTask = TaskType.NONE;
             MercenaryData m = AppUI.Instance.SelectedMercenary;
 
             if (m == null) yield break;
@@ -119,17 +126,15 @@ namespace App {
 
             HexTile tile = TileSelector.Instance.TargetTile;
 
+            AppUI.Instance.ToggleSelectTileText();
+
             // Pop up the task type selection dialog
             // Perform logic here for choosing options to show based on tile type
-            RectTransform d = DialogManager.Instance.ShowDialog(DialogType.TASK_SELECT);
-
-            // If this breaks, ShowDialog failed.
-            if(d == null) yield break;
-
-            RectTransform[] options = d.gameObject.GetComponentsInChildren<RectTransform>();
-            int it = 0;
-            foreach(RectTransform r in options) {
-                if (r == d) continue;
+            DialogManager.Instance.ShowDialog(DialogType.TASK_SELECT);
+            
+            int it = 1;
+            foreach(RectTransform r in TaskTray.transform) {
+                if (r == TaskTray) continue;
 
                 r.gameObject.SetActive(IsValidTaskForTile((TaskType)it, tile));
 
@@ -142,8 +147,13 @@ namespace App {
             // Close the selection dialog
             DialogManager.Instance.CloseAllDialogs();
 
+            // Pass the task to the mercenary data
+            AppUI.Instance.SelectedMercenary.SetPath(MercenaryController.Instance.GetTaskPath(m.Location, tile));
+
             // Generate a corresponding notification and push it to the panel
             NotificationController.Instance.AddNotification(GenerateNotification(selectedTask, m, tile));
+
+            AppUI.Instance.UpdateMercInteractionButton(m);
 
             // reset selectedtask
             selectedTask = TaskType.NONE;

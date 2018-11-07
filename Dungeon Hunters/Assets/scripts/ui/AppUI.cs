@@ -10,6 +10,9 @@ namespace App.UI {
 
         [SerializeField] Image BookImage;
         public GameObject NotificationObject;
+        public GameObject MercenaryLocationPin;
+
+        public Transform MapOverlayParent;
         
         [SerializeField] RectTransform[] Pages;
         [HideInInspector] public int lastPageOpened;
@@ -22,7 +25,10 @@ namespace App.UI {
 
         public static AppUI Instance;
 
-        [HideInInspector] public MercenaryData SelectedMercenary;
+        private MercenaryData selectedMercenary;
+        public MercenaryData SelectedMercenary {
+            get { return selectedMercenary; }
+        }
 
         [Header("Text Fields")]
 
@@ -35,6 +41,11 @@ namespace App.UI {
         public TextMeshProUGUI MercenaryRank;
         public TextMeshProUGUI MercenaryStats;
         public TextMeshProUGUI MercenarySkills;
+
+        [Header("Buttons")]
+
+        public Button SetMissionButton;
+        public Button FocusOnMercButton;
 
         public void Awake() {
             if (Instance == null) Instance = this;
@@ -71,6 +82,29 @@ namespace App.UI {
             } else {
                 SelectTile.gameObject.SetActive(false);
             }
+        }
+
+        public void SetSelectedMercenary(MercenaryData pMercenary) {
+            selectedMercenary = pMercenary;
+
+            UpdateMercInteractionButton(pMercenary);
+        }
+
+        public void UpdateMercInteractionButton(MercenaryData pMercenary) {
+            bool mercIsOnMission = false;
+
+            foreach (Notification n in NotificationController.Instance.Notifications) {
+                if (n.Mercenary == pMercenary) {
+                    mercIsOnMission = true;
+                    break;
+                }
+            }
+            
+            SetMissionButton.interactable = !mercIsOnMission;
+        }
+
+        public void ClickFocusMercButton() {
+            TileSelector.Instance.SetTarget(SelectedMercenary.Location);
         }
 
         public void SwitchPage(int index) {
