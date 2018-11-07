@@ -40,7 +40,7 @@ using UnityEngine;
             return temp;
         }
 
-        public void RecieveAttack(Attack incAttack)
+        public bool RecieveAttack(Attack incAttack)
         {//This is being kept exceedingly simple for now - but realistically there should be a quality modifier on weapons and armour.
          //differences in these ratings should decrease damage - regardless of what deforms - but decrease the quality of the artifact for its subsequent uses
             int IncDamage = incAttack.Rating - (Skills.y + (Stamina - 25));//Decrease the attack by our defense rating and stamina bonus
@@ -56,9 +56,13 @@ using UnityEngine;
                 if (IncDamage > 0)
                 {
                     Health -= IncDamage;
+                 return true;
                 }
             }
+            return false;
         }
+       
+    
 
         void RecalcStats()//Generate Stats on the 
         {

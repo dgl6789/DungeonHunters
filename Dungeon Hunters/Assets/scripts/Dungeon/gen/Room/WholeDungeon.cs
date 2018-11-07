@@ -375,7 +375,12 @@ public class WholeDungeon : MonoBehaviour {
         if (PlayerTurn)
         {//This is an attack on an enemy
             Attack holding = merc.GenerateAttack();
-            mob.RecieveAttack(holding);
+            if (mob.RecieveAttack(holding))
+            {//if the attack hits, lower enemy morale, and raise mine
+                mob.Morale -= 2;
+                merc.Morale += 1;
+
+            }
             merc.Movement -= 3;
 
             //See if the enemy is dead
@@ -383,14 +388,51 @@ public class WholeDungeon : MonoBehaviour {
             {
                 activeRoom.ActiveMonsters.Remove(mob);
                 Destroy(mob.gameObject);
+                foreach(Monster struckByFear in activeRoom.ActiveMonsters)
+                {
+                    struckByFear.Morale -= 2;
+                }
+                merc.Morale += 1;
+                foreach(Mercenary encouraged in AllActiveMercenaries)
+                {
+                    encouraged.Morale += 1;
+                }
             }
-
+            else
+            {
+                MobTick(true);
+            }
         }
         else
         {//This is not an attack on an enemy
             Attack holding = mob.GenerateAttack();
-            merc.RecieveAttack(holding);
+            if (merc.RecieveAttack(holding))
+            {//if a player character is hit
+                mob.Morale++;
+                merc.Morale -= 2;                
+            }
             mob.Stamina -= 3;
+
+            if (merc.Health <= 0)
+            {//if a merc dies
+                CharacterTick(false);//undraw mercs
+                AllActiveMercenaries.Remove(merc);       // remove the relevant merc from the list          
+                foreach (Monster OvertakenByBloodlust in activeRoom.ActiveMonsters)
+                {
+                    OvertakenByBloodlust.Morale += 1;
+                }
+                mob.Morale += 1;
+                foreach (Mercenary discouraged in AllActiveMercenaries)
+                {
+                    discouraged.Morale -= 1;
+                }
+                CharacterTick(true);
+            }
+            else
+            {
+                MobTick(true);
+            }
         }
+
     }
 }

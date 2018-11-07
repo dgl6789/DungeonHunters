@@ -569,8 +569,8 @@ MonoBehaviour:
   Body: 2
   Mind: 1
   Spirit: 4
-  DTier: 1
-  OTier: 1
+  DTier: 3
+  OTier: 3
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -1171,8 +1171,8 @@ MonoBehaviour:
   Body: 4
   Mind: 1
   Spirit: 2
-  DTier: 1
-  OTier: 1
+  DTier: 3
+  OTier: 3
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -1746,8 +1746,8 @@ MonoBehaviour:
   Body: 2
   Mind: 1
   Spirit: 4
-  DTier: 1
-  OTier: 1
+  DTier: 3
+  OTier: 3
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
