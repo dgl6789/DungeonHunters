@@ -22,13 +22,19 @@ namespace App.UI {
 
         public static AppUI Instance;
 
-        [HideInInspector] public MercenaryData selectedMercenary;
+        [HideInInspector] public MercenaryData SelectedMercenary;
 
         [Header("Text Fields")]
 
         public TextMeshProUGUI DateText;
         public TextMeshProUGUI SelectTile;
         public TextMeshProUGUI NotificationBadge;
+        public TextMeshProUGUI NotificationCount;
+
+        public TextMeshProUGUI MercenaryName;
+        public TextMeshProUGUI MercenaryRank;
+        public TextMeshProUGUI MercenaryStats;
+        public TextMeshProUGUI MercenarySkills;
 
         public void Awake() {
             if (Instance == null) Instance = this;
