@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -892,5 +891,26 @@ public class Room : MonoBehaviour
             }
         }
     }
+
+    public void EnemyUpdate(List<Mercenary> incMercs) {
+
+        foreach(Monster mob in ActiveMonsters)
+        {
+            int minDistance = 160;
+            Vector2Int destination;
+            foreach(Mercenary merc in incMercs)
+            {
+                if(merc.Health > 0)
+                {
+                    if((Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y)) < minDistance)
+                    {
+                        minDistance = Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y);
+                        destination = merc.gridPosition;
+                    }
+                }
+            }
+        }
+    }
 }
+
 
