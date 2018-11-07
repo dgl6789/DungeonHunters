@@ -5,7 +5,7 @@ using Numeralien.Utilities;
 
 namespace Overworld {
     public class HexTile : MonoBehaviour {
-        bool obscured = true;
+        public bool Obscured = true;
 
         [HideInInspector]
         public SpriteRenderer HexRenderer;
@@ -69,7 +69,7 @@ namespace Overworld {
 
             tileEffects = GetComponentsInChildren<Transform>(true);
 
-            obscured = true;
+            Obscured = true;
         }
 
         public void SetTileEffectState(int index, bool enabled = true, params float[] parameters) {
@@ -79,8 +79,8 @@ namespace Overworld {
 
             switch(index) {
                 case 1: // Fog of war
-                    if (obscured && !enabled) {
-                        obscured = false;
+                    if (Obscured && !enabled) {
+                        Obscured = false;
                         tileEffects[index].gameObject.SetActive(false);
 
                         HexRenderer.enabled = true;
@@ -90,6 +90,11 @@ namespace Overworld {
                     tileEffects[index].GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, parameters[0]);
                     break;
             }
+        }
+
+        public void Deobfuscate() {
+            Obscured = false;
+            SetTileEffectState(1, false);
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using App.UI;
+using App.Data;
 using Overworld;
 
 namespace App {
-    public class Notification : MonoBehaviour {
-
-        string label;
+    public class Notification {
+        
         MercenaryData mercenary;
         public MercenaryData Mercenary {
             get { return mercenary; }
@@ -16,18 +16,37 @@ namespace App {
             get { return tile; }
         }
 
+        private EncounterEvent myEvent;
+        public EncounterEvent Event {
+            get { return Event; }
+        }
+
+        private string label;
+        public string Label {
+            get { return label; }
+        }
+
         private bool isRequired;
         public bool IsRequired {  get { return isRequired; } }
 
         private int dayLimit;
         public int DayLimit { get { return dayLimit; } }
 
-        public Notification(string pLabel, int pDayLimit = 0, bool pIsRequired = false, MercenaryData pMercenary = null) {
+        private TaskType type;
+        public TaskType Type {
+            get { return type; }
+        }
+
+        public Notification(TaskType pType, EncounterEvent pEvent, string pLabel, int pDayLimit = 0, bool pIsRequired = false, MercenaryData pMercenary = null, HexTile pTile = null) {
             mercenary = pMercenary;
-            label = pLabel;
+            tile = pTile;
+            type = pType;
+            myEvent = pEvent;
 
             isRequired = pIsRequired;
             dayLimit = pDayLimit;
+
+            label = pLabel;
         }
 
         public GameObject NotificationObject() {
