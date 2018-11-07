@@ -67,9 +67,9 @@ using UnityEngine;
         void RecalcStats()//Generate Stats on the 
         {
             //set base combat stats on char stats
-            MaxHealth = 50 + Body * 10;
-            MaxStamina = 25 + (Body + Spirit) * 5;
-            MaxMorale = 10 + (Spirit + Mind) * 2;
+            MaxHealth = 10 + Body * 2;
+            MaxStamina = 10 + (Body + Spirit);
+            MaxMorale = 10 + (Spirit + Mind);
 
             //assign weapon and armour materials based on the tier of the weapons and armour
             switch (DTier) {//figure out what our armour is made of, and assign their stats

@@ -84,13 +84,19 @@ public class WholeDungeon : MonoBehaviour {
     {
         foreach (Mercenary merc in AllActiveMercenaries)
         {//reset merc data on every turn
+            merc.Stamina += merc.Movement; //decrease stamina for "Extra" moves
+            merc.Stamina = Mathf.Min(merc.Stamina, merc.MaxStamina);
             merc.Movement = 5;
         }
         foreach(Monster mob in activeRoom.ActiveMonsters)
         {
+            mob.Stamina += mob.Movement; //decrease stamina for "Extra" moves
+            mob.Stamina = Mathf.Min(mob.Stamina, mob.MaxStamina);
             mob.Movement = 5;
         }
+        UndrawTick();
         activeRoom.EnemyUpdate(AllActiveMercenaries);
+        DrawTick();
     }
 
     public void TraverseRooms(bool isFoward)
@@ -151,22 +157,24 @@ public class WholeDungeon : MonoBehaviour {
                 break;
 
         }
-
-        switch (activeRoom.destinationDir)
+        if (activeRoom.ActiveMonsters.Count <= 0)
         {
-            case 0:
-                NavigationButtons[0].gameObject.SetActive(true);
-                break;
-            case 1:
-                NavigationButtons[1].gameObject.SetActive(true);
-                break;
-            case 2:
-                NavigationButtons[2].gameObject.SetActive(true);
-                break;
-            case 3:
-                NavigationButtons[3].gameObject.SetActive(true);
-                break;
+            switch (activeRoom.destinationDir)
+            {
+                case 0:
+                    NavigationButtons[0].gameObject.SetActive(true);
+                    break;
+                case 1:
+                    NavigationButtons[1].gameObject.SetActive(true);
+                    break;
+                case 2:
+                    NavigationButtons[2].gameObject.SetActive(true);
+                    break;
+                case 3:
+                    NavigationButtons[3].gameObject.SetActive(true);
+                    break;
 
+            }
         }
     }
 
@@ -386,6 +394,7 @@ public class WholeDungeon : MonoBehaviour {
             //See if the enemy is dead
             if(mob.Health <= 0)
             {
+                UndrawTick();
                 activeRoom.ActiveMonsters.Remove(mob);
                 Destroy(mob.gameObject);
                 foreach(Monster struckByFear in activeRoom.ActiveMonsters)
@@ -397,6 +406,8 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     encouraged.Morale += 1;
                 }
+                CalcDirections();
+                DrawTick();
             }
             else
             {
@@ -415,7 +426,7 @@ public class WholeDungeon : MonoBehaviour {
 
             if (merc.Health <= 0)
             {//if a merc dies
-                CharacterTick(false);//undraw mercs
+                UndrawTick();//undraw mercs
                 AllActiveMercenaries.Remove(merc);       // remove the relevant merc from the list          
                 foreach (Monster OvertakenByBloodlust in activeRoom.ActiveMonsters)
                 {
@@ -426,7 +437,7 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     discouraged.Morale -= 1;
                 }
-                CharacterTick(true);
+                DrawTick();
             }
             else
             {
