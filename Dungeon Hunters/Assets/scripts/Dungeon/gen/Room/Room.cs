@@ -23,6 +23,7 @@ public class Room : MonoBehaviour
     private Vector2Int minBound, maxBound;          //useless post-gen
     public Room nextRoom, previousRoom;
     [SerializeField] DungeonCamera DGcam;
+    WholeDungeon myDungeon;
 
     // Use this for initialization
     void Start()
@@ -57,6 +58,7 @@ public class Room : MonoBehaviour
             }
             GeneratePrelim();
         }
+        myDungeon = GetComponentInParent<WholeDungeon>();
     }
     void GeneratePrelim()
     {//Creates the Preliminary requirements to make those lines
@@ -896,19 +898,125 @@ public class Room : MonoBehaviour
 
         foreach(Monster mob in ActiveMonsters)
         {
-            int minDistance = 160;
+            myDungeon.MobTick(false);
+            int minDistance = 160, mercIndex = 0, index=0;
+            int Xdiff=0, Ydiff=0;
             Vector2Int destination;
+            bool moved= false;
             foreach(Mercenary merc in incMercs)
-            {
+            {//go through all the mercs, if they are alive, see if they are the closest. if they are the closest, set them as 
                 if(merc.Health > 0)
                 {
-                    if((Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y)) < minDistance)
+                    
+                    if ((Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y)) < minDistance)
                     {
-                        minDistance = Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y);
+                        Xdiff = merc.gridPosition.x - mob.gridPosition.x;
+                        Ydiff = merc.gridPosition.y - mob.gridPosition.y;
+                        minDistance = Mathf.Abs(Xdiff) + Mathf.Abs(Ydiff);
                         destination = merc.gridPosition;
+                        mercIndex = index;
                     }
                 }
+                index++;
             }
+            myDungeon.MobTick(false);
+            if (minDistance < (mob.Movement + mob.MaxRange))
+            {//if we can move to, and then attack the nearest merc, then do so.
+                while (minDistance > mob.MaxRange)
+                {//if we are too far away to attack
+
+
+                    if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))
+                    {//if X is Greater than Y
+
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                            
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+                            newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+
+                    }
+                    else
+                    {//if Y is greater or equal to X
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+
+                            newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+                    }
+                    minDistance--;
+                }
+
+                //we are now close enough to attack, so we will.
+                myDungeon.RunAttack(incMercs[mercIndex], mob, false);
+                myDungeon.MobTick(true);
+
+
+            }
+            else
+            {
+                myDungeon.MobTick(false);
+                while (mob.Movement > 0)
+                {//if we are too far away to attack
+                    mob.Movement--;
+                    
+                    if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))
+                    {//if X is Greater than Y
+
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+                            newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y +(int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+
+                    }
+                    else
+                    {//if Y is greater or equal to X
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+
+                            newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+                    }
+                }
+                myDungeon.MobTick(true);
+            }
+
         }
     }
 }

@@ -14,7 +14,7 @@ public enum Stance { Offensive, Standard, Parry}
 
 public class Monster : MonoBehaviour {
     public Vector2Int gridPosition;//Position in the grid
-    public int Health, Stamina, Morale; // Basic stats- Health bounds the other 2, low stamina reduces combat effectiveness, and Low Morale leads to unit control loss
+    public int Health, Stamina, Morale, Movement; // Basic stats- Health bounds the other 2, low stamina reduces combat effectiveness, and Low Morale leads to unit control loss
     public int pointBuy, MaxHealth=10, MaxStamina=10, MaxMorale=10, WeaponCohesion=100, ArmourCohesion=100;
     public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein    
     public bool isTemplate;//if this is a template creature, generate it, and if its not

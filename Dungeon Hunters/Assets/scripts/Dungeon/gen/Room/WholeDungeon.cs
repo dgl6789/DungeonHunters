@@ -86,6 +86,11 @@ public class WholeDungeon : MonoBehaviour {
         {//reset merc data on every turn
             merc.Movement = 5;
         }
+        foreach(Monster mob in activeRoom.ActiveMonsters)
+        {
+            mob.Movement = 5;
+        }
+        activeRoom.EnemyUpdate(AllActiveMercenaries);
     }
 
     public void TraverseRooms(bool isFoward)
@@ -230,7 +235,7 @@ public class WholeDungeon : MonoBehaviour {
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
             MovementTick(true);
-            CharacterTick(ActiveMerc, true);
+            CharacterTick(true);
             MobTick(true);
         }
     }

@@ -566,11 +566,11 @@ MonoBehaviour:
   MaxHealth: 0
   MaxStamina: 0
   MaxMorale: 0
-  Body: 4
-  Mind: 4
-  Spirit: 5
-  DTier: 6
-  OTier: 6
+  Body: 2
+  Mind: 1
+  Spirit: 4
+  DTier: 1
+  OTier: 1
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -608,6 +608,7 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
+  Movement: 0
   pointBuy: 15
   MaxHealth: 10
   MaxStamina: 10
@@ -620,7 +621,7 @@ MonoBehaviour:
   isTemplate: 1
   weaponType: 0
   MinRange: 0
-  MaxRange: 0
+  MaxRange: 3
   Style: 0
 --- !u!4 &469991857
 Transform:
@@ -967,6 +968,7 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
+  Movement: 0
   pointBuy: 5
   MaxHealth: 10
   MaxStamina: 10
@@ -979,7 +981,7 @@ MonoBehaviour:
   isTemplate: 1
   weaponType: 0
   MinRange: 0
-  MaxRange: 0
+  MaxRange: 3
   Style: 0
 --- !u!4 &954840169
 Transform:
@@ -1167,10 +1169,10 @@ MonoBehaviour:
   MaxStamina: 0
   MaxMorale: 0
   Body: 4
-  Mind: 4
-  Spirit: 5
-  DTier: 6
-  OTier: 6
+  Mind: 1
+  Spirit: 2
+  DTier: 1
+  OTier: 1
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -1741,11 +1743,11 @@ MonoBehaviour:
   MaxHealth: 0
   MaxStamina: 0
   MaxMorale: 0
-  Body: 4
-  Mind: 4
-  Spirit: 5
-  DTier: 6
-  OTier: 6
+  Body: 2
+  Mind: 1
+  Spirit: 4
+  DTier: 1
+  OTier: 1
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -1809,6 +1811,7 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
+  Movement: 0
   pointBuy: 10
   MaxHealth: 10
   MaxStamina: 10
@@ -1821,7 +1824,7 @@ MonoBehaviour:
   isTemplate: 1
   weaponType: 0
   MinRange: 0
-  MaxRange: 0
+  MaxRange: 3
   Style: 0
 --- !u!1 &1958286211
 GameObject:
