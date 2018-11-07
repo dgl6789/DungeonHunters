@@ -4515,6 +4515,7 @@ MonoBehaviour:
   DateText: {fileID: 1934958877}
   SelectTile: {fileID: 0}
   NotificationBadge: {fileID: 624208619}
+  NotificationCount: {fileID: 845198964}
 --- !u!4 &903190509
 Transform:
   m_ObjectHideFlags: 0
@@ -4564,7 +4565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b629568493ad347bb93529e3f58eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Notifications: []
 --- !u!1 &940448014
 GameObject:
   m_ObjectHideFlags: 0

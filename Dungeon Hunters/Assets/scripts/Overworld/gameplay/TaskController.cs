@@ -35,6 +35,32 @@ namespace App {
             StartCoroutine(SetMission());
         }
 
+        /// <summary>
+        /// Given a task type, mercenary, and tile, generate a notification that can be parsed and sent to the UI.
+        /// </summary>
+        /// <returns>Notification object containing an event.</returns>
+        public Notification GenerateNotification(TaskType pType, MercenaryData pMercenary, HexTile pTile) {
+            // Get a random event object from the event manifest for the given type. It should contain information as to
+            // whether the event is clear-required.
+
+            // Right now, return an empty event.
+            EncounterEvent e = new EncounterEvent();
+
+            // Calculate the day limit based on how long it will take the mercenary to get there from its current tile.
+            int lDayLimit = 0 + e.ExtraDayTimer;
+
+            // Return the generated notification.
+            return new Notification(pType, e, lDayLimit, e.IsRequired, pMercenary, pTile);
+        }
+
+        /// <summary>
+        /// Creates a Notification object from the given Notification specs
+        /// </summary>
+        /// <returns>Notification object to be pushed to the Canvas.</returns>
+        public GameObject ParseNotification(Notification pNotification) {
+            return null;
+        }
+
         private IEnumerator SetMission() {
             MercenaryData m = AppUI.Instance.selectedMercenary;
 

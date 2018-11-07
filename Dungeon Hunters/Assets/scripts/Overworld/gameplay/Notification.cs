@@ -3,7 +3,7 @@ using App.UI;
 using Overworld;
 
 namespace App {
-    public class Notification : MonoBehaviour {
+    public class Notification {
 
         string label;
         MercenaryData mercenary;
@@ -16,15 +16,26 @@ namespace App {
             get { return tile; }
         }
 
+        private EncounterEvent myEvent;
+        public EncounterEvent Event {
+            get { return Event; }
+        }
+
         private bool isRequired;
         public bool IsRequired {  get { return isRequired; } }
 
         private int dayLimit;
         public int DayLimit { get { return dayLimit; } }
 
-        public Notification(string pLabel, int pDayLimit = 0, bool pIsRequired = false, MercenaryData pMercenary = null) {
+        private TaskType type;
+        public TaskType Type {
+            get { return type; }
+        }
+
+        public Notification(TaskType pType, EncounterEvent pEvent, int pDayLimit = 0, bool pIsRequired = false, MercenaryData pMercenary = null, HexTile pTile = null) {
             mercenary = pMercenary;
-            label = pLabel;
+            tile = pTile;
+            type = pType;
 
             isRequired = pIsRequired;
             dayLimit = pDayLimit;

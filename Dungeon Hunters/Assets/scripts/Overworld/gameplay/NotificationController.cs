@@ -47,6 +47,8 @@ namespace App {
             if (Instance == null) Instance = this;
             else if (Instance != this) Destroy(gameObject);
 
+            Notifications = new List<Notification>();
+
             UpdateNotificationBadgeText();
         }
 
@@ -58,6 +60,7 @@ namespace App {
 
         public void UpdateNotificationBadgeText() {
             AppUI.Instance.NotificationBadge.text = "" + Notifications.Count;
+            AppUI.Instance.NotificationCount.text = Notifications.Count + " Notifications Remaining";
         }
     }
 }

@@ -29,6 +29,7 @@ namespace App.UI {
         public TextMeshProUGUI DateText;
         public TextMeshProUGUI SelectTile;
         public TextMeshProUGUI NotificationBadge;
+        public TextMeshProUGUI NotificationCount;
 
         public void Awake() {
             if (Instance == null) Instance = this;
