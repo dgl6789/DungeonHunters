@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy }
+public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend, PlacementSelector }
 
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.
@@ -38,12 +38,21 @@ public class RoomCell : MonoBehaviour {
                 cubeTemp.GetComponent<SpriteRenderer>().color = Color.blue;
                 break;
             case TileState.MovementSelector:
+            case TileState.PlacementSelector:
                 cubeTemp.GetComponent<SpriteRenderer>().color = Color.green;
                 break;
             case TileState.AttackSelector:
                 cubeTemp.GetComponent<SpriteRenderer>().color = Color.red;
                 break;
-
+            case TileState.AttackRange:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(1,.45f,.45f);
+                break;
+            case TileState.ThreatenedByFoe:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(.70f, .4f, 1);
+                break;
+            case TileState.ThreatenedByFriend:
+                cubeTemp.GetComponent<SpriteRenderer>().color = new Color(.4f, .76f, 1);
+                break;
         }
 		
 	}
@@ -61,8 +70,17 @@ public class RoomCell : MonoBehaviour {
         {//If there is a right click
             switch (Mystate)
             {
-                case TileState.MovementSelector:
+                case TileState.MovementSelector://if we are moving, run the code to move stuff
                     myDungeon.MoveActiveMerc(Gridlocation);
+                    break;
+                case TileState.AttackSelector://if we are doing an attack, first turn off the color for here, and then call the attack script, then redraw all monsters.
+                    Mystate = TileState.None;
+                    Monster temp = myDungeon.GetMobFromLoc(Gridlocation);
+                    myDungeon.RunAttack(myDungeon.AllActiveMercenaries[myDungeon.ActiveMerc], temp, true);
+                    Debug.Log("This is where an attack should be");                   
+                    break;
+                case TileState.PlacementSelector://if we are Placeing mercs, place em down. This is different from moving, becasue there are no penalties.
+                    myDungeon.PlaceActiveMerc(Gridlocation);
                     break;
                 default:
                     break;
@@ -98,8 +116,9 @@ public class RoomCell : MonoBehaviour {
         cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.black;
     }
 
+    //Temporarily disabled for new sprites
     public void AssignOreValue(int incValue){
-        switch (incValue)
+       /* switch (incValue)
         {
             case 1://Copper?
                 cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.green;
@@ -131,6 +150,6 @@ public class RoomCell : MonoBehaviour {
             case 10://Aluminum?
                 cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.red;
                 break;
-        }
+        }*/
     }
 }

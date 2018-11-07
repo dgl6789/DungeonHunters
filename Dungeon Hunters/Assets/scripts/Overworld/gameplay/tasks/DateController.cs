@@ -41,6 +41,12 @@ namespace App.UI {
             CurrentDate.Advance();
 
             foreach (Notification n in NotificationController.Instance.Notifications) { n.Advance(); }
+            foreach(MercenaryData m in MercenaryController.Instance.Mercenaries) { m.UpdateLocation(); }
+
+            MercenaryController.Instance.UpdateLocationPins();
+
+            NotificationController.Instance.UpdateNotificationUI();
+            NotificationController.Instance.UpdateNotificationBadgeText();
 
             AppUI.Instance.DateText.text = CurrentDate.ToString();
         }

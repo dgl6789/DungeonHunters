@@ -146,7 +146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -388, y: 0}
+  m_AnchoredPosition: {x: -367, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &108155033
@@ -493,8 +493,10 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
+  ActiveMonsters: []
   sourceDir: 0
   destinationDir: 0
+  HasGenerated: 0
   displayFrameTime: 0
   reGen: 0
   reCon: 0
@@ -554,20 +556,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c123d8e0184030243ae60ca12dd999e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overworldLocation: {fileID: 0}
   gridPosition: {x: 40, y: 30}
-  Health: 0
-  Stamina: 0
-  Morale: 0
-  WeaponCohesion: 0
-  ArmourCohesion: 0
+  Health: 20
+  Stamina: 20
+  Morale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
   Movement: 5
   MaxHealth: 0
   MaxStamina: 0
   MaxMorale: 0
-  Body: 4
-  Mind: 4
-  Spirit: 5
+  Body: 2
+  Mind: 1
+  Spirit: 4
   DTier: 3
   OTier: 3
   defenseQuality: {x: 0, y: 0, z: 0}
@@ -607,18 +608,20 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
-  pointBuy: 20
-  MaxHealth: 100
-  MaxStamina: 50
-  MaxMorale: 20
+  Movement: 0
+  pointBuy: 15
+  MaxHealth: 10
+  MaxStamina: 10
+  MaxMorale: 10
   WeaponCohesion: 100
   ArmourCohesion: 100
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
   isTemplate: 1
-  CombatTest: 0
   weaponType: 0
+  MinRange: 0
+  MaxRange: 3
   Style: 0
 --- !u!4 &469991857
 Transform:
@@ -880,8 +883,10 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
+  ActiveMonsters: []
   sourceDir: 0
   destinationDir: 0
+  HasGenerated: 0
   displayFrameTime: 0
   reGen: 0
   reCon: 0
@@ -963,18 +968,20 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
-  pointBuy: 20
-  MaxHealth: 100
-  MaxStamina: 50
-  MaxMorale: 20
+  Movement: 0
+  pointBuy: 5
+  MaxHealth: 10
+  MaxStamina: 10
+  MaxMorale: 10
   WeaponCohesion: 100
   ArmourCohesion: 100
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
   isTemplate: 1
-  CombatTest: 0
   weaponType: 0
+  MinRange: 0
+  MaxRange: 3
   Style: 0
 --- !u!4 &954840169
 Transform:
@@ -1151,20 +1158,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c123d8e0184030243ae60ca12dd999e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overworldLocation: {fileID: 0}
   gridPosition: {x: 30, y: 40}
-  Health: 0
-  Stamina: 0
-  Morale: 0
-  WeaponCohesion: 0
-  ArmourCohesion: 0
+  Health: 20
+  Stamina: 20
+  Morale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
   Movement: 5
   MaxHealth: 0
   MaxStamina: 0
   MaxMorale: 0
   Body: 4
-  Mind: 4
-  Spirit: 5
+  Mind: 1
+  Spirit: 2
   DTier: 3
   OTier: 3
   defenseQuality: {x: 0, y: 0, z: 0}
@@ -1317,8 +1323,7 @@ MonoBehaviour:
   - {fileID: 1911745938}
   - {fileID: 469991856}
   ActiveMerc: 0
-  debugging: 0
-  debuggingRange: 0
+  dirty: 0
 --- !u!4 &1417395317
 Transform:
   m_ObjectHideFlags: 0
@@ -1368,7 +1373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: 222}
+  m_AnchoredPosition: {x: 6, y: 217}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1445716904
@@ -1490,7 +1495,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: 222}
+  m_AnchoredPosition: {x: 6, y: 217}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1781710954
@@ -1612,7 +1617,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: -238}
+  m_AnchoredPosition: {x: 6, y: -216}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1852195134
@@ -1728,20 +1733,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c123d8e0184030243ae60ca12dd999e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overworldLocation: {fileID: 0}
   gridPosition: {x: 40, y: 40}
-  Health: 0
-  Stamina: 0
-  Morale: 0
-  WeaponCohesion: 0
-  ArmourCohesion: 0
+  Health: 20
+  Stamina: 20
+  Morale: 20
+  WeaponCohesion: 100
+  ArmourCohesion: 100
   Movement: 5
   MaxHealth: 0
   MaxStamina: 0
   MaxMorale: 0
-  Body: 4
-  Mind: 4
-  Spirit: 5
+  Body: 2
+  Mind: 1
+  Spirit: 4
   DTier: 3
   OTier: 3
   defenseQuality: {x: 0, y: 0, z: 0}
@@ -1807,18 +1811,20 @@ MonoBehaviour:
   Health: 0
   Stamina: 0
   Morale: 0
-  pointBuy: 20
-  MaxHealth: 100
-  MaxStamina: 50
-  MaxMorale: 20
+  Movement: 0
+  pointBuy: 10
+  MaxHealth: 10
+  MaxStamina: 10
+  MaxMorale: 10
   WeaponCohesion: 100
   ArmourCohesion: 100
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
   isTemplate: 1
-  CombatTest: 0
   weaponType: 0
+  MinRange: 0
+  MaxRange: 3
   Style: 0
 --- !u!1 &1958286211
 GameObject:
@@ -1853,7 +1859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -388, y: 0}
+  m_AnchoredPosition: {x: -367, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1958286213
@@ -2097,7 +2103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: -238}
+  m_AnchoredPosition: {x: 6, y: -216}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2119221727
@@ -2218,8 +2224,10 @@ MonoBehaviour:
   LinePrefab: {fileID: 121529466}
   CaveTiles: []
   OreTiles: []
-  sourceDir: 0
-  destinationDir: 3
+  ActiveMonsters: []
+  sourceDir: 3
+  destinationDir: 1
+  HasGenerated: 0
   displayFrameTime: 0
   reGen: 0
   reCon: 0

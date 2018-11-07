@@ -4,23 +4,22 @@ using UnityEngine;
 
 public struct Attack
 {
-    public int Rating, Cohesion;
+    public int Rating, Cohesion, baseDamage;
     public Vector3Int WeaponStats;
-    public WeaponType attackType;
+    public DamageType attackType;
     
 }
-public enum WeaponType { Slash, Pierce, Crush}
+public enum DamageType { Slash, Pierce, Crush}
 public enum Stance { Offensive, Standard, Parry}
 
 public class Monster : MonoBehaviour {
     public Vector2Int gridPosition;//Position in the grid
-    public int Health, Stamina, Morale; // Basic stats- Health bounds the other 2, low stamina reduces combat effectiveness, and Low Morale leads to unit control loss
-    public int pointBuy, MaxHealth=100, MaxStamina=50, MaxMorale=20, WeaponCohesion=100, ArmourCohesion=100;
+    public int Health, Stamina, Morale, Movement; // Basic stats- Health bounds the other 2, low stamina reduces combat effectiveness, and Low Morale leads to unit control loss
+    public int pointBuy, MaxHealth=10, MaxStamina=10, MaxMorale=10, WeaponCohesion=100, ArmourCohesion=100;
     public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein    
     public bool isTemplate;//if this is a template creature, generate it, and if its not
-    public bool CombatTest;
-    public WeaponType weaponType;
-
+    public DamageType weaponType;
+    public int MinRange, MaxRange;
     public Stance Style;
     GameObject model;
 	// Use this for initialization
@@ -33,32 +32,32 @@ public class Monster : MonoBehaviour {
                 temp = Random.Range(0, Mathf.Min(3, pointBuy));//pick a random number between 0 and either 3, or the points left
                 weaponTier += temp;//Add it to the relevant 
                 pointBuy -= temp;//decriment the amout of points left, and then do this process again for the other 2 stats
-                MaxHealth += temp * 10;
+                MaxHealth += temp;
 
                 temp = Random.Range(0, Mathf.Min(3, pointBuy));
                 armourTier += temp;
                 pointBuy -= temp;
-                MaxStamina += temp * 5;
+                MaxStamina += temp;
 
                 temp = Random.Range(0, Mathf.Min(3, pointBuy));
                 highestSkill += temp;
                 pointBuy -= temp;
-                MaxMorale += temp * 2;
+                MaxMorale += temp;
             }
             //All of our points have been allocated, time to interprit them.
 
             if (weaponTier > armourTier)
             {
-                weaponType = WeaponType.Slash;
+                weaponType = DamageType.Slash;
                 Style = Stance.Offensive;
             }
             else if (weaponTier % 2 == 0) {
-                weaponType = WeaponType.Pierce;
+                weaponType = DamageType.Pierce;
                 Style = Stance.Parry;
             }
             else
             {
-                weaponType = WeaponType.Crush;
+                weaponType = DamageType.Crush;
                 Style = Stance.Standard;
             }                               
 
@@ -189,50 +188,71 @@ public class Monster : MonoBehaviour {
                     break;
             }
 
-
+            isTemplate = false;//Make sure this only generates once, if copied.
         }
         Health = MaxHealth;
         Stamina = MaxStamina;
         Morale = MaxMorale;
+        model = gameObject;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (CombatTest)
-        {
-            CombatTest = false;
-            Attack temp = GenerateAttack();
-            Debug.Log(temp);
-            RecieveAttack(temp);
-        }
+	void Update () {        
 
 	}
 
-    Attack GenerateAttack()
+    public Attack GenerateAttack()
     {
         Attack temp;
         temp.Rating = Skills.x + (Stamina-25);//Combine offensive skill with basic Stamina Bonus
         temp.WeaponStats = offenseQuality;
         temp.attackType = weaponType;
         temp.Cohesion = WeaponCohesion;
+        temp.baseDamage = 5;
         return temp;
     }
 
-    void RecieveAttack(Attack incAttack)
+    public bool RecieveAttack(Attack incAttack)
     {//This is being kept exceedingly simple for now - but realistically there should be a quality modifier on weapons and armour.
         //differences in these ratings should decrease damage - regardless of what deforms - but decrease the quality of the artifact for its subsequent uses
         int IncDamage = incAttack.Rating - (Skills.y + (Stamina - 25));//Decrease the attack by our defense rating and stamina bonus
         IncDamage += (incAttack.WeaponStats.x - defenseQuality.x);//hardness difference- ability to not erode
         IncDamage += (incAttack.WeaponStats.y - defenseQuality.y);//Strength difference- ability for artifacts to not deform
         IncDamage += (incAttack.WeaponStats.z - defenseQuality.z);//toughness difference - ability for artifacts to not shatter
-
-        IncDamage = (int)(IncDamage * (incAttack.Cohesion / 100.0f));//should probably switch to parabolic method later
-
         Debug.Log(IncDamage);
+
         if (IncDamage > 0)
         {
-            Health -= IncDamage/10;
+            IncDamage = (int)(incAttack.baseDamage * (incAttack.Cohesion / 100.0f));//should probably switch to parabolic method later
+
+            Debug.Log(IncDamage);
+            if (IncDamage > 0)
+            {
+                Health -= IncDamage;
+                Debug.Log("Monster at Grid Position " + gridPosition + "  took " + IncDamage + " Damage, lowering their health to:" + Health);
+                return true;
+            }
         }
+        return false;
+    }
+
+    public void SetStats(Monster incMonster)
+    {
+        //just a simple copy operator for now.
+        Health = incMonster.Health;
+        MaxHealth = incMonster.MaxHealth;
+        pointBuy = incMonster.pointBuy;
+        Stamina = incMonster.Stamina;
+        MaxStamina = incMonster.MaxStamina;
+        Morale = incMonster.MaxStamina;
+        MaxMorale = incMonster.MaxMorale;
+        defenseQuality = incMonster.defenseQuality;
+        offenseQuality = incMonster.offenseQuality;
+        Skills = incMonster.Skills;
+        weaponType = incMonster.weaponType;
+        Style = incMonster.Style;
+        MinRange = incMonster.MinRange;
+        MaxRange = incMonster.MaxRange;
     }
 
 }

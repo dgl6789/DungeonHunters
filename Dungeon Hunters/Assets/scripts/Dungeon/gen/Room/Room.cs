@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -12,17 +11,19 @@ public class Room : MonoBehaviour
     private List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
     public List<Vector3Int> CaveTiles;              //efficient storage of data. useful for reconstruction
     public List<Vector4> OreTiles;                  //efficient storage of data. useful for reconstruction
+    public List<Monster> ActiveMonsters;
     public GameObject[,] AllGameObjects;            //just really used to shut the consol up
     public RoomCell[,] AllCells;                    //Simple container of other objects. Might be better off as a pointer to a single re-used group.
     public int sourceDir;                           //Mildly important for map linking.    
     public int destinationDir;                      //0-3, 0 being up, 1 being right, 2, being down, 3 being left
-    private bool HasGenerated = false;              //Required for start logic
+    public bool HasGenerated = false;              //Required for start logic
     public bool displayFrameTime;                   //use largely in debugging
     public bool reGen = false;                      //Temp variables to use in "map Navigation"                      
     public bool reCon = false;                      //use to Recontruct a map
     private Vector2Int minBound, maxBound;          //useless post-gen
     public Room nextRoom, previousRoom;
     [SerializeField] DungeonCamera DGcam;
+    WholeDungeon myDungeon;
 
     // Use this for initialization
     void Start()
@@ -57,6 +58,7 @@ public class Room : MonoBehaviour
             }
             GeneratePrelim();
         }
+        myDungeon = GetComponentInParent<WholeDungeon>();
     }
     void GeneratePrelim()
     {//Creates the Preliminary requirements to make those lines
@@ -376,6 +378,7 @@ public class Room : MonoBehaviour
         }       
         DefineCave();
         AssignOres();
+        
     }
     
     void DefineCave() {//Determine what tiles have been altered, and to what depth   
@@ -389,7 +392,7 @@ public class Room : MonoBehaviour
                     CaveTiles.Add(new Vector3Int(i, j, AllCells[i, j].Height));
                 }
             }
-        }
+        }        
         HasGenerated = true;
     }
 
@@ -421,6 +424,49 @@ public class Room : MonoBehaviour
         }
         BuildOres();
     }
+
+    public void AssignMonsters(List<Monster> Templates)
+    {
+        int mobPoints = pointsForBuy, gridIndex, templateIndex ;
+        int maxPoints = 0, minPoints = 100;
+      
+        foreach (Monster mob in Templates)
+        {//Know the bounds of what we can spend
+            if (mob.pointBuy > maxPoints)
+                maxPoints = mob.pointBuy;
+
+            if (mob.pointBuy < minPoints)
+                minPoints = mob.pointBuy;
+        }
+
+        while(mobPoints > minPoints)
+        {//add monsters till we run out of 
+            GameObject tempObj = new GameObject();
+            tempObj.AddComponent<Monster>();
+            Monster temp = tempObj.GetComponent<Monster>();
+            templateIndex = Random.Range(0, Templates.Count);
+            gridIndex = Random.Range(0, CaveTiles.Count - 1);
+            temp.SetStats( Templates[templateIndex]);            
+            temp.gridPosition = new Vector2Int(CaveTiles[gridIndex].x, CaveTiles[gridIndex].y);
+            mobPoints -= temp.pointBuy;
+            ActiveMonsters.Add(temp);
+        }
+        if (mobPoints > 0)
+        {
+            GameObject tempObj = new GameObject();
+            tempObj.AddComponent<Monster>();
+            Monster temp = tempObj.GetComponent<Monster>();
+            templateIndex = Random.Range(0, Templates.Count);
+            gridIndex = Random.Range(0, CaveTiles.Count - 1);
+            temp.SetStats(Templates[templateIndex]);
+            temp.isTemplate = false;
+            temp.gridPosition = new Vector2Int(CaveTiles[gridIndex].x, CaveTiles[gridIndex].y);
+            mobPoints -= temp.pointBuy;
+            ActiveMonsters.Add(temp);
+        }
+                
+    }
+
     void BuildOres()
     {
         foreach (Vector4 tile in OreTiles)
@@ -465,7 +511,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    public void ExtendCave()
+    public void ExtendCave(List<Monster> incMobList)
     {//Move to the next cave        
         if(nextRoom != null)
         {//You know, if we're allowed to
@@ -481,6 +527,7 @@ public class Room : MonoBehaviour
                 nextRoom.ConvertFromExtend();
                 nextRoom.DrawLines();
                 nextRoom.LiftTiles();
+                nextRoom.AssignMonsters(incMobList);
             }
         }
     }
@@ -597,7 +644,8 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in upEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0,Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
                     
                 }
             }
@@ -616,8 +664,8 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in rightEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
                 }
             }
             rightEdge.Clear();
@@ -635,8 +683,9 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in downEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+
                 }
             }
             downEdge.Clear();
@@ -655,8 +704,9 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in leftEdge)
                 {
-                    AllCells[loc.x, loc.y].Mystate = (TileState)zoneType;
-                    
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
+                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+
                 }
             }
             leftEdge.Clear();
@@ -669,6 +719,306 @@ public class Room : MonoBehaviour
 
     }
 
- 
+    public void HighLightTargets( Vector2Int startingLoc, int minDistance, int maxDistance, bool activating)
+    {//Draws or Undraws all monster markings in range (placeholder, currently allows wallhacks, basically)
+
+        if (activating)
+        {
+            HighLightZones(5, startingLoc, minDistance, maxDistance);
+
+            foreach (Monster mob in ActiveMonsters)
+            {
+                if (minDistance <= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y) && maxDistance >= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y))
+                {
+                    AllCells[mob.gridPosition.x, mob.gridPosition.y].Mystate = TileState.AttackSelector;
+                }
+            }
+        }
+        else
+        {
+            HighLightZones(0, startingLoc, minDistance, maxDistance);
+        }
+      
+    }
+
+    public void PlaceMercs(bool Advancing, bool Activating)
+    {
+        if (Advancing) {
+            if (Activating)
+            {
+                switch (sourceDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (sourceDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                }
+            }
+        }
+        else
+        {
+            if (Activating)
+            {
+                switch (destinationDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.PlacementSelector;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (destinationDir)
+                {
+                    case 0://top
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 1://Left
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x > 75)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+
+                        break;
+                    case 2://bottom
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.y < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                    case 3://right
+                        foreach (Vector3Int Tile in CaveTiles)
+                        {
+                            if (Tile.x < 4)
+                                AllCells[Tile.x, Tile.y].Mystate = TileState.None;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    public void EnemyUpdate(List<Mercenary> incMercs) {
+
+        foreach(Monster mob in ActiveMonsters)
+        {
+            myDungeon.MobTick(false);
+            int minDistance = 160, mercIndex = 0, index=0;
+            int Xdiff=0, Ydiff=0;
+            Vector2Int destination;
+            bool moved= false;
+            foreach(Mercenary merc in incMercs)
+            {//go through all the mercs, if they are alive, see if they are the closest. if they are the closest, set them as 
+                if(merc.Health > 0)
+                {
+                    
+                    if ((Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y)) < minDistance)
+                    {
+                        Xdiff = merc.gridPosition.x - mob.gridPosition.x;
+                        Ydiff = merc.gridPosition.y - mob.gridPosition.y;
+                        minDistance = Mathf.Abs(Xdiff) + Mathf.Abs(Ydiff);
+                        destination = merc.gridPosition;
+                        mercIndex = index;
+                    }
+                }
+                index++;
+            }
+            myDungeon.MobTick(false);
+            if (minDistance < (mob.Movement + mob.MaxRange))
+            {//if we can move to, and then attack the nearest merc, then do so.
+                while (minDistance > mob.MaxRange)
+                {//if we are too far away to attack
+
+
+                    if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))
+                    {//if X is Greater than Y
+
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                            
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+                            newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+
+                    }
+                    else
+                    {//if Y is greater or equal to X
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+
+                            newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+                    }
+                    minDistance--;
+                }
+
+                //we are now close enough to attack, so we will.
+                myDungeon.RunAttack(incMercs[mercIndex], mob, false);
+                myDungeon.MobTick(true);
+
+
+            }
+            else
+            {
+                myDungeon.MobTick(false);
+                while (mob.Movement > 0)
+                {//if we are too far away to attack
+                    mob.Movement--;
+                    
+                    if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))
+                    {//if X is Greater than Y
+
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+                            newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y +(int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+
+                    }
+                    else
+                    {//if Y is greater or equal to X
+                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
+                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                        {
+                            mob.gridPosition = newGridPos;
+                        }
+                        else//if the block isn't moveable, move in the other relevant direction.
+                        {
+
+                            newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
+                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = newGridPos;
+                            }
+                        }
+                    }
+                }
+                myDungeon.MobTick(true);
+            }
+
+        }
+    }
 }
+
 
