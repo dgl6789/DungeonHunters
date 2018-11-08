@@ -15,7 +15,7 @@ namespace App.UI {
         public void AssignData(Notification pData) {
             LabelField.text = pData.Label;
             
-            DaysField.text = pData.DayLimit == 0 ? "Ready!" : pData.DayLimit + " Days Remaining";
+            DaysField.text = pData.DayLimit == 0 ? "Ready!" : "Ready in " + pData.DayLimit + " days.";
             
             // Portrait.sprite = pData.Mercenary.Portrait;
             TileImage.sprite = pData.Tile.Data.DrawnSprite;

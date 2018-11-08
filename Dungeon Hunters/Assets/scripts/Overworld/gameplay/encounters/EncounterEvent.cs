@@ -11,6 +11,8 @@ namespace App.Data
         public bool IsRequired;
         public string Name;
 
+        public string[] Functionality;
+
         // Also holds data that can spawn an encounter dialog.
         Dictionary<int, KeyValuePair<string, List<Option>>> EncounterData;
 

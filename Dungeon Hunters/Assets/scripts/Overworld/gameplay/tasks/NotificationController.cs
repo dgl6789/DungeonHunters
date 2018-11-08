@@ -28,6 +28,19 @@ namespace App {
             }
         }
 
+        public int NeedsResolutionCount {
+            get {
+                int num = 0;
+
+                foreach (Notification n in Notifications) {
+                    if (n.IsRequired && n.DayLimit == 0)
+                        num++;
+                }
+
+                return num;
+            }
+        }
+
         public bool HasOptionalNotifications
         {
             get
@@ -67,7 +80,9 @@ namespace App {
         public void UpdateNotificationBadgeText() {
             AppUI.Instance.NotificationBadge.text = "" + Notifications.Count;
 
-            string s = Notifications.Count == 1 ? Notifications.Count + " Notification Remaining" : Notifications.Count + " Notifications Remaining";
+            string s = NeedsResolutionCount == 1 ? NeedsResolutionCount + " Notification Remaining" : NeedsResolutionCount + " Notifications Remaining";
+
+            AppUI.Instance.AdvanceDayButton.interactable = !HasRequiredNotifications;
 
             AppUI.Instance.NotificationCount.text = s;
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 using Overworld;
 using App.UI;
 using App.Data;
+using UnityEngine.UI;
 
 namespace App {
     public enum TaskType { NONE, DUNGEONEER, SCOUT, FORAGE, TRAIN }
@@ -29,11 +30,6 @@ namespace App {
 
         public void SetMercenaryTask(MercenaryData pMercenary, TaskType pTaskType, HexTile pTile) {
 
-        }
-
-        public void RefreshMercenaryLocations() {
-            // Set the mercenary's location one days' travel closer to their goal.
-            // A day's travel is one hex divided by the rough terrain factor for that tile, which depends on its tile type.
         }
 
         public void ClickSetMissionButton() {
@@ -131,14 +127,22 @@ namespace App {
             // Pop up the task type selection dialog
             // Perform logic here for choosing options to show based on tile type
             DialogManager.Instance.ShowDialog(DialogType.TASK_SELECT);
+
+            bool changedButtons = false;
             
             int it = 1;
-            foreach(RectTransform r in TaskTray.transform) {
-                if (r == TaskTray) continue;
+            if(!changedButtons) {
+                foreach (RectTransform r in TaskTray.transform) {
+                    if (r == TaskTray) continue;
 
-                r.gameObject.SetActive(IsValidTaskForTile((TaskType)it, tile));
+                    Debug.Log(0);
 
-                it++;
+                    r.GetComponent<Button>().interactable = IsValidTaskForTile((TaskType)it, tile);
+
+                    it++;
+                }
+
+                changedButtons = true;
             }
 
             // wait for a task to be selected
