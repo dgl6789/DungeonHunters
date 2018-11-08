@@ -4808,7 +4808,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BookImage: {fileID: 214752941}
-  NotificationObject: {fileID: 0}
+  NotificationObject: {fileID: 1202824218058554, guid: 476eb97680d918945ade719c2c1348d8,
+    type: 2}
   MercenaryLocationPin: {fileID: 1175721832053578, guid: 2280a3f206cc0b74da6788329a4db7b3,
     type: 2}
   MapOverlayParent: {fileID: 1103989306}
@@ -4821,7 +4822,7 @@ MonoBehaviour:
   lastPageOpened: 0
   LeftMenuPanel: {fileID: 214752939}
   leftPanelOpen: 0
-  AcceptingKeyInput: 0
+  AcceptingKeyInput: 1
   DateText: {fileID: 1934958877}
   SelectTile: {fileID: 1512127198}
   NotificationBadge: {fileID: 624208619}
@@ -4911,7 +4912,7 @@ MonoBehaviour:
   manifest: {fileID: 11400000, guid: b825221f30a2fa4499abc3d54b2d1e56, type: 2}
   mercenaryUIObject: {fileID: 1147777681380334, guid: 3a15809a1a3bcb54d801fc45f0ace084,
     type: 2}
-  mercenaryUIContainer: {fileID: 979431802}
+  mercenaryUIContainer: {fileID: 1322711132}
   mercenaryTabSprites:
   - {fileID: 21300000, guid: 27097afba0183ad40929c69abd394b3f, type: 3}
   - {fileID: 21300002, guid: 27097afba0183ad40929c69abd394b3f, type: 3}
@@ -4929,9 +4930,8 @@ MonoBehaviour:
   DialogIsOpen: 0
   DialogObjectCommon: {fileID: 756831811}
   DialogObjects:
-  - {fileID: 0}
-  - {fileID: 2101785914}
   - {fileID: 942611097}
+  - {fileID: 2101785914}
 --- !u!1 &940448014
 GameObject:
   m_ObjectHideFlags: 0
@@ -11055,13 +11055,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515a349bbb542324580d1f0e041dacf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomSpeed: 3
+  zoomSpeed: 5
   ZoomBounds: {x: 3, y: 8}
   speedSmoothing: 5
-  zoomSmoothing: 3
-  PanBoundsX: {x: -5, y: 25}
-  PanBoundsY: {x: 0, y: 25}
-  Cursor: {fileID: 0}
+  zoomSmoothing: 5
+  PanBoundsX: {x: -2, y: 20}
+  PanBoundsY: {x: -10, y: 40}
+  Cursor: {fileID: 536546406}
 --- !u!1 &2077256451
 GameObject:
   m_ObjectHideFlags: 0
