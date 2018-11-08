@@ -4333,23 +4333,44 @@ Prefab:
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.r
-      value: 0.24807169
+      value: 0.9450981
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.g
-      value: 0.23544855
+      value: 0.7607844
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.b
-      value: 0.3490566
+      value: 0.56078434
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor32.rgba
       value: 4284038207
       objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 903190513}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetSelectedTask
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114094110784611350, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300032, guid: 400581b176e599240a7c0e9e4e93abe1,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76d58894b0571fa48817d1185957fdf3, type: 2}
   m_IsPrefabAsset: 0
@@ -4358,41 +4379,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224513046732250800, guid: 76d58894b0571fa48817d1185957fdf3,
     type: 2}
   m_PrefabInternal: {fileID: 807428336}
---- !u!1 &807428338 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1155804778108044, guid: 76d58894b0571fa48817d1185957fdf3,
-    type: 2}
-  m_PrefabInternal: {fileID: 807428336}
---- !u!114 &807428339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 807428338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 903190513}
-          m_MethodName: SetSelectedTask
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &845198962
 GameObject:
   m_ObjectHideFlags: 0
@@ -4560,6 +4546,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1840373704}
     m_Modifications:
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224513046732250800, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -4714,23 +4705,64 @@ Prefab:
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.r
-      value: 0.24807169
+      value: 0.9450981
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.g
-      value: 0.23544855
+      value: 0.7607844
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.b
-      value: 0.3490566
+      value: 0.56078434
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor32.rgba
       value: 4284038207
       objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetSelectedTask
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 903190513}
+    - target: {fileID: 114094110784611350, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300032, guid: 400581b176e599240a7c0e9e4e93abe1,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76d58894b0571fa48817d1185957fdf3, type: 2}
   m_IsPrefabAsset: 0
@@ -4739,41 +4771,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224513046732250800, guid: 76d58894b0571fa48817d1185957fdf3,
     type: 2}
   m_PrefabInternal: {fileID: 880061952}
---- !u!1 &880061954 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1155804778108044, guid: 76d58894b0571fa48817d1185957fdf3,
-    type: 2}
-  m_PrefabInternal: {fileID: 880061952}
---- !u!114 &880061955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 880061954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 903190513}
-          m_MethodName: SetSelectedTask
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &903190507
 GameObject:
   m_ObjectHideFlags: 0
@@ -4833,6 +4830,7 @@ MonoBehaviour:
   MercenarySkills: {fileID: 1621607915}
   SetMissionButton: {fileID: 940448016}
   FocusOnMercButton: {fileID: 1953870830}
+  AdvanceDayButton: {fileID: 1927260097}
 --- !u!4 &903190509
 Transform:
   m_ObjectHideFlags: 0
@@ -7962,23 +7960,44 @@ Prefab:
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.r
-      value: 0.24807169
+      value: 0.9450981
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.g
-      value: 0.23544855
+      value: 0.7607844
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.b
-      value: 0.3490566
+      value: 0.56078434
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor32.rgba
       value: 4284038207
       objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 903190513}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetSelectedTask
+      objectReference: {fileID: 0}
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114094110784611350, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300032, guid: 400581b176e599240a7c0e9e4e93abe1,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76d58894b0571fa48817d1185957fdf3, type: 2}
   m_IsPrefabAsset: 0
@@ -7987,41 +8006,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224513046732250800, guid: 76d58894b0571fa48817d1185957fdf3,
     type: 2}
   m_PrefabInternal: {fileID: 1545961339}
---- !u!1 &1545961341 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1155804778108044, guid: 76d58894b0571fa48817d1185957fdf3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1545961339}
---- !u!114 &1545961342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1545961341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 903190513}
-          m_MethodName: SetSelectedTask
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1001 &1587872515
 Prefab:
   m_ObjectHideFlags: 0
@@ -8119,69 +8103,35 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
+    - target: {fileID: 114096548158406752, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224792796603718358, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.00099754
-      objectReference: {fileID: 0}
-    - target: {fileID: 224792796603718358, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 172.77
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_text
-      value: Dungeoneer
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_textInfo.characterCount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_textInfo.wordCount
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 903190513}
     - target: {fileID: 1155804778108044, guid: 76d58894b0571fa48817d1185957fdf3, type: 2}
       propertyPath: m_Name
       value: Dungeoneer
       objectReference: {fileID: 0}
+    - target: {fileID: 114094110784611350, guid: 76d58894b0571fa48817d1185957fdf3,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300032, guid: 400581b176e599240a7c0e9e4e93abe1,
+        type: 3}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.r
-      value: 0.24807169
+      value: 0.9450981
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.g
-      value: 0.23544855
+      value: 0.7607844
       objectReference: {fileID: 0}
     - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
         type: 2}
       propertyPath: m_fontColor.b
-      value: 0.3490566
-      objectReference: {fileID: 0}
-    - target: {fileID: 114130179018810874, guid: 76d58894b0571fa48817d1185957fdf3,
-        type: 2}
-      propertyPath: m_fontColor32.rgba
-      value: 4284038207
+      value: 0.56078434
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76d58894b0571fa48817d1185957fdf3, type: 2}
@@ -8191,41 +8141,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224513046732250800, guid: 76d58894b0571fa48817d1185957fdf3,
     type: 2}
   m_PrefabInternal: {fileID: 1587872515}
---- !u!1 &1587872517 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1155804778108044, guid: 76d58894b0571fa48817d1185957fdf3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1587872515}
---- !u!114 &1587872518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1587872517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 903190513}
-          m_MethodName: SetSelectedTask
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 1
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &1599054865
 GameObject:
   m_ObjectHideFlags: 0
@@ -9822,7 +9737,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -9832,8 +9747,8 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300034, guid: 400581b176e599240a7c0e9e4e93abe1, type: 3}
+    m_DisabledSprite: {fileID: 21300034, guid: 400581b176e599240a7c0e9e4e93abe1, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -11055,7 +10970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515a349bbb542324580d1f0e041dacf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomSpeed: 5
+  zoomSpeed: 3
   ZoomBounds: {x: 3, y: 8}
   speedSmoothing: 5
   zoomSmoothing: 5

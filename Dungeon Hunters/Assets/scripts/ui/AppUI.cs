@@ -46,6 +46,7 @@ namespace App.UI {
 
         public Button SetMissionButton;
         public Button FocusOnMercButton;
+        public Button AdvanceDayButton;
 
         public void Awake() {
             if (Instance == null) Instance = this;

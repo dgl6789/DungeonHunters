@@ -4,6 +4,7 @@ using UnityEngine;
 using Overworld;
 using App.UI;
 using App.Data;
+using UnityEngine.UI;
 
 namespace App {
     public enum TaskType { NONE, DUNGEONEER, SCOUT, FORAGE, TRAIN }
@@ -133,12 +134,15 @@ namespace App {
             DialogManager.Instance.ShowDialog(DialogType.TASK_SELECT);
             
             int it = 1;
-            foreach(RectTransform r in TaskTray.transform) {
-                if (r == TaskTray) continue;
+            bool didButtonCheck = false;
+            if (!didButtonCheck) {
+                foreach (RectTransform r in TaskTray.transform) {
+                    if (r == TaskTray) continue;
 
-                r.gameObject.SetActive(IsValidTaskForTile((TaskType)it, tile));
+                    r.gameObject.GetComponent<Button>().interactable = IsValidTaskForTile((TaskType)it, tile);
 
-                it++;
+                    it++;
+                }
             }
 
             // wait for a task to be selected
