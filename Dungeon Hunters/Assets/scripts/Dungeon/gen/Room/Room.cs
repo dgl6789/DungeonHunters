@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public int pointsForBuy;                        //used in generation.
-    public bool primaryRoom;                        //Tells map weather to generate, or receive its map
+    public int pointsForBuy;                        //used in generation.   
     public GameObject LinePrefab;                   
-    private Vector3[] Trajectories;                  //Useful post-gen
-    private Vector2[] Locations;                     //useless post-gen
-    private List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
+    public Vector3[] Trajectories;                  //Useful post-gen
+    public Vector2[] Locations;                     //useless post-gen
+    public List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
     public List<Vector3Int> CaveTiles;              //efficient storage of data. useful for reconstruction
     public List<Vector4> OreTiles;                  //efficient storage of data. useful for reconstruction
     public List<Monster> ActiveMonsters;
@@ -22,8 +21,8 @@ public class Room : MonoBehaviour
     public bool reCon = false;                      //use to Recontruct a map
     private Vector2Int minBound, maxBound;          //useless post-gen
     public Room nextRoom, previousRoom;
-    [SerializeField] DungeonCamera DGcam;
-    WholeDungeon myDungeon;
+    public DungeonCamera DGcam;
+    public WholeDungeon myDungeon;
 
     // Use this for initialization
     void Start()
@@ -32,33 +31,15 @@ public class Room : MonoBehaviour
         minBound = new Vector2Int(1, 1);
         maxBound = new Vector2Int(78, 78);
         Locations = new Vector2[3];
-        Trajectories = new Vector3[3];
-        if (primaryRoom)
-        {
-            AllCells = new RoomCell[80, 80];//instantiates all cubes
-            AllGameObjects = new GameObject[80, 80];//instantiates all cubes
-            for (int i = 0; i < 80; i++)
-            {
-                for (int j = 0; j < 80; j++)
-                {
-                    AllGameObjects[i, j] = Instantiate(LinePrefab, new Vector3(i / 2.0f, j / 2.0f, 0), Quaternion.identity, gameObject.transform);
-                    AllCells[i, j] = AllGameObjects[i, j].GetComponent<RoomCell>();
-                    AllCells[i, j].Gridlocation = new Vector2Int(i, j);                    
-                }
-            }
-            if (nextRoom != null) { 
-                Room temproom;
-                temproom = nextRoom;
-                temproom.AllCells = AllCells;
-                while (temproom.nextRoom != null)
-                {
-                    temproom = temproom.nextRoom;
-                    temproom.AllCells = AllCells;
-                }
-            }
-            GeneratePrelim();
-        }
+        Trajectories = new Vector3[3];       
         myDungeon = GetComponentInParent<WholeDungeon>();
+    }
+
+    public void DeclareToPreventErrors()
+    {
+        CaveTiles = new List<Vector3Int>();
+        LinesTiles = new List<List<Vector2Int>>();
+        OreTiles = new List<Vector4>();
     }
     void GeneratePrelim()
     {//Creates the Preliminary requirements to make those lines
@@ -112,6 +93,8 @@ public class Room : MonoBehaviour
     
     private void DrawLines()
     {//Draws lines of action
+        minBound = new Vector2Int(1, 1);
+        maxBound = new Vector2Int(78, 78);
 
         for (int i = 0; i < 3; i++)
         {
@@ -267,8 +250,8 @@ public class Room : MonoBehaviour
         }
 
         int averageEP = (deltaEP[0] + deltaEP[1] + deltaEP[2]) / 3;
-        if (averageEP < 18)
-            averageEP = 18;
+        if (averageEP < 9)
+            averageEP = 9;
         if (averageEP < largestEP / 2)
             averageEP = largestEP / 2;
         //Make sure that there is enough room to deciment all the way down, and that there is enough room to make an ending.
@@ -329,6 +312,11 @@ public class Room : MonoBehaviour
                 layerSize[4] += 1;
                 break;
         }
+        
+        for(int k =3; k > 0;k --)
+        {
+            layerSize[k] = layerSize[k] + layerSize[k + 1];
+        }
 
         int tier = 4, index = 0;
         // List<Vector2Int> UBorder, DBorder, LBorder, RBorder; //create seperate lists for each set of borders- used later on for movement of zones of depth        
@@ -338,7 +326,7 @@ public class Room : MonoBehaviour
             {//For each line
                 foreach (Vector2Int block in LinesTiles[i])
                 {//For each tile  
-                    for (int j = 0; j < layerSize[tier]; j++)
+                    for (int j = 0; j <= layerSize[tier]; j++)
                     {//start with Maxsize, 0 
 
                         Vector2Int address = new Vector2Int(layerSize[tier] - j, 0 - j);
@@ -347,14 +335,14 @@ public class Room : MonoBehaviour
                         AllCells[output.x, output.y].RaiseTo(tier, i); // Raise the first tile, which is the center of the river, just for security
                         while ((address.x* address.x) + (address.y*address.y) < (layerSize[tier]* layerSize[tier]))
                         {//Increase the y value of the relative position until the distance from the block is too large.
-                            address.y++;
+                            address.y++;                                               
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            AllCells[output.x, output.y].RaiseTo(tier, i);                     
+                            AllCells[output.x, output.y].RaiseTo(tier, i);
                         }
 
                     }
-                    for (int j = 0; j < layerSize[tier]; j++)
+                    for (int j = 0; j <= layerSize[tier]; j++)
                     {//start with -Maxsize, 0
                         Vector2Int address = new Vector2Int(j - layerSize[tier], 0 - j);
                         Vector2Int output = address + block;
@@ -362,10 +350,10 @@ public class Room : MonoBehaviour
                         AllCells[output.x, output.y].RaiseTo(tier, i);
                         while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {
-                            address.y++;
+                            address.y++;   
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            AllCells[output.x, output.y].RaiseTo(tier, i);                      
+                            AllCells[output.x, output.y].RaiseTo(tier, i);                                               
                         }
 
                     }
@@ -524,15 +512,13 @@ public class Room : MonoBehaviour
                 nextRoom.sourceDir = (destinationDir+2)%4;
                 nextRoom.Trajectories = Trajectories;
                 nextRoom.Locations = Locations;
-                nextRoom.ConvertFromExtend();
-                nextRoom.DrawLines();
-                nextRoom.LiftTiles();
-                nextRoom.AssignMonsters(incMobList);
+                nextRoom.ConvertFromExtend(incMobList);
+               
             }
         }
     }
 
-    void ConvertFromExtend()
+    public void ConvertFromExtend(List<Monster> incMobList)
     {//Turn the input'd data into something useful, and generate what we can't get.
 
         //Start off by culling those trajectories and starting positions
@@ -579,7 +565,9 @@ public class Room : MonoBehaviour
                 destinationDir = (int)Random.Range(0.0f, 2.9f);
                 break;
             }
-
+       DrawLines();
+       LiftTiles();
+       AssignMonsters(incMobList);
 
         
     }

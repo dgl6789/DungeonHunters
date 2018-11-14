@@ -113,6 +113,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &14518756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 14518757}
+  - component: {fileID: 14518758}
+  m_Layer: 0
+  m_Name: Landing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &14518757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14518756}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -40, y: -19.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1417395317}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &14518758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 14518756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0d3dc3e66751248b3745156cd633e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Trajectories: []
+  Locations: []
+  CaveTiles: []
+  HasGenerated: 0
+  NorthBranch: {fileID: 0}
+  SouthBranch: {fileID: 0}
+  EastBranch: {fileID: 0}
+  WestBranch: {fileID: 0}
+  DGcam: {fileID: 1346797667}
+  LinePrefab: {fileID: 121529466}
 --- !u!1 &108155031
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,12 +239,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -389,7 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_BlockingObjects: 3
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -489,8 +539,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsForBuy: 25
-  primaryRoom: 0
   LinePrefab: {fileID: 121529466}
+  Trajectories: []
+  Locations: []
   CaveTiles: []
   OreTiles: []
   ActiveMonsters: []
@@ -503,6 +554,7 @@ MonoBehaviour:
   nextRoom: {fileID: 0}
   previousRoom: {fileID: 737412010}
   DGcam: {fileID: 1346797667}
+  myDungeon: {fileID: 0}
 --- !u!4 &289336926
 Transform:
   m_ObjectHideFlags: 0
@@ -805,15 +857,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: -1
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -879,8 +931,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsForBuy: 10
-  primaryRoom: 0
   LinePrefab: {fileID: 121529466}
+  Trajectories: []
+  Locations: []
   CaveTiles: []
   OreTiles: []
   ActiveMonsters: []
@@ -893,6 +946,7 @@ MonoBehaviour:
   nextRoom: {fileID: 289336925}
   previousRoom: {fileID: 2126094828}
   DGcam: {fileID: 1346797667}
+  myDungeon: {fileID: 0}
 --- !u!4 &737412011
 Transform:
   m_ObjectHideFlags: 0
@@ -1072,12 +1126,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -1302,7 +1356,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomPrefab: {fileID: 2126094827}
-  activeRoom: {fileID: 2126094828}
+  activeRoom: {fileID: 0}
+  landingRoom: {fileID: 14518758}
   forTesting: 0
   forwardBack: 0
   NavigationButtons:
@@ -1337,6 +1392,7 @@ Transform:
   - {fileID: 2126094829}
   - {fileID: 737412011}
   - {fileID: 289336926}
+  - {fileID: 14518757}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1416,15 +1472,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: -1
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -1538,8 +1594,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1660,12 +1716,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -1902,15 +1958,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: -1
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -2032,7 +2088,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -2146,15 +2202,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1417395316}
-        m_MethodName: TraverseRooms
-        m_Mode: 6
+        m_MethodName: MoveRooms
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: -1
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -2220,8 +2276,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsForBuy: 18
-  primaryRoom: 1
   LinePrefab: {fileID: 121529466}
+  Trajectories: []
+  Locations: []
   CaveTiles: []
   OreTiles: []
   ActiveMonsters: []
@@ -2234,6 +2291,7 @@ MonoBehaviour:
   nextRoom: {fileID: 737412010}
   previousRoom: {fileID: 0}
   DGcam: {fileID: 1346797667}
+  myDungeon: {fileID: 0}
 --- !u!4 &2126094829
 Transform:
   m_ObjectHideFlags: 0

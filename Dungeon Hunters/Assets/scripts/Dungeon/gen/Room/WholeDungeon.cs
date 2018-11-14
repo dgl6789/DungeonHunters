@@ -12,6 +12,8 @@ public class WholeDungeon : MonoBehaviour {
     public GameObject RoomPrefab;
     public List<List<GameObject>> allRooms; // Pontentially not needed. Possibly a good idea to have though.
     public Room activeRoom;
+    public DungeonHead landingRoom;
+    bool inLandingPhase = true;
     public bool forTesting;
     public bool forwardBack;
     public Button [] NavigationButtons;
@@ -23,7 +25,11 @@ public class WholeDungeon : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         CalcDirections();
-	}
+        for (int i = 4; i < 8; i++)
+        {
+            NavigationButtons[i].gameObject.SetActive(false);
+        }
+    }
 
     private void Awake()
     {
@@ -99,81 +105,166 @@ public class WholeDungeon : MonoBehaviour {
         DrawTick();
     }
 
-    public void TraverseRooms(bool isFoward)
+    public void TraverseRooms(bool isFoward,int Dir)
     {//Code to move from room to room
         //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
         //Not sure how to do it though, probably for DOM
 
-        if (isFoward)
-        {// if we are moving forward
-            if(activeRoom.nextRoom != null)
-            {//if we have forward to move to
-                UndrawTick();                
-                activeRoom.ClearRoom();
-                activeRoom.ExtendCave(AllActiveMonsters);                
-                activeRoom = activeRoom.nextRoom;                
-                activeRoom.OnRoomSwitch(true);
-                activeRoom.PlaceMercs(true, true);
-                forwardBack = true;
+        if (inLandingPhase) {            
+            landingRoom.ClearRoom();
+            inLandingPhase = false;
+
+            switch (Dir)
+            {                
+                case 0:
+                    if(landingRoom.NorthBranch != null)
+                    {
+                        activeRoom = landingRoom.NorthBranch;
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        landingRoom.ExtendCave(AllActiveMonsters, 0,Temp);
+                         activeRoom = landingRoom.NorthBranch;
+                    }
+                    break;
+                case 1:
+                    if (landingRoom.EastBranch != null)
+                    {
+                        activeRoom = landingRoom.EastBranch;
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        landingRoom.ExtendCave(AllActiveMonsters, 1, Temp);
+                        activeRoom = landingRoom.EastBranch;
+                    }
+                    break;
+                case 2:
+                    if (landingRoom.SouthBranch != null)
+                    {
+                        activeRoom = landingRoom.SouthBranch;
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        landingRoom.ExtendCave(AllActiveMonsters, 2, Temp);
+                        activeRoom = landingRoom.SouthBranch;
+                    }
+                    break;
+                case 3:
+                    if (landingRoom.WestBranch != null)
+                    {
+                        activeRoom = landingRoom.WestBranch;
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        landingRoom.ExtendCave(AllActiveMonsters, 3, Temp);
+                        activeRoom = landingRoom.WestBranch;
+                    }
+                    break;
+            }
+            activeRoom.OnRoomSwitch(true);
+            activeRoom.PlaceMercs(true, true);
+            forwardBack = true;
+
+        }
+        else
+        {
+            if (isFoward)
+            {// if we are moving forward
+                if (activeRoom.nextRoom != null)
+                {//if we have forward to move to
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom.ExtendCave(AllActiveMonsters);
+                    activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
+                }
+            }
+            else
+            {
+                if (activeRoom.previousRoom != null)
+                {//if we have forward to move to
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom = activeRoom.previousRoom;
+                    activeRoom.RebuildCave();
+                    activeRoom.OnRoomSwitch(false);
+                    activeRoom.PlaceMercs(false, true);
+                    forwardBack = false;
+
+                }
+                else {
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom = null;
+                    landingRoom.RebuildCave();
+                    inLandingPhase = true;
+                    forwardBack = false;
+                }
             }
         }
-        else{
-            if (activeRoom.previousRoom != null)
-            {//if we have forward to move to
-                UndrawTick();
-                activeRoom.ClearRoom();                
-                activeRoom = activeRoom.previousRoom;
-                activeRoom.RebuildCave();
-                activeRoom.OnRoomSwitch(false);
-                activeRoom.PlaceMercs(false, true);
-                forwardBack = false;
-
-            }
-        }
-
+       
         CalcDirections();
-
     }
 
     void CalcDirections()
     {
-        for (int i = 0; i < 8; i++)
+        if (inLandingPhase)
         {
-            NavigationButtons[i].gameObject.SetActive(false);
+            for (int i = 4; i < 8; i++)
+            {
+                NavigationButtons[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                NavigationButtons[i].gameObject.SetActive(true);
+            }
         }
-        switch (activeRoom.sourceDir)
+        else
         {
-            case 0:
-                NavigationButtons[4].gameObject.SetActive(true);
-                break;
-            case 1:
-                NavigationButtons[5].gameObject.SetActive(true);
-                break;
-            case 2:
-                NavigationButtons[6].gameObject.SetActive(true);
-                break;
-            case 3:
-                NavigationButtons[7].gameObject.SetActive(true);
-                break;
-
-        }
-        if (activeRoom.ActiveMonsters.Count <= 0)
-        {
-            switch (activeRoom.destinationDir)
+            for (int i = 0; i < 8; i++)
+            {
+                NavigationButtons[i].gameObject.SetActive(false);
+            }
+            switch (activeRoom.sourceDir)
             {
                 case 0:
-                    NavigationButtons[0].gameObject.SetActive(true);
+                    NavigationButtons[4].gameObject.SetActive(true);
                     break;
                 case 1:
-                    NavigationButtons[1].gameObject.SetActive(true);
+                    NavigationButtons[5].gameObject.SetActive(true);
                     break;
                 case 2:
-                    NavigationButtons[2].gameObject.SetActive(true);
+                    NavigationButtons[6].gameObject.SetActive(true);
                     break;
                 case 3:
-                    NavigationButtons[3].gameObject.SetActive(true);
+                    NavigationButtons[7].gameObject.SetActive(true);
                     break;
 
+            }
+            if (activeRoom.ActiveMonsters.Count <= 0)
+            {
+                switch (activeRoom.destinationDir)
+                {
+                    case 0:
+                        NavigationButtons[0].gameObject.SetActive(true);
+                        break;
+                    case 1:
+                        NavigationButtons[1].gameObject.SetActive(true);
+                        break;
+                    case 2:
+                        NavigationButtons[2].gameObject.SetActive(true);
+                        break;
+                    case 3:
+                        NavigationButtons[3].gameObject.SetActive(true);
+                        break;
+
+                }
             }
         }
     }
@@ -443,6 +534,19 @@ public class WholeDungeon : MonoBehaviour {
             {
                 MobTick(true);
             }
+        }
+
+    }
+
+
+    public void MoveRooms( int Index) {//Just a linkup for the scene editor, which decided to not be co-operative.
+        if(Index < 0)
+        {
+            TraverseRooms(false, Mathf.Abs(Index));
+        }
+        else
+        {
+            TraverseRooms(true, Index);
         }
 
     }
