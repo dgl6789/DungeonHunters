@@ -36,8 +36,6 @@ namespace App.UI {
         public TextMeshProUGUI SelectTile;
         public TextMeshProUGUI NotificationBadge;
         public TextMeshProUGUI NotificationCount;
-<<<<<<< HEAD
-=======
 
         public TextMeshProUGUI MercenaryName;
         public TextMeshProUGUI MercenaryRank;
@@ -48,7 +46,7 @@ namespace App.UI {
 
         public Button SetMissionButton;
         public Button FocusOnMercButton;
->>>>>>> bfbb8475ecec48e281a36d7b247ec358bf340dfb
+        public Button AdvanceDayButton;
 
         public void Awake() {
             if (Instance == null) Instance = this;

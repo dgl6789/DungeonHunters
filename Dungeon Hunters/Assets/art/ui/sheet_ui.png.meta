@@ -20,6 +20,8 @@ TextureImporter:
     21300030: sheet_ui_15
     21300032: sheet_ui_16
     21300034: sheet_ui_17
+    21300036: sheet_ui_18
+    21300038: sheet_ui_19
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -468,6 +470,46 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7b3a5fc905a754a4fab27224b31b9068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_18
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 3
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 4, z: 4, w: 4}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 747f8cd1a3df7c647b00407fe0a50306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_19
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 4
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a918186e0c3e4dc49a457dc204fddbc0
       vertices: []
       indices: 
       edges: []

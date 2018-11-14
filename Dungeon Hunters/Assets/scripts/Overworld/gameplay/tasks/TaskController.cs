@@ -32,6 +32,11 @@ namespace App {
 
         }
 
+        public void RefreshMercenaryLocations() {
+            // Set the mercenary's location one days' travel closer to their goal.
+            // A day's travel is one hex divided by the rough terrain factor for that tile, which depends on its tile type.
+        }
+
         public void ClickSetMissionButton() {
             StartCoroutine(SetMission());
         }
@@ -127,22 +132,17 @@ namespace App {
             // Pop up the task type selection dialog
             // Perform logic here for choosing options to show based on tile type
             DialogManager.Instance.ShowDialog(DialogType.TASK_SELECT);
-
-            bool changedButtons = false;
             
             int it = 1;
-            if(!changedButtons) {
+            bool didButtonCheck = false;
+            if (!didButtonCheck) {
                 foreach (RectTransform r in TaskTray.transform) {
                     if (r == TaskTray) continue;
 
-                    Debug.Log(0);
-
-                    r.GetComponent<Button>().interactable = IsValidTaskForTile((TaskType)it, tile);
+                    r.gameObject.GetComponent<Button>().interactable = IsValidTaskForTile((TaskType)it, tile);
 
                     it++;
                 }
-
-                changedButtons = true;
             }
 
             // wait for a task to be selected

@@ -107,6 +107,8 @@ namespace App {
                 rect.anchoredPosition = new Vector2(rect.localPosition.x,
                     (NotificationContainer.GetComponent<RectTransform>().rect.yMax - NotificationObject.GetComponent<RectTransform>().rect.height / 2) - i * (rect.rect.height + 3));
             }
+
+            AppUI.Instance.AdvanceDayButton.interactable = !HasRequiredNotifications;
         }
 
         /// <summary>
