@@ -14,7 +14,7 @@ public class DungeonHead : MonoBehaviour
     private Vector2Int minBound, maxBound;          //useless post-gen
     public Room NorthBranch, SouthBranch, EastBranch, WestBranch;
     [SerializeField] DungeonCamera DGcam;
-    WholeDungeon myDungeon;
+    [SerializeField] WholeDungeon myDungeon;
     public GameObject LinePrefab;
 
 
@@ -193,8 +193,8 @@ public class DungeonHead : MonoBehaviour
             case 0:
                 NorthBranch = incRoom;
                 NorthBranch.sourceDir = 2;
-                NorthBranch.Trajectories = new Vector3[] { Trajectories[0], Trajectories[1], Trajectories[2] };
-                NorthBranch.Locations = Locations;
+                NorthBranch.Trajectories = new Vector3[] { Trajectories[3], Trajectories[4], Trajectories[5] };
+                NorthBranch.Locations = new Vector2[] { Locations[3], Locations[4], Locations[5] };
                 NorthBranch.myDungeon = myDungeon;
                 NorthBranch.AllCells = AllCells;
                 NorthBranch.DGcam = DGcam;              
@@ -205,8 +205,8 @@ public class DungeonHead : MonoBehaviour
             case 1:
                 EastBranch = incRoom;
                 EastBranch.sourceDir = 3;
-                EastBranch.Trajectories = new Vector3[] { Trajectories[3], Trajectories[4], Trajectories[5] };
-                EastBranch.Locations = Locations;
+                EastBranch.Trajectories = new Vector3[] { Trajectories[0], Trajectories[1], Trajectories[2] };
+                EastBranch.Locations = new Vector2[] { Locations[0], Locations[1], Locations[2] };
                 EastBranch.myDungeon = myDungeon;
                 EastBranch.AllCells = AllCells;
                 EastBranch.DGcam = DGcam;
@@ -217,8 +217,8 @@ public class DungeonHead : MonoBehaviour
             case 2:
                 SouthBranch = incRoom;
                 SouthBranch.sourceDir = 0;
-                SouthBranch.Trajectories = new Vector3[] { -Trajectories[0], -Trajectories[1], -Trajectories[2] };
-                SouthBranch.Locations = Locations;
+                SouthBranch.Trajectories = new Vector3[] { -Trajectories[3], -Trajectories[4], -Trajectories[5] };
+                SouthBranch.Locations = new Vector2[] { Locations[3], Locations[4], Locations[5] };
                 SouthBranch.myDungeon = myDungeon;
                 SouthBranch.AllCells = AllCells;
                 SouthBranch.DGcam = DGcam;                
@@ -230,7 +230,7 @@ public class DungeonHead : MonoBehaviour
                 WestBranch = incRoom;
                 WestBranch.sourceDir = 1;
                 WestBranch.Trajectories = new Vector3[] { -Trajectories[0], -Trajectories[1], -Trajectories[2] };
-                WestBranch.Locations = Locations;
+                WestBranch.Locations = new Vector2[] { Locations[0], Locations[1], Locations[2] };
                 WestBranch.myDungeon = myDungeon;
                 WestBranch.AllCells = AllCells;
                 WestBranch.DGcam = DGcam;                

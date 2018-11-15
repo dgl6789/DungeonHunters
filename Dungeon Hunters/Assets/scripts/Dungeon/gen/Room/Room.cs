@@ -235,6 +235,7 @@ public class Room : MonoBehaviour
         {//main lines
             foreach (Vector2Int tile in LinesTiles[i])
             {
+                tile.Clamp(minBound, maxBound);
                 AllCells[tile.x, tile.y].RaiseTo(5, i);
             }
             endpoints[i] = LinesTiles[i][(LinesTiles[i].Count - 1)];

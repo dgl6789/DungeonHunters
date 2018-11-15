@@ -120,10 +120,12 @@ public class WholeDungeon : MonoBehaviour {
                     if(landingRoom.NorthBranch != null)
                     {
                         activeRoom = landingRoom.NorthBranch;
+                        activeRoom.RebuildCave();
                     }
                     else
-                    {
+                    {                        
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
                         landingRoom.ExtendCave(AllActiveMonsters, 0,Temp);
                          activeRoom = landingRoom.NorthBranch;
                     }
@@ -132,10 +134,12 @@ public class WholeDungeon : MonoBehaviour {
                     if (landingRoom.EastBranch != null)
                     {
                         activeRoom = landingRoom.EastBranch;
+                        activeRoom.RebuildCave();
                     }
                     else
                     {
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
                         landingRoom.ExtendCave(AllActiveMonsters, 1, Temp);
                         activeRoom = landingRoom.EastBranch;
                     }
@@ -144,10 +148,12 @@ public class WholeDungeon : MonoBehaviour {
                     if (landingRoom.SouthBranch != null)
                     {
                         activeRoom = landingRoom.SouthBranch;
+                        activeRoom.RebuildCave();
                     }
                     else
                     {
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
                         landingRoom.ExtendCave(AllActiveMonsters, 2, Temp);
                         activeRoom = landingRoom.SouthBranch;
                     }
@@ -156,10 +162,12 @@ public class WholeDungeon : MonoBehaviour {
                     if (landingRoom.WestBranch != null)
                     {
                         activeRoom = landingRoom.WestBranch;
+                        activeRoom.RebuildCave();
                     }
                     else
                     {
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
                         landingRoom.ExtendCave(AllActiveMonsters, 3, Temp);
                         activeRoom = landingRoom.WestBranch;
                     }
