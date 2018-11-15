@@ -4,6 +4,7 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     public int pointsForBuy;                        //used in generation.   
+    public int CounterToEnd;
     public GameObject LinePrefab;                   
     public Vector3[] Trajectories;                  //Useful post-gen
     public Vector2[] Locations;                     //useless post-gen
@@ -27,16 +28,15 @@ public class Room : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        LinesTiles = new List<List<Vector2Int>>();
-        minBound = new Vector2Int(1, 1);
-        maxBound = new Vector2Int(78, 78);
-        Locations = new Vector2[3];
-        Trajectories = new Vector3[3];       
-        myDungeon = GetComponentInParent<WholeDungeon>();
+       
     }
 
     public void DeclareToPreventErrors()
-    {
+    { LinesTiles = new List<List<Vector2Int>>();
+        minBound = new Vector2Int(1, 1);
+        maxBound = new Vector2Int(78, 78);
+        Locations = new Vector2[3];
+        Trajectories = new Vector3[3];   
         CaveTiles = new List<Vector3Int>();
         LinesTiles = new List<List<Vector2Int>>();
         OreTiles = new List<Vector4>();
@@ -510,13 +510,17 @@ public class Room : MonoBehaviour
             }
             else
             {//Otherwise, feed it in its pre-reqs, and get started;
+                nextRoom.previousRoom = this;
                 nextRoom.sourceDir = (destinationDir+2)%4;
                 nextRoom.Trajectories = Trajectories;
                 nextRoom.Locations = Locations;
+                nextRoom.myDungeon = myDungeon;
+                nextRoom.AllCells = AllCells;
+                nextRoom.DGcam = DGcam;
                 nextRoom.ConvertFromExtend(incMobList);
                
             }
-        }
+        }        
     }
 
     public void ConvertFromExtend(List<Monster> incMobList)

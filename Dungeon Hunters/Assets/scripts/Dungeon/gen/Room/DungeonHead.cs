@@ -192,49 +192,49 @@ public class DungeonHead : MonoBehaviour
         {
             case 0:
                 NorthBranch = incRoom;
+                NorthBranch.DeclareToPreventErrors();
                 NorthBranch.sourceDir = 2;
                 NorthBranch.Trajectories = new Vector3[] { Trajectories[3], Trajectories[4], Trajectories[5] };
                 NorthBranch.Locations = new Vector2[] { Locations[3], Locations[4], Locations[5] };
                 NorthBranch.myDungeon = myDungeon;
                 NorthBranch.AllCells = AllCells;
-                NorthBranch.DGcam = DGcam;              
-                NorthBranch.DeclareToPreventErrors();
+                NorthBranch.DGcam = DGcam;      
                 NorthBranch.ConvertFromExtend(incMobList);
                 NorthBranch.AssignMonsters(incMobList);
                 break;
             case 1:
                 EastBranch = incRoom;
+                EastBranch.DeclareToPreventErrors();
                 EastBranch.sourceDir = 3;
                 EastBranch.Trajectories = new Vector3[] { Trajectories[0], Trajectories[1], Trajectories[2] };
                 EastBranch.Locations = new Vector2[] { Locations[0], Locations[1], Locations[2] };
                 EastBranch.myDungeon = myDungeon;
                 EastBranch.AllCells = AllCells;
                 EastBranch.DGcam = DGcam;
-                EastBranch.DeclareToPreventErrors();
                 EastBranch.ConvertFromExtend(incMobList);
                 EastBranch.AssignMonsters(incMobList);
                 break;
             case 2:
                 SouthBranch = incRoom;
-                SouthBranch.sourceDir = 0;
+                SouthBranch.sourceDir = 0;  
+                SouthBranch.DeclareToPreventErrors();
                 SouthBranch.Trajectories = new Vector3[] { -Trajectories[3], -Trajectories[4], -Trajectories[5] };
                 SouthBranch.Locations = new Vector2[] { Locations[3], Locations[4], Locations[5] };
                 SouthBranch.myDungeon = myDungeon;
                 SouthBranch.AllCells = AllCells;
-                SouthBranch.DGcam = DGcam;                
-                SouthBranch.DeclareToPreventErrors();
+                SouthBranch.DGcam = DGcam;              
                 SouthBranch.ConvertFromExtend(incMobList);
                 SouthBranch.AssignMonsters(incMobList);
                 break;
             case 3:
-                WestBranch = incRoom;
+                WestBranch = incRoom;    
+                WestBranch.DeclareToPreventErrors();
                 WestBranch.sourceDir = 1;
                 WestBranch.Trajectories = new Vector3[] { -Trajectories[0], -Trajectories[1], -Trajectories[2] };
                 WestBranch.Locations = new Vector2[] { Locations[0], Locations[1], Locations[2] };
                 WestBranch.myDungeon = myDungeon;
                 WestBranch.AllCells = AllCells;
-                WestBranch.DGcam = DGcam;                
-                WestBranch.DeclareToPreventErrors();
+                WestBranch.DGcam = DGcam;            
                 WestBranch.ConvertFromExtend(incMobList);
                 WestBranch.AssignMonsters(incMobList);
                 break;
