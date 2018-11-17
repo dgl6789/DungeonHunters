@@ -500,7 +500,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    public void ExtendCave(List<Monster> incMobList)
+    public void ExtendCave(List<Monster> incMobList, bool isLastCave)
     {//Move to the next cave        
         if(nextRoom != null)
         {//You know, if we're allowed to
@@ -517,7 +517,14 @@ public class Room : MonoBehaviour
                 nextRoom.myDungeon = myDungeon;
                 nextRoom.AllCells = AllCells;
                 nextRoom.DGcam = DGcam;
-                nextRoom.ConvertFromExtend(incMobList);
+                if (!isLastCave)
+                {
+                    nextRoom.ConvertFromExtend(incMobList);
+                }
+                else
+                {
+                    nextRoom.ConvertFromExtendForDeadEnd(incMobList);
+                }
                
             }
         }        
@@ -575,6 +582,59 @@ public class Room : MonoBehaviour
        AssignMonsters(incMobList);
 
         
+    }
+    public void ConvertFromExtendForDeadEnd(List<Monster> incMobList)
+    {//Turn the input'd data into something useful, and generate what we can't get.
+
+        //Start off by culling those trajectories and starting positions
+        for (int i = 0; i < 3; i++)
+        {
+            Trajectories[i].x = Mathf.Clamp(Trajectories[i].x, -5 - i, 5 + i);
+            Trajectories[i].y = Mathf.Clamp(Trajectories[i].y, -5 - i, 5 + i);
+            List<Vector2Int> v2ITemp = new List<Vector2Int>();
+            LinesTiles.Add(v2ITemp);
+        }
+        switch (sourceDir)
+        {
+            case 0://up 
+                for (int i = 0; i < 3; i++)
+                {
+                    Locations[i].y = 78;
+                }
+                destinationDir = 2;
+                break;
+            case 1://from right             
+                    destinationDir = 3;                
+                for (int i = 0; i < 3; i++)
+                {
+                    Locations[i].x = 78;
+                }
+                break;
+            case 2://down
+                destinationDir = 0;
+                for (int i = 0; i < 3; i++)
+                {
+                    Locations[i].y = 1;
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 3; i++)
+                {
+                    Locations[i].x = 1;
+                }
+                destinationDir = 1;
+                break;
+        }
+        DrawLines();
+        foreach(List<Vector2Int> line in LinesTiles)
+        {//this just prematurely ends the process of drawing lines.
+            line.RemoveRange((line.Count / 2), line.Count / 2);
+            line.RemoveAt(line.Count-1);
+        }
+        LiftTiles();
+        AssignMonsters(incMobList);
+
+
     }
 
     public void OnRoomSwitch(bool isMovingForward)

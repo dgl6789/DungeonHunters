@@ -116,7 +116,7 @@ public class WholeDungeon : MonoBehaviour {
 
             switch (Dir)
             {                
-                case 0:
+                case 0://Navigate to the proper room if it exists, if it doesn't, create it then move to it.
                     if(landingRoom.NorthBranch != null)
                     {
                         activeRoom = landingRoom.NorthBranch;
@@ -126,7 +126,7 @@ public class WholeDungeon : MonoBehaviour {
                     {                        
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
-                        Temp.CounterToEnd = Random.Range(5, 20);
+                        Temp.CounterToEnd = Random.Range(3,3);
                         landingRoom.ExtendCave(AllActiveMonsters, 0,Temp); 
                         activeRoom = landingRoom.NorthBranch;
                     }
@@ -141,7 +141,7 @@ public class WholeDungeon : MonoBehaviour {
                     {
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
-                        Temp.CounterToEnd = Random.Range(5, 20);
+                        Temp.CounterToEnd = Random.Range(3,3);
                         landingRoom.ExtendCave(AllActiveMonsters, 1, Temp);
                         activeRoom = landingRoom.EastBranch;
                     }
@@ -156,7 +156,7 @@ public class WholeDungeon : MonoBehaviour {
                     {
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
-                        Temp.CounterToEnd = Random.Range(5, 20);
+                        Temp.CounterToEnd = Random.Range(3,3);
                         landingRoom.ExtendCave(AllActiveMonsters, 2, Temp);
                         activeRoom = landingRoom.SouthBranch;
                     }
@@ -171,7 +171,7 @@ public class WholeDungeon : MonoBehaviour {
                     {
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
-                        Temp.CounterToEnd = Random.Range(5, 20);
+                        Temp.CounterToEnd = Random.Range(3,3);
                         landingRoom.ExtendCave(AllActiveMonsters, 3, Temp);
                         activeRoom = landingRoom.WestBranch;
                     }
@@ -189,23 +189,51 @@ public class WholeDungeon : MonoBehaviour {
                 UndrawTick();
                 activeRoom.ClearRoom();
                 if (activeRoom.nextRoom == null && activeRoom.CounterToEnd > 1)
-                {
+                {//Regular forward room, new
                     Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                     Temp.transform.SetParent(gameObject.transform);
                     Temp.CounterToEnd = activeRoom.CounterToEnd - 1;
                     Temp.DeclareToPreventErrors();
                     activeRoom.nextRoom = Temp;
+                    activeRoom.ExtendCave(AllActiveMonsters, false);
+                    activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
                 }
-                activeRoom.ExtendCave(AllActiveMonsters);
-                activeRoom = activeRoom.nextRoom;
-                activeRoom.OnRoomSwitch(true);
-                activeRoom.PlaceMercs(true, true);
-                forwardBack = true;
+                else if (activeRoom.nextRoom == null && activeRoom.CounterToEnd == 1)
+                {//last room in a branch
+                    Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                    Temp.transform.SetParent(gameObject.transform);
+                    Temp.CounterToEnd = activeRoom.CounterToEnd - 1;
+                    Temp.DeclareToPreventErrors();
+                    activeRoom.nextRoom = Temp;
+                    activeRoom.ExtendCave(AllActiveMonsters, true); activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
+                }
+                else if (activeRoom.nextRoom != null)
+                {//room already generated
+                    activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
+                }
+                else
+                {//retrun to landing after clearing final room.
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom = null;
+                    landingRoom.RebuildCave();
+                    inLandingPhase = true;
+                    forwardBack = false;
+                }
             }
             else
             {
                 if (activeRoom.previousRoom != null)
-                {//if we have forward to move to
+                {//if we have  backward to move to.
                     UndrawTick();
                     activeRoom.ClearRoom();
                     activeRoom = activeRoom.previousRoom;
@@ -215,7 +243,7 @@ public class WholeDungeon : MonoBehaviour {
                     forwardBack = false;
 
                 }
-                else {
+                else {//if we are returning to the landing zone, do so.
                     UndrawTick();
                     activeRoom.ClearRoom();
                     activeRoom = null;
