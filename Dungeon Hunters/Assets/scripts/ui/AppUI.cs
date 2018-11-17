@@ -18,6 +18,8 @@ namespace App.UI {
         [HideInInspector] public int lastPageOpened;
         
         [SerializeField] RectTransform LeftMenuPanel;
+        [SerializeField] RectTransform MercenaryInventoryPanel;
+        [SerializeField] RectTransform StrongholdInventoryPanel;
 
         [HideInInspector] public bool leftPanelOpen;
 
@@ -48,6 +50,18 @@ namespace App.UI {
         public Button FocusOnMercButton;
         public Button AdvanceDayButton;
 
+        [Header("Animators")]
+
+        [SerializeField] Animator TopInventoryPanel;
+        [SerializeField] Animator BottomInventoryPanel;
+
+        bool topInventoryOpen, bottomInventoryOpen;
+        MercenaryData lastLoadedMercenaryInventory;
+
+        [Header("Sprites")]
+
+        [SerializeField] Sprite[] inventoryButtonSprites;
+
         public void Awake() {
             if (Instance == null) Instance = this;
             else if (Instance != this) Destroy(gameObject);
@@ -74,6 +88,15 @@ namespace App.UI {
                 leftPanelOpen = !leftPanelOpen;
                 LeftMenuPanel.GetComponent<Animator>().SetBool("Open", leftPanelOpen);
             }
+
+            if (!leftPanelOpen)
+            {
+                BottomInventoryPanel.SetBool("Open", false);
+                TopInventoryPanel.SetBool("Open", false);
+            } else {
+                BottomInventoryPanel.SetBool("Open", bottomInventoryOpen);
+                TopInventoryPanel.SetBool("Open", topInventoryOpen);
+            }
         }
 
         public void ToggleSelectTileText(string mercenaryName = "") {
@@ -86,9 +109,20 @@ namespace App.UI {
         }
 
         public void SetSelectedMercenary(MercenaryData pMercenary) {
-            selectedMercenary = pMercenary;
+            if (selectedMercenary != pMercenary)
+            {
+                selectedMercenary = pMercenary;
 
-            UpdateMercInteractionButton(pMercenary);
+                UpdateMercInteractionButton(pMercenary);
+
+                if (bottomInventoryOpen)
+                {
+                    BottomInventoryPanel.SetTrigger("SwapSelected");
+
+                    // Load the selected mercenary's data into the inventory panel while it's behind the left panel ui
+                    Invoke("LoadMercenaryInventory", 0.075f);
+                }
+            }
         }
 
         public void UpdateMercInteractionButton(MercenaryData pMercenary) {
@@ -108,8 +142,40 @@ namespace App.UI {
             TileSelector.Instance.SetTarget(SelectedMercenary.Location);
         }
 
+        public void ClickShowStrongholdInventoryButton()
+        {
+            topInventoryOpen = !topInventoryOpen;
+            TopInventoryPanel.SetBool("Open", topInventoryOpen);
+
+            if(topInventoryOpen) LoadStrongholdInventory();
+        }
+
+        public void ClickShowMercenaryInventoryButton() {
+            bottomInventoryOpen = !bottomInventoryOpen;
+            if (bottomInventoryOpen)
+            {
+                    BottomInventoryPanel.SetTrigger("SwapSelected");
+
+                    // Load the selected mercenary's data into the inventory panel while it's behind the left panel ui
+                    Invoke("LoadMercenaryInventory", 0.075f);
+            }
+
+            // Toggle the inventory panel's visibility
+            BottomInventoryPanel.SetBool("Open", bottomInventoryOpen);
+        }
+
+        public void LoadMercenaryInventory() {
+            Debug.LogFormat("Loaded {0}'s inventory.", selectedMercenary.Name);
+        }
+
+        public void LoadStrongholdInventory()
+        {
+            Debug.Log("Loaded the Stronghold inventory.");
+        }
+
         public void SwitchPage(int index) {
-            if(leftPanelOpen && index == lastPageOpened) {
+
+            if (leftPanelOpen && index == lastPageOpened) {
                 ToggleLeftMenu();
                 return;
             }
