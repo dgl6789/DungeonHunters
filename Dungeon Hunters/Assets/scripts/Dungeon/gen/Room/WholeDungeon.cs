@@ -9,6 +9,7 @@ using Dungeon;
 public class WholeDungeon : MonoBehaviour {
     enum DisplayState {None, Attack, Walk, Stance, Data }
     private DisplayState myDisplayState = 0;
+    public int foodLeft;
     public GameObject RoomPrefab;
     public List<List<GameObject>> allRooms; // Pontentially not needed. Possibly a good idea to have though.
     public Room activeRoom;
@@ -17,6 +18,8 @@ public class WholeDungeon : MonoBehaviour {
     public bool forTesting;
     public bool forwardBack;
     public Button [] NavigationButtons;
+    public Button[] RoomEndButtons;
+    public Text FoodAmount;
     public List<Mercenary> AllActiveMercenaries;
     public List<Monster> AllActiveMonsters;
     public int ActiveMerc;
@@ -261,6 +264,12 @@ public class WholeDungeon : MonoBehaviour {
     {
         if (inLandingPhase)
         {
+            foreach (Button Butt in RoomEndButtons)
+            {
+                Butt.gameObject.SetActive(false);
+                FoodAmount.text = foodLeft.ToString();
+                FoodAmount.gameObject.SetActive(false);
+            }
             for (int i = 4; i < 8; i++)
             {
                 NavigationButtons[i].gameObject.SetActive(false);
@@ -275,40 +284,23 @@ public class WholeDungeon : MonoBehaviour {
             for (int i = 0; i < 8; i++)
             {
                 NavigationButtons[i].gameObject.SetActive(false);
-            }
-            switch (activeRoom.sourceDir)
-            {
-                case 0:
-                    NavigationButtons[4].gameObject.SetActive(true);
-                    break;
-                case 1:
-                    NavigationButtons[5].gameObject.SetActive(true);
-                    break;
-                case 2:
-                    NavigationButtons[6].gameObject.SetActive(true);
-                    break;
-                case 3:
-                    NavigationButtons[7].gameObject.SetActive(true);
-                    break;
-
-            }
+            }            
             if (activeRoom.ActiveMonsters.Count <= 0)
             {
-                switch (activeRoom.destinationDir)
+                foreach(Button Butt in RoomEndButtons)
                 {
-                    case 0:
-                        NavigationButtons[0].gameObject.SetActive(true);
-                        break;
-                    case 1:
-                        NavigationButtons[1].gameObject.SetActive(true);
-                        break;
-                    case 2:
-                        NavigationButtons[2].gameObject.SetActive(true);
-                        break;
-                    case 3:
-                        NavigationButtons[3].gameObject.SetActive(true);
-                        break;
-
+                    Butt.gameObject.SetActive(true);
+                    FoodAmount.text = foodLeft.ToString();
+                    FoodAmount.gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                foreach (Button Butt in RoomEndButtons)
+                {
+                    Butt.gameObject.SetActive(false);
+                    FoodAmount.text = foodLeft.ToString();
+                    FoodAmount.gameObject.SetActive(false);
                 }
             }
         }
@@ -583,7 +575,6 @@ public class WholeDungeon : MonoBehaviour {
 
     }
 
-
     public void MoveRooms( int Index) {//Just a linkup for the scene editor, which decided to not be co-operative.
         if(Index < 0)
         {
@@ -594,5 +585,27 @@ public class WholeDungeon : MonoBehaviour {
             TraverseRooms(true, Index);
         }
 
+    }
+
+    public void LootAndLeave()
+    {
+        Debug.Log("returning to the Fortress, Loot in hand.");
+        foreach (Button Butt in RoomEndButtons)
+        {
+            Butt.gameObject.SetActive(false);
+            FoodAmount.text = foodLeft.ToString();
+            FoodAmount.gameObject.SetActive(false);
+        }
+    }
+
+    public void CampPhase()
+    {
+        Debug.Log("Entering Camp Phase");
+        foreach (Button Butt in RoomEndButtons)
+        {
+            Butt.gameObject.SetActive(false);
+            FoodAmount.text = foodLeft.ToString();
+            FoodAmount.gameObject.SetActive(false);
+        }
     }
 }

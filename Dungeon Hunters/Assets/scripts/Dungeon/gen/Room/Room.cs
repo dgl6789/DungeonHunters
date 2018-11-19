@@ -517,6 +517,7 @@ public class Room : MonoBehaviour
                 nextRoom.myDungeon = myDungeon;
                 nextRoom.AllCells = AllCells;
                 nextRoom.DGcam = DGcam;
+                nextRoom.pointsForBuy = (int)((pointsForBuy + 1) * 1.25f);
                 if (!isLastCave)
                 {
                     nextRoom.ConvertFromExtend(incMobList);
@@ -954,8 +955,7 @@ public class Room : MonoBehaviour
             myDungeon.MobTick(false);
             int minDistance = 160, mercIndex = 0, index=0;
             int Xdiff=0, Ydiff=0;
-            Vector2Int destination;
-            bool moved= false;
+            Vector2Int destination;            
             foreach(Mercenary merc in incMercs)
             {//go through all the mercs, if they are alive, see if they are the closest. if they are the closest, set them as 
                 if(merc.Health > 0)
