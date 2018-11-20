@@ -602,15 +602,21 @@ public class WholeDungeon : MonoBehaviour {
     {
         Debug.Log("Entering Camp Phase");
         foreach (Button Butt in RoomEndButtons)
-        {
+        {//Disable previous set of buttons
             Butt.gameObject.SetActive(false);
             foodDisplay.text = foodLeft.ToString();            
-        }//Disable previous set of buttons
-        for (int i=0; i < AllActiveMercenaries.Count; i++) {
+        }
+        Text[] Stats = new Text[3];
+        for (int i=0; i < AllActiveMercenaries.Count; i++)
+        {//Enable new set of buttons, based on number of mercs active. (or alive) 
+
             CampButtons[i].gameObject.SetActive(true);
+            Stats = CampButtons[i].GetComponentsInChildren<Text>();
+            Stats[0].text = (AllActiveMercenaries[i].Health + "/" + AllActiveMercenaries[i].MaxHealth);
+            Stats[1].text = (AllActiveMercenaries[i].Stamina + "/" + AllActiveMercenaries[i].MaxStamina);
+            Stats[2].text = (AllActiveMercenaries[i].Morale + "/" + AllActiveMercenaries[i].MaxMorale);
 
-        }//Enable new set of buttons, based on number of mercs active. (or alive) 
-
+        }
 
 
     }
@@ -628,8 +634,9 @@ public class WholeDungeon : MonoBehaviour {
     {
         foodLeft -= AllActiveMercenaries.Count;
         foodDisplay.text = foodLeft.ToString();        
-        AllActiveMercenaries[index].Stamina -= 10;
-        foreach(Mercenary merc in AllActiveMercenaries)
+        AllActiveMercenaries[index].Stamina -= 10;//reduce stamina for guard merc
+        Text[] Stats = new Text[3];
+        foreach (Mercenary merc in AllActiveMercenaries)//Increase resting stats for all resting mercs, and the guard merc.
         {
             merc.Health += merc.MaxHealth / 10;          
             merc.Stamina += 5;          
@@ -637,9 +644,18 @@ public class WholeDungeon : MonoBehaviour {
 
             merc.Health = Mathf.Min(merc.Health, merc.MaxHealth);
             merc.Stamina = Mathf.Min(merc.Stamina, merc.MaxStamina);
-            merc.Morale = Mathf.Min(merc.Morale, merc.MaxHealth);
+            merc.Morale = Mathf.Min(merc.Morale, merc.MaxMorale);
         }
-        if(foodLeft < AllActiveMercenaries.Count)
+        for (int i = 0; i < AllActiveMercenaries.Count; i++)        {//Enable new set of buttons, based on number of mercs active. (or alive) 
+
+          
+            Stats = CampButtons[i].GetComponentsInChildren<Text>();
+            Stats[0].text = (AllActiveMercenaries[i].Health + "/" + AllActiveMercenaries[i].MaxHealth);
+            Stats[1].text = (AllActiveMercenaries[i].Stamina + "/" + AllActiveMercenaries[i].MaxStamina);
+            Stats[2].text = (AllActiveMercenaries[i].Morale + "/" + AllActiveMercenaries[i].MaxMorale);
+
+        }
+        if (foodLeft < AllActiveMercenaries.Count)
         {
             LeaveCampPhase();
             MoveRooms(1);            
