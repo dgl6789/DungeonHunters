@@ -291,7 +291,7 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     Butt.gameObject.SetActive(true);
                     foodDisplay.text = foodLeft.ToString();
-                    foodDisplay.gameObject.SetActive(true);
+                    
                 }
             }
             else
@@ -300,7 +300,7 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     Butt.gameObject.SetActive(false);
                     foodDisplay.text = foodLeft.ToString();
-                    foodDisplay.gameObject.SetActive(false);
+                    
                 }
             }
         }
@@ -594,7 +594,7 @@ public class WholeDungeon : MonoBehaviour {
         {
             Butt.gameObject.SetActive(false);
             foodDisplay.text = foodLeft.ToString();
-            foodDisplay.gameObject.SetActive(false);
+            
         }
     }
 
@@ -604,8 +604,7 @@ public class WholeDungeon : MonoBehaviour {
         foreach (Button Butt in RoomEndButtons)
         {
             Butt.gameObject.SetActive(false);
-            foodDisplay.text = foodLeft.ToString();
-            foodDisplay.gameObject.SetActive(false);
+            foodDisplay.text = foodLeft.ToString();            
         }//Disable previous set of buttons
         for (int i=0; i < AllActiveMercenaries.Count; i++) {
             CampButtons[i].gameObject.SetActive(true);
@@ -628,8 +627,7 @@ public class WholeDungeon : MonoBehaviour {
     public void DesignateWatchman(int index)
     {
         foodLeft -= AllActiveMercenaries.Count;
-        foodDisplay.text = foodLeft.ToString();
-        foodDisplay.gameObject.SetActive(true);
+        foodDisplay.text = foodLeft.ToString();        
         AllActiveMercenaries[index].Stamina -= 10;
         foreach(Mercenary merc in AllActiveMercenaries)
         {
