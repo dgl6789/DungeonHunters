@@ -76,8 +76,7 @@ public class RoomCell : MonoBehaviour {
                 case TileState.AttackSelector://if we are doing an attack, first turn off the color for here, and then call the attack script, then redraw all monsters.
                     Mystate = TileState.None;
                     Monster temp = myDungeon.GetMobFromLoc(Gridlocation);
-                    myDungeon.RunAttack(myDungeon.AllActiveMercenaries[myDungeon.ActiveMerc], temp, true);
-                    Debug.Log("This is where an attack should be");                   
+                    myDungeon.RunAttack(myDungeon.AllActiveMercenaries[myDungeon.ActiveMerc], temp, true);                                     
                     break;
                 case TileState.PlacementSelector://if we are Placeing mercs, place em down. This is different from moving, becasue there are no penalties.
                     myDungeon.PlaceActiveMerc(Gridlocation);

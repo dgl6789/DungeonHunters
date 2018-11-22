@@ -21,9 +21,11 @@ public class WholeDungeon : MonoBehaviour {
     public Button[] RoomEndButtons;
     public Button[] CampButtons;
     public Text foodDisplay;
+    public GameObject CharacterIndicator;
     public List<Mercenary> AllActiveMercenaries;
     public List<Monster> AllActiveMonsters;
-    public int ActiveMerc;
+    public CharPortrait portrait;
+    public int ActiveMerc=0;
     public bool dirty= true;
 
 	// Use this for initialization
@@ -33,6 +35,7 @@ public class WholeDungeon : MonoBehaviour {
         {
             NavigationButtons[i].gameObject.SetActive(false);
         }
+        portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
     }
 
     private void Awake()
@@ -55,7 +58,8 @@ public class WholeDungeon : MonoBehaviour {
             ActiveMerc--;
             if (ActiveMerc < 0)
                 ActiveMerc = AllActiveMercenaries.Count - 1;
-            dirty = true;          
+            dirty = true;
+            portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -63,6 +67,7 @@ public class WholeDungeon : MonoBehaviour {
             ActiveMerc++;
             ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
             dirty = true;
+            portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
@@ -111,8 +116,9 @@ public class WholeDungeon : MonoBehaviour {
 
     public void TraverseRooms(bool isFoward,int Dir)
     {//Code to move from room to room
-        //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
-        //Not sure how to do it though, probably for DOM
+     //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
+     //Not sure how to do it though, probably for DOM
+        portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
 
         if (inLandingPhase) {            
             landingRoom.ClearRoom();
@@ -370,9 +376,7 @@ public class WholeDungeon : MonoBehaviour {
             int totalMovement = (Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.x - index.x) + Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.y - index.y));
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
-            MovementTick(true);
-            CharacterTick(true);
-            MobTick(true);
+            DrawTick();
         }
     }
     public void PlaceActiveMerc(Vector2Int index)
@@ -441,12 +445,13 @@ public class WholeDungeon : MonoBehaviour {
                 CharacterTick(true);
                 MobTick(true);
                 break;
-            default:
-               
+            default:               
                 MobTick(true);
                 break;
         }
         CharacterTick(true);
+        CharacterIndicator.transform.position = new Vector3(AllActiveMercenaries[ActiveMerc].gridPosition.x/2.0f, AllActiveMercenaries[ActiveMerc].gridPosition.y/2.0f, 1);
+        portrait.Tick();
     }
 
     void UndrawTick()
@@ -523,8 +528,13 @@ public class WholeDungeon : MonoBehaviour {
             if(mob.Health <= 0)
             {
                 UndrawTick();
+                if(mob.pointBuy > 5)
+                {
+                    foodLeft += (mob.pointBuy / 5);
+                }
                 activeRoom.ActiveMonsters.Remove(mob);
                 Destroy(mob.gameObject);
+
                 foreach(Monster struckByFear in activeRoom.ActiveMonsters)
                 {
                     struckByFear.Morale -= 2;
@@ -584,6 +594,7 @@ public class WholeDungeon : MonoBehaviour {
         {
             TraverseRooms(true, Index);
         }
+       
 
     }
 
@@ -601,6 +612,7 @@ public class WholeDungeon : MonoBehaviour {
     public void CampPhase()
     {
         Debug.Log("Entering Camp Phase");
+        portrait.Deactivate();
         foreach (Button Butt in RoomEndButtons)
         {//Disable previous set of buttons
             Butt.gameObject.SetActive(false);
