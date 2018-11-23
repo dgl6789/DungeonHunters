@@ -7,9 +7,7 @@ public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , Att
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.
     public bool Passable;// used for navigation
-    public int Decoration; // used for display/World Gen
-    public int FluidType = 0;
-    public int LootType = 0;    
+    public int Decoration, River, RiverIndex, RiverDistance; // used for display/World Gen
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
     public DungeonCamera DGcam;
@@ -88,23 +86,34 @@ public class RoomCell : MonoBehaviour {
     }
     
 
-    public void IncrimentHieght(int deltaHeight, int incColor)
+    public void IncrimentHeight(int deltaHeight, int incRiver, int incRiverIndex, int incRiverDistance)
     {
+        River = incRiver;
+        RiverIndex = incRiverIndex;
+        RiverDistance = incRiverDistance;
         Height = deltaHeight;
         Passable = true;
         cubeTemp.transform.Translate(new Vector3(0, 0, deltaHeight));
         cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
     }
 
-    public void RaiseTo(int deltaHeight, int incColor)
+    public bool RaiseTo(int deltaHeight, int incRiver, int incRiverIndex, int incRiverDistance)
     {
-        if(Height < deltaHeight)
+        if(Height <= deltaHeight)
         {
-            Passable = true;
-            Height = deltaHeight;
-            cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
-            cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+            if (incRiverDistance <= RiverDistance)
+            {
+                River = incRiver;
+                RiverIndex = incRiverIndex;
+                RiverDistance = incRiverDistance;
+                Passable = true;
+                Height = deltaHeight;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
+                cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+                return true;
+            }
         }
+        return false;
     }
 
     public void Reset()

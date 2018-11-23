@@ -673,4 +673,16 @@ public class WholeDungeon : MonoBehaviour {
             MoveRooms(1);            
         }
     }
+
+    public void StanceSwitch(int incStyle)
+    {
+        if (AllActiveMercenaries[ActiveMerc].Movement > 0 && (int)AllActiveMercenaries[ActiveMerc].Style != incStyle)
+        {//if we have any movement, and we are actually changing, subtract a movement, and change that style.
+            UndrawTick();
+            AllActiveMercenaries[ActiveMerc].Style = (Stance)incStyle;
+            Debug.Log("Switching to stance " + (Stance)incStyle);
+            AllActiveMercenaries[ActiveMerc].Movement -= 1;
+            DrawTick();
+        }
+    }
 }

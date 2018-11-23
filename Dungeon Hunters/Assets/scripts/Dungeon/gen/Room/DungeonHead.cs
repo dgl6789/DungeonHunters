@@ -12,6 +12,7 @@ public class DungeonHead : MonoBehaviour
     public RoomCell[,] AllCells;                    //Simple container of other objects. Might be better off as a pointer to a single re-used group.
     public bool HasGenerated = false;              //Required for start logic
     private Vector2Int minBound, maxBound;          //useless post-gen
+    public Vector3Int[,] RiverInformation;
     public Room NorthBranch, SouthBranch, EastBranch, WestBranch;
     [SerializeField] DungeonCamera DGcam;
     [SerializeField] WholeDungeon myDungeon;
@@ -26,7 +27,7 @@ public class DungeonHead : MonoBehaviour
         maxBound = new Vector2Int(78, 78);
         Locations = new Vector2[6];
         Trajectories = new Vector3[6];
-
+        RiverInformation = new Vector3Int[80, 80];
         AllCells = new RoomCell[80, 80];//instantiates all tile datapieces
         AllGameObjects = new GameObject[80, 80];//instantiates all tile Gameobjects (this makes them passable to other rooms) 
         for (int i = 0; i < 80; i++)
@@ -119,51 +120,62 @@ public class DungeonHead : MonoBehaviour
         Vector2Int[] endpoints = new Vector2Int[6];
         for (int i = 0; i < 6; i++)
         {//main lines
+            int temp = 0;
             foreach (Vector2Int tile in LinesTiles[i])
             {
-                AllCells[tile.x, tile.y].RaiseTo(5, i);
+                AllCells[tile.x, tile.y].RaiseTo(5, i,temp,0);
+                temp++;
             }
             endpoints[i] = LinesTiles[i][(LinesTiles[i].Count - 1)];
         }
-        int[] layerSize = { 9, 8, 6, 3, 1 };
-        int tier = 4, ErosionIndex = 0;
+        int[] layerSize = { 9, 8, 6, 3, 1 };        
+        int tier = 4, riverIndex = 0;
+        // List<Vector2Int> UBorder, DBorder, LBorder, RBorder; //create seperate lists for each set of borders- used later on for movement of zones of depth        
         while (tier >= 0)
         {//Lift intial territory, and add then create borders.
             for (int i = 0; i < 6; i++)
             {//For each line
+                riverIndex = 0;
                 foreach (Vector2Int block in LinesTiles[i])
-                {//For each tile  
+                {//For each tile                      
                     for (int j = 0; j <= layerSize[tier]; j++)
                     {//start with Maxsize, 0 
-                        Vector2Int address = new Vector2Int(layerSize[tier] - j, 1 - j);
+
+                        Vector2Int address = new Vector2Int(layerSize[tier] - j, 0 - j);
                         Vector2Int output = address + block;//Make sure the modification is applied to the action location
                         output.Clamp(minBound, maxBound);//And that that location is within the bounds of the map.                        
-                        AllCells[output.x, output.y].RaiseTo(tier, i); // Raise the first tile, which is the center of the river, just for security
+                        if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0))// Raise the first tile, which is the center of the river, just for security
+                            RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
                         while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {//Increase the y value of the relative position until the distance from the block is too large.
                             address.y++;
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            AllCells[output.x, output.y].RaiseTo(tier, i);
+                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, address.x + address.y))
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
                         }
+
                     }
                     for (int j = 0; j <= layerSize[tier]; j++)
                     {//start with -Maxsize, 0
                         Vector2Int address = new Vector2Int(j - layerSize[tier], 0 - j);
                         Vector2Int output = address + block;
                         output.Clamp(minBound, maxBound);
-                        AllCells[output.x, output.y].RaiseTo(tier, i);
+                        AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0);
                         while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {
+                            address.y++;
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            AllCells[output.x, output.y].RaiseTo(tier, i);
-                            address.y++;
+                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, address.x + address.y))
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
                         }
+
                     }
-                    ErosionIndex++;//keep track of current/last tile
+
+                    riverIndex++;//keep track of the current tile within the River
                 }
-                ErosionIndex = 0;
+
             }
             tier--;
         }
@@ -251,7 +263,7 @@ public class DungeonHead : MonoBehaviour
     {
         foreach (Vector3Int tile in CaveTiles)
         {
-            AllCells[tile.x, tile.y].IncrimentHieght(tile.z, 0);//Faster operation for defined maps.
+            AllCells[tile.x, tile.y].IncrimentHeight(tile.z, 0,0,0);//Faster operation for defined maps.
         }
     }
 
