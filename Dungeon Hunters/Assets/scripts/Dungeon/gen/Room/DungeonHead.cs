@@ -145,14 +145,14 @@ public class DungeonHead : MonoBehaviour
                         Vector2Int output = address + block;//Make sure the modification is applied to the action location
                         output.Clamp(minBound, maxBound);//And that that location is within the bounds of the map.                        
                         if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0))// Raise the first tile, which is the center of the river, just for security
-                            RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
+                            RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, 0);
                         while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {//Increase the y value of the relative position until the distance from the block is too large.
                             address.y++;
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, address.x + address.y))
-                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
+                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y)))
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y));
                         }
 
                     }
@@ -167,8 +167,8 @@ public class DungeonHead : MonoBehaviour
                             address.y++;
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, address.x + address.y))
-                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
+                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y)))
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y));
                         }
 
                     }

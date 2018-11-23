@@ -346,8 +346,8 @@ public class Room : MonoBehaviour
                             address.y++;                                               
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, address.x + address.y))
-                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex,address.x+address.y);
+                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y)))
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, Mathf.Abs( address.x) + Mathf.Abs(address.y));
                         }
 
                     }
@@ -356,14 +356,15 @@ public class Room : MonoBehaviour
                         Vector2Int address = new Vector2Int(j - layerSize[tier], 0 - j);
                         Vector2Int output = address + block;
                         output.Clamp(minBound, maxBound);                      
-                        AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0);
+                        if(AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0))
+                            RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, 0);
                         while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {
                             address.y++;   
                             output = address + block;
                             output.Clamp(minBound, maxBound);
-                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, address.x + address.y))
-                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, address.x + address.y);
+                            if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y)))
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y));
                         }
 
                     }

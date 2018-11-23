@@ -99,9 +99,21 @@ public class RoomCell : MonoBehaviour {
 
     public bool RaiseTo(int deltaHeight, int incRiver, int incRiverIndex, int incRiverDistance)
     {
-        if(Height <= deltaHeight)
+        if (Height < deltaHeight)
         {
-            if (incRiverDistance <= RiverDistance)
+           
+                River = incRiver;
+                RiverIndex = incRiverIndex;
+                RiverDistance = incRiverDistance;
+                Passable = true;
+                Height = deltaHeight;
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
+                cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+                return true;
+        }
+        else if (Height == deltaHeight)
+        {
+            if (incRiverDistance < RiverDistance)
             {
                 River = incRiver;
                 RiverIndex = incRiverIndex;
