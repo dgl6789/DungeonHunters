@@ -5,7 +5,7 @@ public class Room : MonoBehaviour
 {
     public int pointsForBuy;                        //used in generation.   
     public int CounterToEnd;
-    public GameObject LinePrefab;                   
+    public GameObject LinePrefab;
     public Vector3[] Trajectories;                  //Useful post-gen
     public Vector2[] Locations;                     //useless post-gen
     public List<List<Vector2Int>> LinesTiles;       //Limited usage post-gen
@@ -29,7 +29,7 @@ public class Room : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-       
+
     }
 
     public void DeclareToPreventErrors()
@@ -37,14 +37,14 @@ public class Room : MonoBehaviour
         minBound = new Vector2Int(1, 1);
         maxBound = new Vector2Int(78, 78);
         Locations = new Vector2[3];
-        Trajectories = new Vector3[3];   
+        Trajectories = new Vector3[3];
         CaveTiles = new List<Vector3Int>();
         LinesTiles = new List<List<Vector2Int>>();
         OreTiles = new List<Vector4>();
     }
     void GeneratePrelim()
     {//Creates the Preliminary requirements to make those lines
-       
+
         for (int i = 0; i < 3; i++)
         {
             List<Vector2Int> v2ITemp = new List<Vector2Int>();
@@ -69,7 +69,7 @@ public class Room : MonoBehaviour
                     XMin = 1;
                     Locations[i] = new Vector2Int(1, Random.Range(30, 50));
                     break;
-            }          
+            }
 
             //increase range of options for non-opposite angles (L shaped passages, instead of I shaped ones).
             if (Mathf.Abs(sourceDir - destinationDir) != 2)
@@ -90,8 +90,8 @@ public class Room : MonoBehaviour
         }
         DrawLines();
         LiftTiles();
-    }   
-    
+    }
+
     private void DrawLines()
     {//Draws lines of action
         minBound = new Vector2Int(1, 1);
@@ -100,7 +100,7 @@ public class Room : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             float toSwitchAt, riseRun, runRise, absRiRu, absRuRi;
-            int index=0;
+            int index = 0;
 
             toSwitchAt = Mathf.Abs(Trajectories[i].x) + Mathf.Abs(Trajectories[i].y);//figure out how long this stretch is
 
@@ -109,8 +109,8 @@ public class Room : MonoBehaviour
             riseRun = Trajectories[i].x / Trajectories[i].y;
             runRise = Trajectories[i].y / Trajectories[i].x;
             absRiRu = Mathf.Abs(riseRun);
-            absRuRi = Mathf.Abs(runRise); 
-            
+            absRuRi = Mathf.Abs(runRise);
+
             bool contWhile = true;
             while (contWhile)
             {
@@ -226,7 +226,7 @@ public class Room : MonoBehaviour
                 }
             }
         }
-    }    
+    }
 
     void LiftTiles()
     {//Raises tiles alongside lines of action
@@ -239,7 +239,7 @@ public class Room : MonoBehaviour
             foreach (Vector2Int tile in LinesTiles[i])
             {
                 tile.Clamp(minBound, maxBound);
-                if (AllCells[tile.x, tile.y].RaiseTo(5, i, temp,0))
+                if (AllCells[tile.x, tile.y].RaiseTo(5, i, temp, 0))
                     RiverInformation[tile.x, tile.y] = new Vector3Int(i, temp, 0);
 
                 temp++;
@@ -247,7 +247,7 @@ public class Room : MonoBehaviour
             endpoints[i] = LinesTiles[i][(LinesTiles[i].Count - 1)];
         }
         int[] deltaEP = new int[3]; //Difference in endpoints 
-        deltaEP[0] = Mathf.Abs(endpoints[0].x - endpoints[1].x) + Mathf.Abs(endpoints[0].y - endpoints[1].y);  
+        deltaEP[0] = Mathf.Abs(endpoints[0].x - endpoints[1].x) + Mathf.Abs(endpoints[0].y - endpoints[1].y);
         deltaEP[1] = Mathf.Abs(endpoints[2].x - endpoints[1].x) + Mathf.Abs(endpoints[2].y - endpoints[1].y);
         deltaEP[2] = Mathf.Abs(endpoints[0].x - endpoints[2].x) + Mathf.Abs(endpoints[0].y - endpoints[2].y);
         for (int i = 0; i < 3; i++)
@@ -319,8 +319,8 @@ public class Room : MonoBehaviour
                 layerSize[4] += 1;
                 break;
         }
-        
-        for(int k =3; k > 0;k --)
+
+        for (int k = 3; k > 0; k--)
         {
             layerSize[k] = layerSize[k] + layerSize[k + 1];
         }
@@ -339,15 +339,15 @@ public class Room : MonoBehaviour
                         Vector2Int address = new Vector2Int(layerSize[tier] - j, 0 - j);
                         Vector2Int output = address + block;//Make sure the modification is applied to the action location
                         output.Clamp(minBound, maxBound);//And that that location is within the bounds of the map.                        
-                        if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0))// Raise the first tile, which is the center of the river, just for security
-                            RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex,0); 
-                        while ((address.x* address.x) + (address.y*address.y) < (layerSize[tier]* layerSize[tier]))
+                        if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, 0))// Raise the first tile, which is the center of the river, just for security
+                            RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, 0);
+                        while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {//Increase the y value of the relative position until the distance from the block is too large.
-                            address.y++;                                               
+                            address.y++;
                             output = address + block;
                             output.Clamp(minBound, maxBound);
                             if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y)))
-                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, Mathf.Abs( address.x) + Mathf.Abs(address.y));
+                                RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y));
                         }
 
                     }
@@ -355,12 +355,12 @@ public class Room : MonoBehaviour
                     {//start with -Maxsize, 0
                         Vector2Int address = new Vector2Int(j - layerSize[tier], 0 - j);
                         Vector2Int output = address + block;
-                        output.Clamp(minBound, maxBound);                      
-                        if(AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex,0))
+                        output.Clamp(minBound, maxBound);
+                        if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, 0))
                             RiverInformation[output.x, output.y] = new Vector3Int(i, riverIndex, 0);
                         while ((address.x * address.x) + (address.y * address.y) < (layerSize[tier] * layerSize[tier]))
                         {
-                            address.y++;   
+                            address.y++;
                             output = address + block;
                             output.Clamp(minBound, maxBound);
                             if (AllCells[output.x, output.y].RaiseTo(tier, i, riverIndex, Mathf.Abs(address.x) + Mathf.Abs(address.y)))
@@ -371,52 +371,52 @@ public class Room : MonoBehaviour
 
                     riverIndex++;//keep track of the current tile within the River
                 }
-               
+
             }
             tier--;
-        }       
+        }
         DefineCave();
         AssignOres();
-        
+
     }
-    
+
     void DefineCave() {//Determine what tiles have been altered, and to what depth   
         CaveTiles.Clear();
-        for(int i =0; i<80; i++)
+        for (int i = 0; i < 80; i++)
         {
             for (int j = 0; j < 80; j++)
             {
-                if(AllCells[i,j].Height > 0)
+                if (AllCells[i, j].Height > 0)
                 {
                     CaveTiles.Add(new Vector3Int(i, j, AllCells[i, j].Height));
                 }
             }
-        }        
+        }
         HasGenerated = true;
     }
 
-   public void RebuildCave()
+    public void RebuildCave()
     {
-        foreach(Vector3Int tile in CaveTiles)
+        foreach (Vector3Int tile in CaveTiles)
         {
-            AllCells[tile.x, tile.y].IncrimentHeight(tile.z,0,0,0);//Faster operation for defined maps.
+            AllCells[tile.x, tile.y].IncrimentHeight(tile.z, 0, 0, 0);//Faster operation for defined maps.
         }
         BuildOres();
     }
     void AssignOres()
     {
         OreTiles.Clear();
-        int orePoints = pointsForBuy, maxPoints =9, currentVein, index;//make some local variables
+        int orePoints = pointsForBuy, maxPoints = 9, currentVein, index;//make some local variables
 
-        while(orePoints > 0)//while we have points left to spend
+        while (orePoints > 0)//while we have points left to spend
         {
-            if(orePoints < maxPoints)// make sure we don't spend more points than we have available
+            if (orePoints < maxPoints)// make sure we don't spend more points than we have available
             {
                 maxPoints = orePoints;
             }
-            currentVein = Random.Range(1, maxPoints+1);//give us a random value to use
+            currentVein = Random.Range(1, maxPoints + 1);//give us a random value to use
             index = Random.Range(0, CaveTiles.Count);// and give us a random location
-            Vector4 temp = new Vector4(CaveTiles[index].x, CaveTiles[index].y, CaveTiles[index].z+1, currentVein);//Combine the value, and location    
+            Vector4 temp = new Vector4(CaveTiles[index].x, CaveTiles[index].y, CaveTiles[index].z + 1, currentVein);//Combine the value, and location    
             CaveTiles[index] = new Vector3Int(CaveTiles[index].x, CaveTiles[index].y, CaveTiles[index].z + 1);
             OreTiles.Add(temp);//Add it to the list
             orePoints -= currentVein;//and expend those points
@@ -426,9 +426,9 @@ public class Room : MonoBehaviour
 
     public void AssignMonsters(List<Monster> Templates)
     {
-        int mobPoints = pointsForBuy, gridIndex, templateIndex ;
+        int mobPoints = pointsForBuy, gridIndex, templateIndex;
         int maxPoints = 0, minPoints = 100;
-      
+
         foreach (Monster mob in Templates)
         {//Know the bounds of what we can spend
             if (mob.pointBuy > maxPoints)
@@ -438,14 +438,14 @@ public class Room : MonoBehaviour
                 minPoints = mob.pointBuy;
         }
 
-        while(mobPoints > minPoints)
+        while (mobPoints > minPoints)
         {//add monsters till we run out of 
             GameObject tempObj = new GameObject();
             tempObj.AddComponent<Monster>();
             Monster temp = tempObj.GetComponent<Monster>();
             templateIndex = Random.Range(0, Templates.Count);
             gridIndex = Random.Range(0, CaveTiles.Count - 1);
-            temp.SetStats( Templates[templateIndex]);            
+            temp.SetStats(Templates[templateIndex]);
             temp.gridPosition = new Vector2Int(CaveTiles[gridIndex].x, CaveTiles[gridIndex].y);
             mobPoints -= temp.pointBuy;
             ActiveMonsters.Add(temp);
@@ -463,7 +463,7 @@ public class Room : MonoBehaviour
             mobPoints -= temp.pointBuy;
             ActiveMonsters.Add(temp);
         }
-                
+
     }
 
     void BuildOres()
@@ -497,9 +497,9 @@ public class Room : MonoBehaviour
             reCon = false;
             ClearRoom();
             RebuildCave();
-            
+
         }
-       
+
     }
 
     public void ClearRoom()
@@ -512,16 +512,16 @@ public class Room : MonoBehaviour
 
     public void ExtendCave(List<Monster> incMobList, bool isLastCave)
     {//Move to the next cave        
-        if(nextRoom != null)
+        if (nextRoom != null)
         {//You know, if we're allowed to
-            if(nextRoom.HasGenerated == true)
+            if (nextRoom.HasGenerated == true)
             {//if it already exists, do the fast draw.                
                 nextRoom.RebuildCave();
             }
             else
             {//Otherwise, feed it in its pre-reqs, and get started;
                 nextRoom.previousRoom = this;
-                nextRoom.sourceDir = (destinationDir+2)%4;
+                nextRoom.sourceDir = (destinationDir + 2) % 4;
                 nextRoom.Trajectories = Trajectories;
                 nextRoom.Locations = Locations;
                 nextRoom.myDungeon = myDungeon;
@@ -536,9 +536,9 @@ public class Room : MonoBehaviour
                 {
                     nextRoom.ConvertFromExtendForDeadEnd(incMobList);
                 }
-               
+
             }
-        }        
+        }
     }
 
     public void ConvertFromExtend(List<Monster> incMobList)
@@ -547,24 +547,24 @@ public class Room : MonoBehaviour
         //Start off by culling those trajectories and starting positions
         for (int i = 0; i < 3; i++)
         {
-            Trajectories[i].x = Mathf.Clamp(Trajectories[i].x, -5-i, 5+i);
-            Trajectories[i].y = Mathf.Clamp(Trajectories[i].y, -5-i, 5+i);
+            Trajectories[i].x = Mathf.Clamp(Trajectories[i].x, -5 - i, 5 + i);
+            Trajectories[i].y = Mathf.Clamp(Trajectories[i].y, -5 - i, 5 + i);
             List<Vector2Int> v2ITemp = new List<Vector2Int>();
             LinesTiles.Add(v2ITemp);
         }
-            switch (sourceDir)
-            {
+        switch (sourceDir)
+        {
             case 0://up 
                 for (int i = 0; i < 3; i++)
                 {
                     Locations[i].y = 78;
                 }
                 destinationDir = (int)Random.Range(1.0f, 3.1f);
-            break;
+                break;
             case 1://from right
                 do {
                     destinationDir = (int)Random.Range(0.0f, 3.1f);
-                 }while(destinationDir == 1);
+                } while (destinationDir == 1);
                 for (int i = 0; i < 3; i++)
                 {
                     Locations[i].x = 78;
@@ -577,7 +577,7 @@ public class Room : MonoBehaviour
                 } while (destinationDir == 2);
                 for (int i = 0; i < 3; i++)
                 {
-                    Locations[i].y =1;
+                    Locations[i].y = 1;
                 }
                 break;
             case 3:
@@ -587,12 +587,12 @@ public class Room : MonoBehaviour
                 }
                 destinationDir = (int)Random.Range(0.0f, 2.9f);
                 break;
-            }
-       DrawLines();
-       LiftTiles();
-       AssignMonsters(incMobList);
+        }
+        DrawLines();
+        LiftTiles();
+        AssignMonsters(incMobList);
 
-        
+
     }
     public void ConvertFromExtendForDeadEnd(List<Monster> incMobList)
     {//Turn the input'd data into something useful, and generate what we can't get.
@@ -615,7 +615,7 @@ public class Room : MonoBehaviour
                 destinationDir = 2;
                 break;
             case 1://from right             
-                    destinationDir = 3;                
+                destinationDir = 3;
                 for (int i = 0; i < 3; i++)
                 {
                     Locations[i].x = 78;
@@ -637,10 +637,10 @@ public class Room : MonoBehaviour
                 break;
         }
         DrawLines();
-        foreach(List<Vector2Int> line in LinesTiles)
+        foreach (List<Vector2Int> line in LinesTiles)
         {//this just prematurely ends the process of drawing lines.
             line.RemoveRange((line.Count / 2), line.Count / 2);
-            line.RemoveAt(line.Count-1);
+            line.RemoveAt(line.Count - 1);
         }
         LiftTiles();
         AssignMonsters(incMobList);
@@ -650,27 +650,27 @@ public class Room : MonoBehaviour
 
     public void OnRoomSwitch(bool isMovingForward)
     { // this will handle any things to be changed on a room switch using the forward or backward buttons.
-         Vector2Int temp = new Vector2Int(0,0);
+        Vector2Int temp = new Vector2Int(0, 0);
 
         if (isMovingForward)//if we are moving foward, move the camera to the center of the "starting" positions.
-        {           
-            foreach(List<Vector2Int> river in LinesTiles)
+        {
+            foreach (List<Vector2Int> river in LinesTiles)
             {
                 temp += river[0];
             }
-            temp = new Vector2Int(temp.x / 3, temp.y / 3);           
+            temp = new Vector2Int(temp.x / 3, temp.y / 3);
             DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
-            
+
 
         }
         else
-        {            
+        {
             foreach (List<Vector2Int> river in LinesTiles)
             {
-                temp += river[river.Count-1];
+                temp += river[river.Count - 1];
             }
             temp = new Vector2Int(temp.x / 3, temp.y / 3);
-            DGcam.SetTargetPosition(new Vector3(temp.x/2, temp.y/2 , 0));
+            DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
         }
 
 
@@ -681,7 +681,7 @@ public class Room : MonoBehaviour
 
     public void HighLightZones(int zoneType, Vector2Int startingLoc, int minDistance, int maxDistance)
     {
-        if(maxDistance == 0)
+        if (maxDistance == 0)
         {
             AllCells[startingLoc.x, startingLoc.y].Mystate = (TileState)zoneType;
             return;
@@ -689,9 +689,9 @@ public class Room : MonoBehaviour
         List<Vector2Int> upEdge = new List<Vector2Int>(), leftEdge = new List<Vector2Int>(), rightEdge = new List<Vector2Int>(), downEdge = new List<Vector2Int>(), temp = new List<Vector2Int>();
         temp.Add(startingLoc);
         upEdge.Add(new Vector2Int(startingLoc.x, startingLoc.y + 1));
-        leftEdge.Add(new Vector2Int(startingLoc.x-1, startingLoc.y ));
+        leftEdge.Add(new Vector2Int(startingLoc.x - 1, startingLoc.y));
         downEdge.Add(new Vector2Int(startingLoc.x, startingLoc.y - 1));
-        rightEdge.Add(new Vector2Int(startingLoc.x+1, startingLoc.y));
+        rightEdge.Add(new Vector2Int(startingLoc.x + 1, startingLoc.y));
         int index = 1;
         while (index <= maxDistance)
         {
@@ -708,9 +708,9 @@ public class Room : MonoBehaviour
             {
                 foreach (Vector2Int loc in upEdge)
                 {
-                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0,Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
+                    Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
                     AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
-                    
+
                 }
             }
             upEdge.Clear();
@@ -718,12 +718,12 @@ public class Room : MonoBehaviour
 
             //Right Zone 
             temp.Clear();
-            temp.Add(new Vector2Int(rightEdge[0].x , rightEdge[0].y-1));//Add the "left" edge of the existing zone.
+            temp.Add(new Vector2Int(rightEdge[0].x, rightEdge[0].y - 1));//Add the "left" edge of the existing zone.
             foreach (Vector2Int loc in rightEdge)
             {
-                temp.Add(new Vector2Int(loc.x+1, loc.y));//advance all non-edge in the zone
+                temp.Add(new Vector2Int(loc.x + 1, loc.y));//advance all non-edge in the zone
             }
-            temp.Add(new Vector2Int(rightEdge[rightEdge.Count - 1].x , rightEdge[rightEdge.Count - 1].y-1));//Add the "right" edge of the existing zone.
+            temp.Add(new Vector2Int(rightEdge[rightEdge.Count - 1].x, rightEdge[rightEdge.Count - 1].y - 1));//Add the "right" edge of the existing zone.
             if (index >= minDistance)
             {
                 foreach (Vector2Int loc in rightEdge)
@@ -737,12 +737,12 @@ public class Room : MonoBehaviour
 
             //Down Zone 
             temp.Clear();
-            temp.Add(new Vector2Int(downEdge[0].x-1, downEdge[0].y));//Add the "left" edge of the existing zone.
+            temp.Add(new Vector2Int(downEdge[0].x - 1, downEdge[0].y));//Add the "left" edge of the existing zone.
             foreach (Vector2Int loc in downEdge)
             {
-                temp.Add(new Vector2Int(loc.x, loc.y-1));//advance all non-edge in the zone
+                temp.Add(new Vector2Int(loc.x, loc.y - 1));//advance all non-edge in the zone
             }
-            temp.Add(new Vector2Int(downEdge[downEdge.Count - 1].x+1, downEdge[downEdge.Count- 1].y ));//Add the "right" edge of the existing zone.
+            temp.Add(new Vector2Int(downEdge[downEdge.Count - 1].x + 1, downEdge[downEdge.Count - 1].y));//Add the "right" edge of the existing zone.
             if (index >= minDistance)
             {
                 foreach (Vector2Int loc in downEdge)
@@ -758,12 +758,12 @@ public class Room : MonoBehaviour
 
             //Left Zone 
             temp.Clear();
-            temp.Add(new Vector2Int(leftEdge[0].x, leftEdge[0].y-1));//Add the "left" edge of the existing zone.
+            temp.Add(new Vector2Int(leftEdge[0].x, leftEdge[0].y - 1));//Add the "left" edge of the existing zone.
             foreach (Vector2Int loc in leftEdge)
             {
-                temp.Add(new Vector2Int(loc.x-1, loc.y));//advance all non-edge in the zone
+                temp.Add(new Vector2Int(loc.x - 1, loc.y));//advance all non-edge in the zone
             }
-            temp.Add(new Vector2Int(leftEdge[leftEdge.Count - 1].x , leftEdge[leftEdge.Count - 1].y+1));//Add the "right" edge of the existing zone.
+            temp.Add(new Vector2Int(leftEdge[leftEdge.Count - 1].x, leftEdge[leftEdge.Count - 1].y + 1));//Add the "right" edge of the existing zone.
             if (index >= minDistance)
             {
                 foreach (Vector2Int loc in leftEdge)
@@ -783,7 +783,7 @@ public class Room : MonoBehaviour
 
     }
 
-    public void HighLightTargets( Vector2Int startingLoc, int minDistance, int maxDistance, bool activating)
+    public void HighLightTargets(Vector2Int startingLoc, int minDistance, int maxDistance, bool activating)
     {//Draws or Undraws all monster markings in range (placeholder, currently allows wallhacks, basically)
 
         if (activating)
@@ -802,7 +802,7 @@ public class Room : MonoBehaviour
         {
             HighLightZones(0, startingLoc, minDistance, maxDistance);
         }
-      
+
     }
 
     public void PlaceMercs(bool Advancing, bool Activating)
@@ -960,17 +960,17 @@ public class Room : MonoBehaviour
 
     public void EnemyUpdate(List<Mercenary> incMercs) {
 
-        foreach(Monster mob in ActiveMonsters)
+        foreach (Monster mob in ActiveMonsters)
         {
-            myDungeon.MobTick(false);
-            int minDistance = 160, mercIndex = 0, index=0;
-            int Xdiff=0, Ydiff=0;
-            Vector2Int destination;            
-            foreach(Mercenary merc in incMercs)
+            mob.Movement = 5;            
+            int minDistance = 160, mercIndex = 0, index = 0;
+            int Xdiff = 0, Ydiff = 0;
+            Vector2Int destination = new Vector2Int();
+            foreach (Mercenary merc in incMercs)
             {//go through all the mercs, if they are alive, see if they are the closest. if they are the closest, set them as 
-                if(merc.Health > 0)
+                if (merc.Health > 0)
                 {
-                    
+
                     if ((Mathf.Abs(merc.gridPosition.x - mob.gridPosition.x) + Mathf.Abs(merc.gridPosition.y - mob.gridPosition.y)) < minDistance)
                     {
                         Xdiff = merc.gridPosition.x - mob.gridPosition.x;
@@ -982,21 +982,102 @@ public class Room : MonoBehaviour
                 }
                 index++;
             }
-            myDungeon.MobTick(false);
-            if (minDistance < (mob.Movement + mob.MaxRange))
-            {//if we can move to, and then attack the nearest merc, then do so.
-                while (minDistance > mob.MaxRange)
-                {//if we are too far away to attack
+            myDungeon.MobTick(false);          
+            int distance = minDistance;
+            bool doStandard = false;
+            if (minDistance > 9)
+            {//only do advanced map math if we have to
+                int currentRiver = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].x;
+                int targetRiver = RiverInformation[destination.x, destination.y].x;
+                int currentIndex = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].y;
+                int targetIndex = RiverInformation[destination.x, destination.y].y;
+                int indexDiff = currentIndex - targetIndex;
+                Vector2Int difference = new Vector2Int();
+                if (Mathf.Abs(indexDiff) < 9 && targetRiver == currentRiver)
+                {//if we are close enough to do standard math, do so
+                    doStandard = true;
+                }
+                else
+                {
+                    if (currentRiver != targetRiver)
+                    {//River Switch
+                        Debug.Log("River Switch");
+                        while (targetRiver != currentRiver && mob.Movement > 0)
+                        {//if we are on different rivers, seek to change river
+                            float percentage;
+                            percentage = (float)currentIndex / (float)LinesTiles[currentRiver].Count;
+                            int temp = Mathf.Min(Mathf.Max((int)(currentIndex * percentage), 0), LinesTiles[targetRiver].Count-1);
+                            Debug.Log("target: " + LinesTiles[targetRiver].Count + " At " + temp);
+                            Debug.Log("local: " + LinesTiles[currentRiver].Count + " At " + currentIndex);
+                            difference = LinesTiles[targetRiver][temp] - LinesTiles[currentRiver][Mathf.Min(currentIndex, LinesTiles[currentRiver].Count -1)];
+                            if (Mathf.Abs(difference.x) > Mathf.Abs(difference.y))
+                            {
+                                difference = new Vector2Int((int)Mathf.Clamp(difference.x, -1.1f, 1.1f), 0);
+                            }
+                            else
+                            {
+                                difference = new Vector2Int(0, (int)Mathf.Clamp(difference.y, -1.1f, 1.1f));
+                            }
+                            difference = difference + mob.gridPosition;
+                            if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
+                            {
+                                mob.gridPosition = difference;//move the object, update relevent information
+                                
+                                currentRiver = RiverInformation[mob.gridPosition.x, mob.gridPosition.x].x;
+                                targetRiver = RiverInformation[destination.x, destination.y].x;
+                            }
+                            mob.Movement--;
 
+                        }
+                        if (Mathf.Abs(indexDiff) <= 9)
+                        {
+                            doStandard = true;
+                        }
+                    }
 
+                    if (mob.Movement > 0 && !doStandard)
+                    {//Follow River
+                        Debug.Log("River follow");
+                        while (mob.Movement > 0 && Mathf.Abs(indexDiff) > 9)
+                        {//if we can move, and should be using the follow-river method.
+                            if (indexDiff > 1)
+                            {//moving down river
+                                difference = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];//figure out the movement of the river center at my positon
+                                difference = mob.gridPosition + difference;//move the positon to it
+                                if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
+                                {
+                                    mob.gridPosition = difference;
+                                }
+                                mob.Movement--;//decriment watchers.
+                                indexDiff--;
+                            }
+                            else
+                            {
+                                difference = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];//see previous block
+                                difference = mob.gridPosition + difference;
+                                if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
+                                {
+                                    mob.gridPosition = difference;
+                                }
+                                mob.Movement--;
+                                indexDiff--;
+                            }
+                        }
+                    }
+                }
+
+            }
+            if (mob.Movement > 0 )
+            {
+                Debug.Log("standard Movement");
+                while (mob.Movement > 0 && distance > mob.MaxRange)
+                {
                     if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))
                     {//if X is Greater than Y
-
                         Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
                         if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
                         {
                             mob.gridPosition = newGridPos;
-                            
                         }
                         else//if the block isn't moveable, move in the other relevant direction.
                         {
@@ -1025,61 +1106,63 @@ public class Room : MonoBehaviour
                             }
                         }
                     }
-                    minDistance--;
+                    mob.Movement--;
+                    distance--;
                 }
+                if (mob.Movement > 1)
+                {//if we are in attack range, attack.
+                    if( Mathf.Abs(mob.gridPosition.x - destination.x) + Mathf.Abs(mob.gridPosition.y + destination.y) < mob.MaxRange)
+                        myDungeon.RunAttack(incMercs[mercIndex], mob, false);
+                    myDungeon.MobTick(true);
+                }
+            }//Simple, stupid, non-map math.
+            myDungeon.MobTick(true);
+        }
+    }
+    
 
-                //we are now close enough to attack, so we will.
-                myDungeon.RunAttack(incMercs[mercIndex], mob, false);
-                myDungeon.MobTick(true);
 
+    public void RiverNavigation(Vector2Int sourcePos, Vector2Int targetPos)
+    {
+        int currentRiver = RiverInformation[sourcePos.x, sourcePos.y].x;
+        int targetRiver = RiverInformation[targetPos.x, targetPos.y].x;
+        int differenceSqr = (sourcePos.x - targetPos.x) * (sourcePos.x - targetPos.x) + (sourcePos.y - targetPos.y) * (sourcePos.y - targetPos.y);
+        if (differenceSqr < 81)
+        {//if we are close enough to simply move towards the enemy, do so.
+            Debug.Log("I am within 9 tiles, i should switch to direct attack mode.");
+        }
 
+        int currentIndex, targetIndex, indexDiff;
+        currentIndex = RiverInformation[sourcePos.x, sourcePos.y].y;
+        targetIndex = RiverInformation[targetPos.x, targetPos.y].y;
+        indexDiff =  currentIndex - targetIndex;
+        if(targetRiver!= currentRiver)
+        {//if we are on different rivers, seek to change river
+            float percentage;
+            percentage = (float)currentIndex / (float)LinesTiles[currentRiver].Count;            
+            Debug.Log("We are different Rivers: I am in: " + currentRiver + " , they are in: " + targetRiver + " Percentage : " + percentage);
+            Debug.Log("attempting to move from " + LinesTiles[currentRiver][currentIndex] + " to " + LinesTiles[targetRiver][Mathf.Min(Mathf.Max((int)(currentIndex*percentage),0), LinesTiles[targetRiver].Count)]);
+        }
+        else{//if we are on the same river, move down it, unless we're close enough to attack.
+           
+            if (Mathf.Abs(currentIndex - targetIndex) < 9)
+            {
+                Debug.Log("I am within 9 tiles of river, i should switch to direct attack mode.");
             }
             else
             {
-                myDungeon.MobTick(false);
-                while (mob.Movement > 0)
-                {//if we are too far away to attack
-                    mob.Movement--;
-                    
-                    if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))
-                    {//if X is Greater than Y
-
-                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
-                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
-                        {
-                            mob.gridPosition = newGridPos;
-                        }
-                        else//if the block isn't moveable, move in the other relevant direction.
-                        {
-                            newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y +(int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
-                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
-                            {
-                                mob.gridPosition = newGridPos;
-                            }
-                        }
-
-                    }
-                    else
-                    {//if Y is greater or equal to X
-                        Vector2Int newGridPos = new Vector2Int(mob.gridPosition.x, mob.gridPosition.y + (int)(Mathf.Clamp((Ydiff), -1.4f, 1.4f)));
-                        if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
-                        {
-                            mob.gridPosition = newGridPos;
-                        }
-                        else//if the block isn't moveable, move in the other relevant direction.
-                        {
-
-                            newGridPos = new Vector2Int(mob.gridPosition.x + (int)(Mathf.Clamp((Xdiff), -1.4f, 1.4f)), mob.gridPosition.y);
-                            if (AllCells[newGridPos.x, newGridPos.y].Height > 0)//If the block is passible, move into it.
-                            {
-                                mob.gridPosition = newGridPos;
-                            }
-                        }
-                    }
+                Debug.Log("My index is " + currentIndex + " My target is at " + targetIndex);
+                if(indexDiff > 1)
+                {
+                    Vector2Int movement = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];
+                    Debug.Log("Moving in the direction of " + movement);
                 }
-                myDungeon.MobTick(true);
+                else
+                {
+                    Vector2Int movement = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];
+                    Debug.Log("Moving in the direction of " + movement);
+                }
             }
-
         }
     }
 }
