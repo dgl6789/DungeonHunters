@@ -9,21 +9,34 @@ using Dungeon;
 public class WholeDungeon : MonoBehaviour {
     enum DisplayState {None, Attack, Walk, Stance, Data }
     private DisplayState myDisplayState = 0;
+    public int foodLeft;
     public GameObject RoomPrefab;
     public List<List<GameObject>> allRooms; // Pontentially not needed. Possibly a good idea to have though.
     public Room activeRoom;
+    public DungeonHead landingRoom;
+    bool inLandingPhase = true;
     public bool forTesting;
     public bool forwardBack;
     public Button [] NavigationButtons;
+    public Button[] RoomEndButtons;
+    public Button[] CampButtons;
+    public Text foodDisplay;
+    public GameObject CharacterIndicator;
     public List<Mercenary> AllActiveMercenaries;
     public List<Monster> AllActiveMonsters;
-    public int ActiveMerc;
+    public CharPortrait portrait;
+    public int ActiveMerc=0;
     public bool dirty= true;
 
 	// Use this for initialization
 	void Start () {
         CalcDirections();
-	}
+        for (int i = 4; i < 8; i++)
+        {
+            NavigationButtons[i].gameObject.SetActive(false);
+        }
+        portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
+    }
 
     private void Awake()
     {
@@ -45,7 +58,8 @@ public class WholeDungeon : MonoBehaviour {
             ActiveMerc--;
             if (ActiveMerc < 0)
                 ActiveMerc = AllActiveMercenaries.Count - 1;
-            dirty = true;          
+            dirty = true;
+            portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -53,6 +67,7 @@ public class WholeDungeon : MonoBehaviour {
             ActiveMerc++;
             ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
             dirty = true;
+            portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
@@ -99,81 +114,200 @@ public class WholeDungeon : MonoBehaviour {
         DrawTick();
     }
 
-    public void TraverseRooms(bool isFoward)
+    public void TraverseRooms(bool isFoward,int Dir)
     {//Code to move from room to room
-        //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
-        //Not sure how to do it though, probably for DOM
+     //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
+     //Not sure how to do it though, probably for DOM
+        portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
 
-        if (isFoward)
-        {// if we are moving forward
-            if(activeRoom.nextRoom != null)
-            {//if we have forward to move to
-                UndrawTick();                
-                activeRoom.ClearRoom();
-                activeRoom.ExtendCave(AllActiveMonsters);                
-                activeRoom = activeRoom.nextRoom;                
-                activeRoom.OnRoomSwitch(true);
-                activeRoom.PlaceMercs(true, true);
-                forwardBack = true;
+        if (inLandingPhase) {            
+            landingRoom.ClearRoom();
+            inLandingPhase = false;
+
+            switch (Dir)
+            {                
+                case 0://Navigate to the proper room if it exists, if it doesn't, create it then move to it.
+                    if(landingRoom.NorthBranch != null)
+                    {
+                        activeRoom = landingRoom.NorthBranch;
+                        activeRoom.RebuildCave();
+                    }
+                    else
+                    {                        
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
+                        Temp.CounterToEnd = Random.Range(3,3);
+                        landingRoom.ExtendCave(AllActiveMonsters, 0,Temp); 
+                        activeRoom = landingRoom.NorthBranch;
+                    }
+                    break;
+                case 1:
+                    if (landingRoom.EastBranch != null)
+                    {
+                        activeRoom = landingRoom.EastBranch;
+                        activeRoom.RebuildCave();
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
+                        Temp.CounterToEnd = Random.Range(3,3);
+                        landingRoom.ExtendCave(AllActiveMonsters, 1, Temp);
+                        activeRoom = landingRoom.EastBranch;
+                    }
+                    break;
+                case 2:
+                    if (landingRoom.SouthBranch != null)
+                    {
+                        activeRoom = landingRoom.SouthBranch;
+                        activeRoom.RebuildCave();
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
+                        Temp.CounterToEnd = Random.Range(3,3);
+                        landingRoom.ExtendCave(AllActiveMonsters, 2, Temp);
+                        activeRoom = landingRoom.SouthBranch;
+                    }
+                    break;
+                case 3:
+                    if (landingRoom.WestBranch != null)
+                    {
+                        activeRoom = landingRoom.WestBranch;
+                        activeRoom.RebuildCave();
+                    }
+                    else
+                    {
+                        Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                        Temp.transform.SetParent(gameObject.transform);
+                        Temp.CounterToEnd = Random.Range(3,3);
+                        landingRoom.ExtendCave(AllActiveMonsters, 3, Temp);
+                        activeRoom = landingRoom.WestBranch;
+                    }
+                    break;
             }
+            activeRoom.OnRoomSwitch(true);
+            activeRoom.PlaceMercs(true, true);
+            forwardBack = true;
+
         }
-        else{
-            if (activeRoom.previousRoom != null)
-            {//if we have forward to move to
+        else
+        {
+            if (isFoward)
+            {// if we are moving forward 
                 UndrawTick();
-                activeRoom.ClearRoom();                
-                activeRoom = activeRoom.previousRoom;
-                activeRoom.RebuildCave();
-                activeRoom.OnRoomSwitch(false);
-                activeRoom.PlaceMercs(false, true);
-                forwardBack = false;
+                activeRoom.ClearRoom();
+                if (activeRoom.nextRoom == null && activeRoom.CounterToEnd > 1)
+                {//Regular forward room, new
+                    Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                    Temp.transform.SetParent(gameObject.transform);
+                    Temp.CounterToEnd = activeRoom.CounterToEnd - 1;
+                    Temp.DeclareToPreventErrors();
+                    activeRoom.nextRoom = Temp;
+                    activeRoom.ExtendCave(AllActiveMonsters, false);
+                    activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
+                }
+                else if (activeRoom.nextRoom == null && activeRoom.CounterToEnd == 1)
+                {//last room in a branch
+                    Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
+                    Temp.transform.SetParent(gameObject.transform);
+                    Temp.CounterToEnd = activeRoom.CounterToEnd - 1;
+                    Temp.DeclareToPreventErrors();
+                    activeRoom.nextRoom = Temp;
+                    activeRoom.ExtendCave(AllActiveMonsters, true); activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
+                }
+                else if (activeRoom.nextRoom != null)
+                {//room already generated
+                    activeRoom = activeRoom.nextRoom;
+                    activeRoom.OnRoomSwitch(true);
+                    activeRoom.PlaceMercs(true, true);
+                    forwardBack = true;
+                }
+                else
+                {//retrun to landing after clearing final room.
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom = null;
+                    landingRoom.RebuildCave();
+                    inLandingPhase = true;
+                    forwardBack = false;
+                }
+            }
+            else
+            {
+                if (activeRoom.previousRoom != null)
+                {//if we have  backward to move to.
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom = activeRoom.previousRoom;
+                    activeRoom.RebuildCave();
+                    activeRoom.OnRoomSwitch(false);
+                    activeRoom.PlaceMercs(false, true);
+                    forwardBack = false;
 
+                }
+                else {//if we are returning to the landing zone, do so.
+                    UndrawTick();
+                    activeRoom.ClearRoom();
+                    activeRoom = null;
+                    landingRoom.RebuildCave();
+                    inLandingPhase = true;
+                    forwardBack = false;
+                }
             }
         }
-
+       
         CalcDirections();
-
     }
 
     void CalcDirections()
     {
-        for (int i = 0; i < 8; i++)
+        if (inLandingPhase)
         {
-            NavigationButtons[i].gameObject.SetActive(false);
-        }
-        switch (activeRoom.sourceDir)
-        {
-            case 0:
-                NavigationButtons[4].gameObject.SetActive(true);
-                break;
-            case 1:
-                NavigationButtons[5].gameObject.SetActive(true);
-                break;
-            case 2:
-                NavigationButtons[6].gameObject.SetActive(true);
-                break;
-            case 3:
-                NavigationButtons[7].gameObject.SetActive(true);
-                break;
-
-        }
-        if (activeRoom.ActiveMonsters.Count <= 0)
-        {
-            switch (activeRoom.destinationDir)
+            foreach (Button Butt in RoomEndButtons)
             {
-                case 0:
-                    NavigationButtons[0].gameObject.SetActive(true);
-                    break;
-                case 1:
-                    NavigationButtons[1].gameObject.SetActive(true);
-                    break;
-                case 2:
-                    NavigationButtons[2].gameObject.SetActive(true);
-                    break;
-                case 3:
-                    NavigationButtons[3].gameObject.SetActive(true);
-                    break;
-
+                Butt.gameObject.SetActive(false);
+                foodDisplay.text = foodLeft.ToString();                
+            }
+            for (int i = 4; i < 8; i++)
+            {
+                NavigationButtons[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                NavigationButtons[i].gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                NavigationButtons[i].gameObject.SetActive(false);
+            }            
+            if (activeRoom.ActiveMonsters.Count <= 0)
+            {
+                foreach(Button Butt in RoomEndButtons)
+                {
+                    Butt.gameObject.SetActive(true);
+                    foodDisplay.text = foodLeft.ToString();
+                    
+                }
+            }
+            else
+            {
+                foreach (Button Butt in RoomEndButtons)
+                {
+                    Butt.gameObject.SetActive(false);
+                    foodDisplay.text = foodLeft.ToString();
+                    
+                }
             }
         }
     }
@@ -242,9 +376,7 @@ public class WholeDungeon : MonoBehaviour {
             int totalMovement = (Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.x - index.x) + Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.y - index.y));
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
-            MovementTick(true);
-            CharacterTick(true);
-            MobTick(true);
+            DrawTick();
         }
     }
     public void PlaceActiveMerc(Vector2Int index)
@@ -313,12 +445,13 @@ public class WholeDungeon : MonoBehaviour {
                 CharacterTick(true);
                 MobTick(true);
                 break;
-            default:
-               
+            default:               
                 MobTick(true);
                 break;
         }
         CharacterTick(true);
+        CharacterIndicator.transform.position = new Vector3(AllActiveMercenaries[ActiveMerc].gridPosition.x/2.0f, AllActiveMercenaries[ActiveMerc].gridPosition.y/2.0f, 1);
+        portrait.Tick();
     }
 
     void UndrawTick()
@@ -395,8 +528,13 @@ public class WholeDungeon : MonoBehaviour {
             if(mob.Health <= 0)
             {
                 UndrawTick();
+                if(mob.pointBuy > 5)
+                {
+                    foodLeft += (mob.pointBuy / 5);
+                }
                 activeRoom.ActiveMonsters.Remove(mob);
                 Destroy(mob.gameObject);
+
                 foreach(Monster struckByFear in activeRoom.ActiveMonsters)
                 {
                     struckByFear.Morale -= 2;
@@ -445,5 +583,106 @@ public class WholeDungeon : MonoBehaviour {
             }
         }
 
+    }
+
+    public void MoveRooms( int Index) {//Just a linkup for the scene editor, which decided to not be co-operative.
+        if(Index < 0)
+        {
+            TraverseRooms(false, Mathf.Abs(Index));
+        }
+        else
+        {
+            TraverseRooms(true, Index);
+        }
+       
+
+    }
+
+    public void LootAndLeave()
+    {
+        Debug.Log("returning to the Fortress, Loot in hand.");
+        foreach (Button Butt in RoomEndButtons)
+        {
+            Butt.gameObject.SetActive(false);
+            foodDisplay.text = foodLeft.ToString();
+            
+        }
+    }
+
+    public void CampPhase()
+    {
+        Debug.Log("Entering Camp Phase");
+        portrait.Deactivate();
+        foreach (Button Butt in RoomEndButtons)
+        {//Disable previous set of buttons
+            Butt.gameObject.SetActive(false);
+            foodDisplay.text = foodLeft.ToString();            
+        }
+        Text[] Stats = new Text[3];
+        for (int i=0; i < AllActiveMercenaries.Count; i++)
+        {//Enable new set of buttons, based on number of mercs active. (or alive) 
+
+            CampButtons[i].gameObject.SetActive(true);
+            Stats = CampButtons[i].GetComponentsInChildren<Text>();
+            Stats[0].text = (AllActiveMercenaries[i].Health + "/" + AllActiveMercenaries[i].MaxHealth);
+            Stats[1].text = (AllActiveMercenaries[i].Stamina + "/" + AllActiveMercenaries[i].MaxStamina);
+            Stats[2].text = (AllActiveMercenaries[i].Morale + "/" + AllActiveMercenaries[i].MaxMorale);
+
+        }
+
+
+    }
+    public void LeaveCampPhase()
+    {
+        foreach(Button butt in CampButtons)
+        {
+            butt.gameObject.SetActive(false);
+        }
+        ActiveMerc = 0;
+        MoveRooms(1);
+    }
+
+    public void DesignateWatchman(int index)
+    {
+        foodLeft -= AllActiveMercenaries.Count;
+        foodDisplay.text = foodLeft.ToString();        
+        AllActiveMercenaries[index].Stamina -= 10;//reduce stamina for guard merc
+        Text[] Stats = new Text[3];
+        foreach (Mercenary merc in AllActiveMercenaries)//Increase resting stats for all resting mercs, and the guard merc.
+        {
+            merc.Health += merc.MaxHealth / 10;          
+            merc.Stamina += 5;          
+            merc.Morale += 1;
+
+            merc.Health = Mathf.Min(merc.Health, merc.MaxHealth);
+            merc.Stamina = Mathf.Min(merc.Stamina, merc.MaxStamina);
+            merc.Morale = Mathf.Min(merc.Morale, merc.MaxMorale);
+        }
+        for (int i = 0; i < AllActiveMercenaries.Count; i++)        {//Enable new set of buttons, based on number of mercs active. (or alive) 
+
+          
+            Stats = CampButtons[i].GetComponentsInChildren<Text>();
+            Stats[0].text = (AllActiveMercenaries[i].Health + "/" + AllActiveMercenaries[i].MaxHealth);
+            Stats[1].text = (AllActiveMercenaries[i].Stamina + "/" + AllActiveMercenaries[i].MaxStamina);
+            Stats[2].text = (AllActiveMercenaries[i].Morale + "/" + AllActiveMercenaries[i].MaxMorale);
+
+        }
+        if (foodLeft < AllActiveMercenaries.Count)
+        {
+            LeaveCampPhase();
+            MoveRooms(1);            
+        }
+    }
+
+    public void StanceSwitch(int incStyle)
+    {
+        if (AllActiveMercenaries[ActiveMerc].Movement > 0 && (int)AllActiveMercenaries[ActiveMerc].Style != incStyle)
+        {//if we have any movement, and we are actually changing, subtract a movement, and change that style.
+            UndrawTick();
+            AllActiveMercenaries[ActiveMerc].Style = (Stance)incStyle;
+            Debug.Log("Switching to stance " + (Stance)incStyle);
+            AllActiveMercenaries[ActiveMerc].Movement -= 1;
+            DrawTick();
+        }
     }
 }

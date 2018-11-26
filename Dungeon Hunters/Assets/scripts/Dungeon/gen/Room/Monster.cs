@@ -26,22 +26,22 @@ public class Monster : MonoBehaviour {
 	void Start () {
         if (isTemplate)
         {//If we are to generate 
-            int weaponTier =0, armourTier=0, highestSkill=0, temp;
-            while(pointBuy > 3)
+            int weaponTier =0, armourTier=0, highestSkill=0, temp, pointsRemaining = pointBuy;
+            while(pointsRemaining > 3)
             {//while we still have points to spend
-                temp = Random.Range(0, Mathf.Min(3, pointBuy));//pick a random number between 0 and either 3, or the points left
+                temp = Random.Range(0, Mathf.Min(3, pointsRemaining));//pick a random number between 0 and either 3, or the points left
                 weaponTier += temp;//Add it to the relevant 
-                pointBuy -= temp;//decriment the amout of points left, and then do this process again for the other 2 stats
+                pointsRemaining -= temp;//decriment the amout of points left, and then do this process again for the other 2 stats
                 MaxHealth += temp;
 
-                temp = Random.Range(0, Mathf.Min(3, pointBuy));
+                temp = Random.Range(0, Mathf.Min(3, pointsRemaining));
                 armourTier += temp;
-                pointBuy -= temp;
+                pointsRemaining -= temp;
                 MaxStamina += temp;
 
-                temp = Random.Range(0, Mathf.Min(3, pointBuy));
+                temp = Random.Range(0, Mathf.Min(3, pointsRemaining));
                 highestSkill += temp;
-                pointBuy -= temp;
+                pointsRemaining -= temp;
                 MaxMorale += temp;
             }
             //All of our points have been allocated, time to interprit them.
