@@ -22,6 +22,12 @@ TextureImporter:
     21300034: sheet_ui_17
     21300036: sheet_ui_18
     21300038: sheet_ui_19
+    21300040: sheet_ui_20
+    21300042: sheet_ui_21
+    21300044: sheet_ui_22
+    21300046: sheet_ui_23
+    21300048: sheet_ui_24
+    21300050: sheet_ui_25
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -495,13 +501,133 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: sheet_ui_20
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 42
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0269cea3d2ec3354baad5fbb529f9301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_21
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 42
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89dc8b3518b6f42479d0dc0fc8a4b326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_22
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 25
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 735999346bac5d04bbed81f1d217784b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_23
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 25
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa24d977df499fc41871d8928d266539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_24
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 25
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ff9bf02af379e04bb7b06a343b06141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_25
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 2
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25c8064fdb33dc345ab361072a9affa0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: sheet_ui_19
       rect:
         serializedVersion: 2
-        x: 19
-        y: 4
-        width: 31
-        height: 31
+        x: 31
+        y: 10
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -509,7 +635,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a918186e0c3e4dc49a457dc204fddbc0
+      spriteID: 9bf278101f9bc7a4dbb8edb3495cf1a9
       vertices: []
       indices: 
       edges: []

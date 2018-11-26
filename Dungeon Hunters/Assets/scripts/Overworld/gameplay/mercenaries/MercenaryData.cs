@@ -10,6 +10,8 @@ namespace App {
 
         public GameObject LocationMarker;
 
+        public Inventory Equipment;
+
         private HexTile location;
         public HexTile Location {
             get { return location; }
@@ -33,7 +35,7 @@ namespace App {
 
         public List<MercenarySkills> Skills;
 
-        public MercenaryData(string pName, int pMind, int pBody, int pSpirit, List<MercenarySkills> pSkills, int pRank = 1) {
+        public MercenaryData(string pName, int pMind, int pBody, int pSpirit, List<MercenarySkills> pSkills, int pRank = 1, Inventory pEquipment = null) {
             name = pName;
             mind = pMind;
             body = pBody;
@@ -42,6 +44,13 @@ namespace App {
 
             Skills = new List<MercenarySkills>();
             Skills.AddRange(pSkills);
+
+            if(pEquipment == null) {
+                // Inventories are always 5x5 for now.
+                Equipment = new Inventory(5, 5);
+            } else {
+                Equipment = pEquipment;
+            }
         }
 
         public void SetPath(List<HexTile> pPath) {

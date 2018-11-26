@@ -20,7 +20,7 @@ namespace App {
         [SerializeField] GameObject mercenaryUIObject;
         [SerializeField] RectTransform mercenaryUIContainer;
         [SerializeField] Sprite[] mercenaryTabSprites;
-
+        
         // Use this for initialization
         void Awake() {
             if (Instance == null) Instance = this;
@@ -34,6 +34,7 @@ namespace App {
             // Add a starter mercenary to the list.
             Mercenaries.Add(RandomMercenary());
             Mercenaries.Add(RandomMercenary());
+            
             UpdateMercenaryUI();
             SetSelectedMercenary(Mercenaries[0]);
         }
