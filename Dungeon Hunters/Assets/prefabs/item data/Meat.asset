@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Name: Meat
   m_EditorClassIdentifier: 
   Name: Meat
-  Power: 0
+  BasePower: 0
   FlavorText: The ichor of death promises a perpetuation of life.
   Type: 3
+  Shape: 4
   Stackable: 1
-  StackSize: 1
+  MaxEnchantments: 0
   EnchantmentPool: []
-  ActiveEnchantments: []
-  IsInitialized: 0
-  AbsoluteCenter: {x: 0, y: 0}
-  Shape: 7
   Image: {fileID: 21300006, guid: b363924f63d42424281ac4639a289ddd, type: 3}
+  StackSize: 1
+  ActiveEnchantments: []
+  RotationIndex: 0

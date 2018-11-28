@@ -9,8 +9,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f47dec1ed05eef43840eb9cf654e7e2, type: 3}
-  m_Name: ProtectionI
+  m_Name: ForagingI
   m_EditorClassIdentifier: 
-  Type: 1
+  Type: 3
   Power: 1
-  Image: {fileID: 21300014, guid: 363adedd8fe8125419fb91adfcbedfed, type: 3}
+  Image: {fileID: 21300016, guid: 363adedd8fe8125419fb91adfcbedfed, type: 3}

@@ -9,17 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4e5969f7d4a28447aeb63a5c9b9c549, type: 3}
-  m_Name: LesserTalismanOfTesting
+  m_Name: IronTowerShield
   m_EditorClassIdentifier: 
-  Name: Lesser Talisman of Testing
-  Power: 1
-  FlavorText: Unassuming and meek, its aura is helpful nonetheless.
-  Type: 0
+  Name: Iron Tower Shield
+  BasePower: 10
+  FlavorText: If I can't see them, they can't see me.
+  Type: 1
+  Shape: 1
   Stackable: 0
+  MaxEnchantments: 2
+  EnchantmentPool:
+  - {fileID: 11400000, guid: 5630e0660fd611b41a27175d6eeb1500, type: 2}
+  Image: {fileID: 21300002, guid: b363924f63d42424281ac4639a289ddd, type: 3}
   StackSize: 0
-  EnchantmentPool: []
   ActiveEnchantments: []
-  IsInitialized: 0
-  AbsoluteCenter: {x: 4, y: 1}
-  Shape: 7
-  Image: {fileID: 21300000, guid: b363924f63d42424281ac4639a289ddd, type: 3}
+  RotationIndex: 0

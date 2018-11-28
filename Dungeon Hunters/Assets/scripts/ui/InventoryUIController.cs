@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using App.UI;
 using App;
+using System;
 
 public class InventoryUIController : MonoBehaviour {
 
@@ -16,6 +17,9 @@ public class InventoryUIController : MonoBehaviour {
     Inventory topInventory, bottomInventory;
 
     [HideInInspector] public RectTransform SelectedItem;
+    private RectTransform lastSelectedItem;
+    private Vector2 selectionAnchorOffset;
+
     Inventory FocusedInventory;
     RectTransform FocusedGrid;
 
@@ -30,6 +34,35 @@ public class InventoryUIController : MonoBehaviour {
 
     public void Update() {
         if (mouseHovering) MouseOver(FocusedGrid);
+        
+        // Snapping selected item to the mouse cursor correctly
+        if (SelectedItem != null) {
+            // need to recalculate the anchor offset
+            if (SelectedItem != lastSelectedItem) {
+                Item i = SelectedItem.GetComponent<ItemObject>().Data;
+
+                // This is the difference between the center of the rect to the
+                // center of the index of 0, 0 in the item's local configuration, in world space
+                
+                // Offset in inventory units of the center of the origin of the item from the top left corner of the item bound rect
+                Vector2 originRectCenter = Item.GetLocalPointRect(i, 0, 0).center;
+                Rect localBounds = Item.GetLocalBounds(i);
+                // Item bounding rect center
+                Vector2 boundsCenter = new Vector2(localBounds.width, localBounds.height) / 2;
+
+                // Offset in inventory units from the center of the item bounding rect to the center of the item's origin
+                Vector2 offset = originRectCenter - boundsCenter;
+                offset.y *= -1;
+
+                // Convert the offset to screen space
+                selectionAnchorOffset = offset * itemUISize * AppUI.Instance.UICanvas.transform.lossyScale;
+            }
+
+            // snap the selected item to the cursor, adding the offset.
+            SelectedItem.position = Input.mousePosition - (Vector3)selectionAnchorOffset;
+        }
+
+        lastSelectedItem = SelectedItem;
     }
 
     public void MouseOver(RectTransform pGridParent) {
@@ -130,6 +163,50 @@ public class InventoryUIController : MonoBehaviour {
         }
 
         return targetRect;
+    }
+
+    public void ToggleEquipMousedOverItem() {
+        // Only equip an item if there isn't a held item
+        if (SelectedItem != null) return;
+
+        // Only equip an item that's in a mercenary's inventory
+        MercenaryData toEquipTo = null;
+        foreach(MercenaryData m in MercenaryController.Instance.Mercenaries) {
+            if (FocusedInventory == m.Inventory) {
+                toEquipTo = m;
+                break;
+            }
+        }
+
+        // This isn't a mercenary inventory, so return.
+        if (toEquipTo == null) return;
+
+        Item toEquip = GetMousedOverItem(FocusedGrid);
+
+        // No item was moused over, so return.
+        if (toEquip == null) return;
+
+        // This item isn't equippable, so return.
+        if (!Item.IsEquippable(toEquip)) return;
+
+        // We can equip or unequip the item. Do it.
+
+        if(toEquip.IsEquipped) {
+            toEquipTo.UnequipItem(toEquip);
+        } else {
+            toEquipTo.EquipItem(toEquip);
+        }
+
+        // Update the equipped badge for the correct item UI object
+        foreach (ItemObject i in FocusedGrid.GetComponentsInChildren<ItemObject>()) {
+            if (toEquip == i.Data) {
+                i.UpdateIsEquipped();
+                break;
+            }
+        }
+
+        // Update the power readout
+        AppUI.Instance.MercenaryEquipPowerInventory.text = "Equipment Power\n" + AppUI.Instance.SelectedMercenary.Inventory.EquippedPowerLevel + " / " + AppUI.Instance.SelectedMercenary.MaxEquipmentPower;
     }
 
     public void MouseExit() {
@@ -240,6 +317,9 @@ public class InventoryUIController : MonoBehaviour {
 
         if (SelectedItem == null) return;
 
+        // Make sure the selected item always draws over the other items
+        SelectedItem.transform.SetAsLastSibling();
+
         // We have the item object that should be held.
         CursorController.Instance.PickupInventoryItem();
     }
@@ -260,7 +340,7 @@ public class InventoryUIController : MonoBehaviour {
         // compare the item's indices to the indices in the inventory
         Item item = SelectedItem.GetComponent<ItemObject>().Data;
         if (!FocusedInventory.TestAddition(item, clickedIndex.x, clickedIndex.y)) return;
-
+       
         // This item can go in the slots indicated by the clicked origin slot
         // Remove the item from the inventory it came from, and put it in the focused inventory
         // with its origin at the clicked slot
@@ -273,6 +353,9 @@ public class InventoryUIController : MonoBehaviour {
 
         // Reload the focused inventory
         LoadInventory(FocusedInventory, pGridParent);
+
+        // Reset the cursor
+        CursorController.Instance.PutDownInventoryItem();
     }
 
     public void ClickShowStrongholdInventoryButton() {
@@ -308,7 +391,12 @@ public class InventoryUIController : MonoBehaviour {
         UnloadMercenaryInventory();
 
         // Load the new inventory
-        LoadInventory(AppUI.Instance.SelectedMercenary.Equipment, AppUI.Instance.MercInventoryGridParent);
+        LoadInventory(AppUI.Instance.SelectedMercenary.Inventory, AppUI.Instance.MercInventoryGridParent);
+
+        AppUI.Instance.MercenaryNameInventory.text = AppUI.Instance.SelectedMercenary.Name;
+        AppUI.Instance.MercenaryEquipPowerInventory.text = "Equipment Power\n" + AppUI.Instance.SelectedMercenary.Inventory.EquippedPowerLevel + " / " + AppUI.Instance.SelectedMercenary.MaxEquipmentPower;
+        AppUI.Instance.MercenaryPowerLevelInventory.text = "Power " + AppUI.Instance.SelectedMercenary.Inventory.PowerLevel;
+        AppUI.Instance.MercenaryRankInventory.text = "Rank " + AppUI.Instance.SelectedMercenary.Rank;
     }
 
     /// <summary>
@@ -324,6 +412,8 @@ public class InventoryUIController : MonoBehaviour {
     /// <param name="pToLoad">Inventory to load.</param>
     /// <param name="pUIGrid">Panel to load into.</param>
     public void LoadInventory(Inventory pToLoad, RectTransform pUIGrid) {
+        UnloadInventory(pUIGrid);
+
         List<Item> closedList = new List<Item>();
 
         for (int x = 0; x < pToLoad.Width; x++) {
@@ -333,9 +423,10 @@ public class InventoryUIController : MonoBehaviour {
 
                 if (i != null && !closedList.Contains(i)) {
                     // This item still needs to be instantiated
-                    if (i.AbsoluteCenter == new Vector2Int(x, y)) {
-                        // If this index is the index of the absolute center of the item, place it here and add it to the closed list.
+                    int indexOfThisIndex = Array.IndexOf(i.GlobalConfiguration.Indices, new Vector2Int(x, y));
+                    if (indexOfThisIndex != -1 && i.LocalConfiguration.Indices[indexOfThisIndex] == Vector2Int.zero) {
 
+                        // If this index is the index of the local center of the item, place it here and add it to the closed list.
                         GameObject item = Instantiate(AppUI.Instance.ItemObject, pUIGrid);
                         item.GetComponent<Image>().sprite = i.Image;
                         item.GetComponent<ItemObject>().Data = i;
@@ -343,9 +434,12 @@ public class InventoryUIController : MonoBehaviour {
                         // Set the scale
                         // Get the index bounds of the item in the inventory
                         Rect itemBounds = pToLoad.ItemBounds(i);
+                        Rect boundsBeforeRotation = Item.LocalBoundsBeforeRotation(i);
 
+                        item.GetComponent<RectTransform>().localRotation = Quaternion.Euler(new Vector3(0, 0, i.RotationIndex * 90f));
+                        
                         // xMin = itembounds.x, xMax = xMin + itemBounds.width * itemUISize, etc
-                        item.GetComponent<RectTransform>().sizeDelta = new Vector2(itemBounds.width * itemUISize, itemBounds.height * itemUISize);
+                        item.GetComponent<RectTransform>().sizeDelta = new Vector2(boundsBeforeRotation.width * itemUISize, boundsBeforeRotation.height * itemUISize);
 
                         // Calculate the position of this index in the grid after scaling.
                         Vector2 position = new Vector2(
@@ -365,8 +459,6 @@ public class InventoryUIController : MonoBehaviour {
         // Set up the text fields
         if (pUIGrid == AppUI.Instance.MercInventoryGridParent) {
             bottomInventory = pToLoad;
-            AppUI.Instance.MercenaryNameInventory.text = AppUI.Instance.SelectedMercenary.Name;
-            AppUI.Instance.MercenaryPowerLevelInventory.text = "Power " + pToLoad.PowerLevel;
         } else topInventory = pToLoad;
     }
 

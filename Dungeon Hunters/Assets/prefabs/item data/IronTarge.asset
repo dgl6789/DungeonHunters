@@ -11,17 +11,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e5969f7d4a28447aeb63a5c9b9c549, type: 3}
   m_Name: IronTarge
   m_EditorClassIdentifier: 
-  Name: IronTarge
+  Name: Iron Targe
   BasePower: 3
   FlavorText: A reinforced disc of wood can be the difference between victory and
     perdition.
   Type: 1
+  Shape: 4
   Stackable: 0
-  StackSize: 1
+  MaxEnchantments: 1
   EnchantmentPool:
   - {fileID: 11400000, guid: 5630e0660fd611b41a27175d6eeb1500, type: 2}
-  ActiveEnchantments: []
-  IsInitialized: 0
-  AbsoluteCenter: {x: 0, y: 0}
-  Shape: 7
   Image: {fileID: 21300014, guid: b363924f63d42424281ac4639a289ddd, type: 3}
+  StackSize: 1
+  ActiveEnchantments: []
+  RotationIndex: 0

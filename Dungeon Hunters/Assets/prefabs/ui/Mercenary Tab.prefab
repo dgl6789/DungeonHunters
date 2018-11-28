@@ -134,8 +134,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Mercenary Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7686f18409e92974f8706ca43b0b8e30, type: 2}
-  m_sharedMaterial: {fileID: 21889107702165048, guid: 7686f18409e92974f8706ca43b0b8e30,
+  m_fontAsset: {fileID: 11400000, guid: 7b2c16a1f8869ad46a27524bad5a2732, type: 2}
+  m_sharedMaterial: {fileID: 21122353335117152, guid: 7b2c16a1f8869ad46a27524bad5a2732,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -160,11 +160,11 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 7.1
+  m_fontSizeBase: 1
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 6
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
@@ -316,8 +316,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: M / B / S
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7686f18409e92974f8706ca43b0b8e30, type: 2}
-  m_sharedMaterial: {fileID: 21889107702165048, guid: 7686f18409e92974f8706ca43b0b8e30,
+  m_fontAsset: {fileID: 11400000, guid: 46438293961938d448d2e732aeca3973, type: 2}
+  m_sharedMaterial: {fileID: 21764665157553348, guid: 46438293961938d448d2e732aeca3973,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -342,17 +342,17 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 260
+  m_textAlignment: 516
   m_isAlignmentEnumConverted: 1
-  m_characterSpacing: 0
-  m_wordSpacing: 0
+  m_characterSpacing: -8
+  m_wordSpacing: -5
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -360,7 +360,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -430,8 +430,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Rank X
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7686f18409e92974f8706ca43b0b8e30, type: 2}
-  m_sharedMaterial: {fileID: 21889107702165048, guid: 7686f18409e92974f8706ca43b0b8e30,
+  m_fontAsset: {fileID: 11400000, guid: 46438293961938d448d2e732aeca3973, type: 2}
+  m_sharedMaterial: {fileID: 21764665157553348, guid: 46438293961938d448d2e732aeca3973,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -456,17 +456,17 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 257
+  m_textAlignment: 513
   m_isAlignmentEnumConverted: 1
-  m_characterSpacing: 0
-  m_wordSpacing: 0
+  m_characterSpacing: -8
+  m_wordSpacing: -5
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -600,8 +600,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -26.48, y: -4.4725}
-  m_SizeDelta: {x: 27.32, y: 8.945}
+  m_AnchoredPosition: {x: -26.48, y: -3.61}
+  m_SizeDelta: {x: 27.32, y: 7.23}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224376736696828540
 RectTransform:
@@ -640,7 +640,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 53.3}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 85.599, y: 27.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224666241510270572
@@ -658,8 +658,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.69, y: -4.4725}
-  m_SizeDelta: {x: 29.78, y: 8.94}
+  m_AnchoredPosition: {x: 0.69, y: -3.61}
+  m_SizeDelta: {x: 29.78, y: 7.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224825995478652410
 RectTransform:
@@ -676,6 +676,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.28, y: 6.24}
-  m_SizeDelta: {x: 55.72, y: 9.84}
+  m_AnchoredPosition: {x: -12.28, y: 5.5775}
+  m_SizeDelta: {x: 55.72, y: 11.165}
   m_Pivot: {x: 0.5, y: 0.5}

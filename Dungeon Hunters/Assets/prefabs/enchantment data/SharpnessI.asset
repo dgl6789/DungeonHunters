@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Name: SharpnessI
   m_EditorClassIdentifier: 
   Type: 0
-  BasePower: 1
-  Rank: 1
+  Power: 1
   Image: {fileID: 21300008, guid: 363adedd8fe8125419fb91adfcbedfed, type: 3}

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace App {
@@ -7,18 +8,29 @@ namespace App {
 
         private int[,] layout;
 
-        private List<Item> items;
-        public Item this[Item item] {
-            get {
-                return items[items.IndexOf(item)];
-            }
+        private Dictionary<int, Item> items;
+
+        public int KeyOf(Item pItem) {
+            return items.FirstOrDefault(i => i.Value == pItem).Key;
         }
 
         public int PowerLevel {
             get {
                 int p = 0;
-                foreach(Item i in items) {
-                    p += i.Power;
+                foreach(KeyValuePair<int, Item> kvp in items) {
+                        p += kvp.Value.Power;
+                }
+
+                return p;
+            }
+        }
+
+        public int EquippedPowerLevel {
+            get {
+                int p = 0;
+                foreach (KeyValuePair<int, Item> kvp in items) {
+                    if (Item.IsEquippable(kvp.Value))
+                        p += kvp.Value.IsEquipped ? kvp.Value.Power : 0;
                 }
 
                 return p;
@@ -34,12 +46,12 @@ namespace App {
         }
 
         public Inventory(int sizeX, int sizeY) {
-            items = new List<Item>();
+            items = new Dictionary<int, Item>();
 
             layout = new int[sizeX, sizeY];
             for(int x = 0; x < layout.GetLength(0); x++) {
                 for (int y = 0; y < layout.GetLength(1); y++) {
-                    layout[x, y] = -1;
+                    layout[x, y] = 0;
                 }
             }
         }
@@ -52,22 +64,27 @@ namespace App {
         /// <param name="y">Y position in the inventory layout of the item's origin.</param>
         /// <returns>True if the add succeeded, false if not.</returns>
         public bool AddItem(Item item, int x, int y) {
-            if (!item.IsInitialized) item.InitializeShape();
 
             if (TestAddition(item, x, y)) {
-                if (items.Contains(item)) {
+                if (items.ContainsValue(item)) {
                     RemoveItem(item);
                     AddItem(item, x, y);
                 }
 
-                items.Add(item);
+                int k = GetSmallestUnusedKey();
+
+                items.Add(k, item);
                 item.Inventory = this;
 
-                foreach (Vector2Int i in item.Configuration.Indices) {
-                    layout[i.x + x, i.y + y] = items.IndexOf(item);
+                // Update the item's globalconfiguration indices
+                for(int i = 0; i < item.GlobalConfiguration.Indices.Length; i++) {
+                    item.GlobalConfiguration.Indices[i] = new Vector2Int(x + item.LocalConfiguration.Indices[i].x, y + item.LocalConfiguration.Indices[i].y);
                 }
 
-                item.AbsoluteCenter = new Vector2Int(x, y);
+                // Update the inventory's layout
+                foreach (Vector2Int i in item.GlobalConfiguration.Indices) {
+                    layout[i.x, i.y] = k;
+                }
 
                 return true;
             } else if (item.Stackable && item.Name == GetItemFromLayout(x, y).Name) {
@@ -86,14 +103,13 @@ namespace App {
         /// <returns></returns>
         public bool TestAddition(Item item, int x, int y) {
             // If the indices are not available, return false.
-            foreach (Vector2Int i in item.Configuration.Indices) {
-                int tX = i.x + x;
-                int tY = i.y + y;
+            foreach (Vector2Int i in item.LocalConfiguration.Indices) {
+                int tx = x + i.x;
+                int ty = y + i.y;
 
-                if (tX < -1 || tX > layout.GetLength(0) || 
-                    tY < -1 || tY > layout.GetLength(1) || 
-                    !(layout[tX, tY] == -1 || layout[tX, tY] == items.IndexOf(item)))
-                    return false;
+                if (tx < 0 || tx > layout.GetLength(0) - 1 || ty < 0 || ty > layout.GetLength(1) - 1) return false;
+
+                if (!(layout[tx, ty] == 0 || layout[tx, ty] == KeyOf(item))) return false;
             }
 
             return true;
@@ -104,29 +120,61 @@ namespace App {
         /// </summary>
         /// <param name="item">Item to remove.</param>
         public void RemoveItem(Item item) {
-            if (!items.Contains(item)) return;
+            int targetKey = KeyOf(item);
 
-            int targetIndex = items.IndexOf(item);
+            if (targetKey == 0) return;
 
             for(int x = 0; x < layout.GetLength(0); x++) {
                 for (int y = 0; y < layout.GetLength(1); y++) {
-                    if (layout[x, y] == targetIndex) layout[x, y] = -1;
+                    if (layout[x, y] == targetKey) layout[x, y] = 0;
                 }
             }
 
-            items.Remove(item);
+            items.Remove(targetKey);
             item.Inventory = null;
         }
 
+        /// <summary>
+        /// Get a list of all the items in the inventory.
+        /// </summary>
+        /// <returns>List of all the items in the inventory.</returns>
+        public List<Item> GetItems() {
+            List<Item> i = new List<Item>();
+
+            foreach(KeyValuePair<int, Item> item in items) {
+                if (!i.Contains(item.Value)) i.Add(item.Value);
+            }
+
+            return i;
+        }
+
+        /// <summary>
+        /// Get a list of all the active enchantments in the inventory. These are
+        /// enchantments on equipment that is equipped, or enchantments on items
+        /// that are not equippable, like trinkets.
+        /// </summary>
+        /// <returns>List of all the active enchantments in the inventory.</returns>
+        public List<Enchantment> GetActiveEnchantments() {
+            List<Enchantment> enchantments = new List<Enchantment>();
+
+            foreach (Item i in GetItems()) {
+                if(Item.IsEnchantable(i) && (i.IsEquipped || !Item.IsEquippable(i))) {
+                    enchantments.AddRange(i.ActiveEnchantments);
+                }
+            }
+
+            return enchantments;
+        }
+
         public Rect ItemBounds(Item i) {
-            int targetIndex = items.IndexOf(i);
+            int targetIndex = KeyOf(i);
 
             int largestHIndex = 0;
             int smallestHIndex = int.MaxValue;
             int largestWIndex = 0;
             int smallestWIndex = int.MaxValue;
 
-            if(items.Contains(i)) {
+            if(items.ContainsValue(i)) {
                 for(int x = 0; x < layout.GetLength(0); x++) {
                     for (int y = 0; y < layout.GetLength(1); y++) {
                         if(layout[x, y] == targetIndex) {
@@ -148,10 +196,28 @@ namespace App {
                 index = layout[x, y];
             else return null;
 
-            if (index > -1 && index < items.Count)
-                return items[index];
+            if (index > 0 && items.ContainsKey(index)) return items[index];
 
             return null;
+        }
+
+        public override string ToString() {
+            string s = "";
+
+            for (int x = 0; x < layout.GetLength(0); x++) {
+                for (int y = 0; y < layout.GetLength(1); y++) {
+                    s += (y < layout.GetLength(1) - 1) ? layout[x, y] + ", " : layout[x, y] + "\n";
+                }
+            }
+
+            return s;
+        }
+
+        private int GetSmallestUnusedKey() {
+            int i = 1;
+            while (items.ContainsKey(i)) i++;
+
+            return i;
         }
     }
 }

@@ -9,18 +9,27 @@ namespace App.UI {
 
         [SerializeField] TextMeshProUGUI LabelField;
         [SerializeField] TextMeshProUGUI DaysField;
-        [SerializeField] Image Portrait;
-        [SerializeField] Image TileImage;
+
+        [SerializeField] Button FocusMercButton;
+        [SerializeField] Button FocusDestinationButton;
+        [SerializeField] Button FinishButton;
 
         public void AssignData(Notification pData) {
             LabelField.text = pData.Label;
             
-            DaysField.text = pData.DayLimit == 0 ? "Ready!" : "Ready in " + pData.DayLimit + " days.";
-            
-            // Portrait.sprite = pData.Mercenary.Portrait;
-            TileImage.sprite = pData.Tile.Data.DrawnSprite;
+            DaysField.text = pData.DayLimit == 0 ? "Ready! Click the checkmark to resolve." : "Ready in " + pData.DayLimit + " days.";
 
-            GetComponent<Button>().onClick.AddListener(() => NotificationController.Instance.ClickNotification(NotificationController.Instance.Notifications.IndexOf(pData)));
+            FocusMercButton.onClick.AddListener(() => TileSelector.Instance.SetTarget(pData.Mercenary.Location));
+            FocusDestinationButton.onClick.AddListener(() => TileSelector.Instance.SetTarget(pData.Tile));
+
+            // Listener for when the notification is ready to turn in
+            FinishButton.onClick.AddListener(() => {
+                    NotificationController.Instance.ClickNotification(NotificationController.Instance.Notifications.IndexOf(pData));
+                    TileSelector.Instance.SetTarget(pData.Tile);
+                }
+            );
+            
+            FinishButton.interactable = (pData.DayLimit == 0);
         }
     }
 }

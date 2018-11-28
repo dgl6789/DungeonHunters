@@ -1,16 +1,13 @@
 fileFormatVersion: 2
-guid: 363adedd8fe8125419fb91adfcbedfed
+guid: 62b3ee26312eaa54a800fe39a2b8bd92
 TextureImporter:
   fileIDToRecycleName:
-    21300000: sheet_enchantments_0
-    21300002: sheet_enchantments_1
-    21300004: sheet_enchantments_2
-    21300006: sheet_enchantments_3
-    21300008: sheet_enchantments_4
-    21300010: sheet_enchantments_5
-    21300012: sheet_enchantments_6
-    21300014: sheet_enchantments_7
-    21300016: sheet_enchantments_8
+    21300000: buttons_notificationFocusTask_0
+    21300002: buttons_notificationFocusTask_1
+    21300004: buttons_notificationFocusTask_2
+    21300006: buttons_notificationFocusTask_3
+    21300008: buttons_notificationFocusTask_4
+    21300010: buttons_notificationFocusTask_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -69,7 +66,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 64
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -80,7 +77,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 256
+    maxTextureSize: 64
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -91,7 +88,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Android
-    maxTextureSize: 256
+    maxTextureSize: 64
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -102,7 +99,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: WebGL
-    maxTextureSize: 256
+    maxTextureSize: 64
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -115,93 +112,93 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheet_enchantments_0
+      name: buttons_notificationFocusTask_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 242
-        width: 14
-        height: 14
+        y: 12
+        width: 11
+        height: 11
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d14e64bfc7d38b642b2bd3fb26c5b75d
+      spriteID: f23e958b8abcef54fa9cd8f5d2a1fa6e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_enchantments_1
+      name: buttons_notificationFocusTask_1
       rect:
         serializedVersion: 2
-        x: 15
-        y: 242
-        width: 14
-        height: 14
+        x: 0
+        y: 0
+        width: 11
+        height: 11
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8b3f609e8c4a6b4b97723e2c689ee18
+      spriteID: b2fa197f5462c6545b781fba297d8e0f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_enchantments_2
+      name: buttons_notificationFocusTask_2
       rect:
         serializedVersion: 2
-        x: 30
-        y: 242
-        width: 14
-        height: 14
+        x: 12
+        y: 12
+        width: 11
+        height: 11
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f0cf71dd1a2eef14284ac70a45fe4d99
+      spriteID: a2b621bc532480547846ce7555cf0c11
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_enchantments_3
+      name: buttons_notificationFocusTask_3
       rect:
         serializedVersion: 2
-        x: 45
-        y: 242
-        width: 14
-        height: 14
+        x: 12
+        y: 0
+        width: 11
+        height: 11
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39333a2991eb7f642b7b25e70bf52a96
+      spriteID: 98af3fafb4baea249ae8c62156d8dbec
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_enchantments_4
+      name: buttons_notificationFocusTask_4
       rect:
         serializedVersion: 2
-        x: 60
-        y: 242
-        width: 14
-        height: 14
+        x: 24
+        y: 12
+        width: 11
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -209,19 +206,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a71395ce88e01c142a46fe3f815d568a
+      spriteID: 23fec40dd39c00b46b617f6c00e1188e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheet_enchantments_5
+      name: buttons_notificationFocusTask_5
       rect:
         serializedVersion: 2
-        x: 75
-        y: 242
-        width: 14
-        height: 14
+        x: 24
+        y: 0
+        width: 11
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,67 +226,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0554f43bebf9b1642845270148134695
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_enchantments_6
-      rect:
-        serializedVersion: 2
-        x: 90
-        y: 242
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dbfe743558deb5045b84c65a2263e410
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_enchantments_7
-      rect:
-        serializedVersion: 2
-        x: 105
-        y: 242
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: af49cd38f285ea14f8516c185ffc9cd6
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheet_enchantments_8
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 242
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fdfca5d32af2c6e498a89f26f6c7b38a
+      spriteID: 81895f49fd7d6c3459810ba3061e2e31
       vertices: []
       indices: 
       edges: []
@@ -297,7 +234,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d35fc79c3558a8b438ead62e7b2e9b33
+    spriteID: 1841e9e7e6f2a484ebcd9fc9dbf4fbc5
     vertices: []
     indices: 
     edges: []

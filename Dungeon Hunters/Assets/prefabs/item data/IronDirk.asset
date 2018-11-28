@@ -9,17 +9,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4e5969f7d4a28447aeb63a5c9b9c549, type: 3}
-  m_Name: IronShortsword
+  m_Name: IronDirk
   m_EditorClassIdentifier: 
-  Name: Iron Shortsword
-  BasePower: 5
-  FlavorText: A lump of rock from the earth turned instrument of liberation.
+  Name: Iron Dirk
+  BasePower: 3
+  FlavorText: Danger close.
   Type: 2
-  Shape: 5
+  Shape: 4
   Stackable: 0
-  MaxEnchantments: 0
-  EnchantmentPool: []
-  Image: {fileID: 21300012, guid: b363924f63d42424281ac4639a289ddd, type: 3}
-  StackSize: 1
+  MaxEnchantments: 1
+  EnchantmentPool:
+  - {fileID: 11400000, guid: 004989036388e424598275c0ba23f18e, type: 2}
+  Image: {fileID: 21300000, guid: b363924f63d42424281ac4639a289ddd, type: 3}
+  StackSize: 0
+  IsEquipped: 0
   ActiveEnchantments: []
   RotationIndex: 0

@@ -9,18 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4e5969f7d4a28447aeb63a5c9b9c549, type: 3}
-  m_Name: GreaterTalismanOfTesting
+  m_Name: OrbOfLuck
   m_EditorClassIdentifier: 
-  Name: Greater Talisman of Testing
-  Power: 5
-  FlavorText: It hums with energy. You get the impression that it is here to help.
+  Name: Lucky Wizard's Orb
+  BasePower: 6
+  FlavorText: If the wizard lost it, how lucky is it, really?
   Type: 0
+  Shape: 4
   Stackable: 0
-  StackSize: 0
+  MaxEnchantments: 1
   EnchantmentPool:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 5402cd7d1aed6614a8e4088c4aeebe0a, type: 2}
+  Image: {fileID: 21300020, guid: b363924f63d42424281ac4639a289ddd, type: 3}
+  StackSize: 1
   ActiveEnchantments: []
-  IsInitialized: 0
-  AbsoluteCenter: {x: 0, y: 0}
-  Shape: 3
-  Image: {fileID: 21300002, guid: b363924f63d42424281ac4639a289ddd, type: 3}
+  RotationIndex: 0

@@ -38,6 +38,8 @@ namespace App.UI {
 
         public TextMeshProUGUI MercenaryNameInventory;
         public TextMeshProUGUI MercenaryPowerLevelInventory;
+        public TextMeshProUGUI MercenaryEquipPowerInventory;
+        public TextMeshProUGUI MercenaryRankInventory;
 
         [Header("Buttons")]
 
@@ -53,11 +55,12 @@ namespace App.UI {
         public Animator TopInventoryPanel;
         public Animator BottomInventoryPanel;
 
-
         [Header("Sprites")]
 
         public Sprite[] inventoryButtonSprites;
         public Sprite[] itemTypeSprites;
+        public Sprite enchantmentLockedSprite;
+        public Sprite enchantmentEmptySprite;
 
         [Header("Transforms")]
 
@@ -80,7 +83,10 @@ namespace App.UI {
         public GameObject ItemObject;
         public GameObject ItemTooltipObject;
 
-        public Item testItem;
+        public Item towershield;
+        public Item armor;
+        public Item berryswitch;
+        public Item meat;
 
         public void Awake() {
             if (Instance == null) Instance = this;
@@ -92,16 +98,14 @@ namespace App.UI {
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Z)) {
-                Item i = Instantiate(testItem);
-                i.InitializeShape();
-                i.StackSize = 14;
-                SelectedMercenary.Equipment.AddItem(i, 2, 2);
-            }
+                int rot = Random.Range(0, 4);
 
-            if(InventoryUIController.Instance.SelectedItem != null) {
-                // snap the selected item to the cursor.
-                // check if it's going to be put down?
-                InventoryUIController.Instance.SelectedItem.position = Input.mousePosition;
+                Item m = Item.Initialize(meat, 0, 0, rot, true, SelectedMercenary.Inventory);
+                m.StackSize = Random.Range(3, 27);
+                SelectedMercenary.Inventory.AddItem(m, 0, 0);
+                SelectedMercenary.Inventory.AddItem(Item.Initialize(towershield, 3, 4, rot, true, SelectedMercenary.Inventory), 3, 4);
+                SelectedMercenary.Inventory.AddItem(Item.Initialize(armor, 3, 1, rot, true, SelectedMercenary.Inventory), 3, 1);
+                SelectedMercenary.Inventory.AddItem(Item.Initialize(berryswitch, 2, 2, rot, true, SelectedMercenary.Inventory), 2, 2);
             }
 
             if(AcceptingKeyInput)
@@ -113,6 +117,10 @@ namespace App.UI {
                 if (Input.GetButtonDown("MercenaryManagementMenu")) SwitchPage(2);
                 if (Input.GetButtonDown("StrongholdManagementMenu")) SwitchPage(3);
                 if (Input.GetButtonDown("OptionsMenu")) SwitchPage(4);
+
+                if(Input.GetButtonDown("Equip")) {
+                    InventoryUIController.Instance.ToggleEquipMousedOverItem();
+                }
             }
         }
 

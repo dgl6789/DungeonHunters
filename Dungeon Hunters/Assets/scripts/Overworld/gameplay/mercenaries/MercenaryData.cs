@@ -10,7 +10,8 @@ namespace App {
 
         public GameObject LocationMarker;
 
-        public Inventory Equipment;
+        public Inventory Inventory;
+        public List<Item> Equipment;
 
         private HexTile location;
         public HexTile Location {
@@ -31,11 +32,21 @@ namespace App {
         public int Spirit { get { return spirit; } }
         public int Rank { get { return rank; } }
 
+        private int equipmentPower;
+        public int EquipmentPower {
+            get { return equipmentPower; }
+        }
+        public int MaxEquipmentPower {
+            get {
+                return Rank * 10;
+            }
+        }
+
         public Sprite Portrait;
 
         public List<MercenarySkills> Skills;
 
-        public MercenaryData(string pName, int pMind, int pBody, int pSpirit, List<MercenarySkills> pSkills, int pRank = 1, Inventory pEquipment = null) {
+        public MercenaryData(string pName, int pMind, int pBody, int pSpirit, List<MercenarySkills> pSkills, int pRank = 1, Inventory pInventory = null) {
             name = pName;
             mind = pMind;
             body = pBody;
@@ -45,14 +56,47 @@ namespace App {
             Skills = new List<MercenarySkills>();
             Skills.AddRange(pSkills);
 
-            if(pEquipment == null) {
+            Equipment = new List<Item>();
+
+            if(Inventory == null) {
                 // Inventories are always 5x5 for now.
-                Equipment = new Inventory(5, 5);
+                Inventory = new Inventory(5, 5);
             } else {
-                Equipment = pEquipment;
+                Inventory = pInventory;
             }
         }
 
+        /// <summary>
+        /// Equip an item.
+        /// </summary>
+        /// <param name="pItem">Item to equip.</param>
+        public bool EquipItem(Item pItem) {
+            // Can only equip an item if its power wouldn't cause the mercenary to
+            // exceed its current maximum equipment power
+            if (EquipmentPower + pItem.Power > MaxEquipmentPower) return false;
+
+            equipmentPower += pItem.Power;
+
+            pItem.IsEquipped = true;
+            Equipment.Add(pItem);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Unequip an item.
+        /// </summary>
+        /// <param name="pItem">Item to unequip.</param>
+        public void UnequipItem(Item pItem) {
+            if (Equipment.Contains(pItem)) {
+                equipmentPower -= pItem.Power;
+
+                pItem.IsEquipped = false;
+                Equipment.Remove(pItem);
+            }
+        }
+
+        #region Pathfinding
         public void SetPath(List<HexTile> pPath) {
             CurrentPath = pPath;
             PathIndex = 0;
@@ -79,5 +123,6 @@ namespace App {
                 }
             }
         }
+        #endregion
     }
 }

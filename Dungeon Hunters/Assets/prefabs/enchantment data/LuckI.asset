@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Name: LuckI
   m_EditorClassIdentifier: 
   Type: 2
-  BasePower: 1
-  Rank: 1
+  Power: 2
   Image: {fileID: 21300012, guid: 363adedd8fe8125419fb91adfcbedfed, type: 3}

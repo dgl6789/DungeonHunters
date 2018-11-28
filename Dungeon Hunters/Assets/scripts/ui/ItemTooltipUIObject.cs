@@ -36,8 +36,17 @@ namespace App.UI {
                 default:
                     EquipmentBase.gameObject.SetActive(true);
 
-                    for(int e = 0; e < Mathf.Min(pItem.ActiveEnchantments.Count, 5); e++) {
-                        EnchantmentImages[e].sprite = pItem.ActiveEnchantments[e].Image;
+                    int numLocked = 5 - pItem.MaxEnchantments;
+
+                    for(int i = 0; i < 5; i++) {
+                        if(i > numLocked)
+                            EnchantmentImages[i].sprite = AppUI.Instance.enchantmentLockedSprite;
+                        else if(i < pItem.ActiveEnchantments.Count) {
+                            EnchantmentImages[i].sprite = pItem.ActiveEnchantments[i].Image;
+                            EnchantmentImages[i].color = Color.white;
+                        } else {
+                            EnchantmentImages[i].sprite = AppUI.Instance.enchantmentEmptySprite;
+                        }
                     }
 
                     break;
