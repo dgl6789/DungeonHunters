@@ -672,6 +672,7 @@ public class Room : MonoBehaviour
             temp = new Vector2Int(temp.x / 3, temp.y / 3);
             DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
         }
+        
 
 
 
@@ -1004,12 +1005,13 @@ public class Room : MonoBehaviour
                         Debug.Log("River Switch");
                         while (targetRiver != currentRiver && mob.Movement > 0)
                         {//if we are on different rivers, seek to change river
+                            currentIndex = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].y;
                             float percentage;
                             percentage = (float)currentIndex / (float)LinesTiles[currentRiver].Count;
                             int temp = Mathf.Min(Mathf.Max((int)(currentIndex * percentage), 0), LinesTiles[targetRiver].Count-1);
                             Debug.Log("target: " + LinesTiles[targetRiver].Count + " At " + temp);
                             Debug.Log("local: " + LinesTiles[currentRiver].Count + " At " + currentIndex);
-                            difference = LinesTiles[targetRiver][temp] - LinesTiles[currentRiver][Mathf.Min(currentIndex, LinesTiles[currentRiver].Count -1)];
+                            difference =  LinesTiles[targetRiver][temp] - LinesTiles[currentRiver][Mathf.Min(currentIndex, LinesTiles[currentRiver].Count -1)];
                             if (Mathf.Abs(difference.x) > Mathf.Abs(difference.y))
                             {
                                 difference = new Vector2Int((int)Mathf.Clamp(difference.x, -1.1f, 1.1f), 0);
@@ -1023,7 +1025,7 @@ public class Room : MonoBehaviour
                             {
                                 mob.gridPosition = difference;//move the object, update relevent information
                                 
-                                currentRiver = RiverInformation[mob.gridPosition.x, mob.gridPosition.x].x;
+                                currentRiver = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].x;
                                 targetRiver = RiverInformation[destination.x, destination.y].x;
                             }
                             mob.Movement--;
@@ -1047,6 +1049,7 @@ public class Room : MonoBehaviour
                                 if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
                                 {
                                     mob.gridPosition = difference;
+                                    currentIndex = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].y;
                                 }
                                 mob.Movement--;//decriment watchers.
                                 indexDiff--;
@@ -1058,6 +1061,7 @@ public class Room : MonoBehaviour
                                 if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
                                 {
                                     mob.gridPosition = difference;
+                                    currentIndex = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].y;
                                 }
                                 mob.Movement--;
                                 indexDiff--;
@@ -1118,53 +1122,8 @@ public class Room : MonoBehaviour
             }//Simple, stupid, non-map math.
             myDungeon.MobTick(true);
         }
-    }
-    
-
-
-    public void RiverNavigation(Vector2Int sourcePos, Vector2Int targetPos)
-    {
-        int currentRiver = RiverInformation[sourcePos.x, sourcePos.y].x;
-        int targetRiver = RiverInformation[targetPos.x, targetPos.y].x;
-        int differenceSqr = (sourcePos.x - targetPos.x) * (sourcePos.x - targetPos.x) + (sourcePos.y - targetPos.y) * (sourcePos.y - targetPos.y);
-        if (differenceSqr < 81)
-        {//if we are close enough to simply move towards the enemy, do so.
-            Debug.Log("I am within 9 tiles, i should switch to direct attack mode.");
-        }
-
-        int currentIndex, targetIndex, indexDiff;
-        currentIndex = RiverInformation[sourcePos.x, sourcePos.y].y;
-        targetIndex = RiverInformation[targetPos.x, targetPos.y].y;
-        indexDiff =  currentIndex - targetIndex;
-        if(targetRiver!= currentRiver)
-        {//if we are on different rivers, seek to change river
-            float percentage;
-            percentage = (float)currentIndex / (float)LinesTiles[currentRiver].Count;            
-            Debug.Log("We are different Rivers: I am in: " + currentRiver + " , they are in: " + targetRiver + " Percentage : " + percentage);
-            Debug.Log("attempting to move from " + LinesTiles[currentRiver][currentIndex] + " to " + LinesTiles[targetRiver][Mathf.Min(Mathf.Max((int)(currentIndex*percentage),0), LinesTiles[targetRiver].Count)]);
-        }
-        else{//if we are on the same river, move down it, unless we're close enough to attack.
-           
-            if (Mathf.Abs(currentIndex - targetIndex) < 9)
-            {
-                Debug.Log("I am within 9 tiles of river, i should switch to direct attack mode.");
-            }
-            else
-            {
-                Debug.Log("My index is " + currentIndex + " My target is at " + targetIndex);
-                if(indexDiff > 1)
-                {
-                    Vector2Int movement = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];
-                    Debug.Log("Moving in the direction of " + movement);
-                }
-                else
-                {
-                    Vector2Int movement = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];
-                    Debug.Log("Moving in the direction of " + movement);
-                }
-            }
-        }
-    }
+    }    
+       
 }
 
 
