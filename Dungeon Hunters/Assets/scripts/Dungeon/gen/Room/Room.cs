@@ -559,22 +559,55 @@ public class Room : MonoBehaviour
                 {
                     Locations[i].y = 78;
                 }
-                destinationDir = (int)Random.Range(1.0f, 3.1f);
+                if (previousRoom != null && previousRoom.sourceDir == sourceDir) // if the last room was a straight line
+                {
+                    do
+                    {
+                        destinationDir = (int)Random.Range(1.0f, 3.1f);
+                    } while (destinationDir != 1 && destinationDir != 3);
+                }
+                else
+                {
+                    destinationDir = (int)Random.Range(1.0f, 3.1f);
+                }
                 break;
             case 1://from right
-                do {
-                    destinationDir = (int)Random.Range(0.0f, 3.1f);
-                } while (destinationDir == 1);
+                if (previousRoom != null && previousRoom.sourceDir == sourceDir) // if the last room was a straight line
+                {
+                    do
+                    {
+                        destinationDir = (int)Random.Range(0.0f, 3.1f);
+                    } while ((destinationDir != 2 && destinationDir != 0 )|| destinationDir == 1);
+                }
+                else
+                {
+                    do
+                    {
+                        destinationDir = (int)Random.Range(0.0f, 3.1f);
+                    } while (destinationDir == 1 );
+                    
+                } 
                 for (int i = 0; i < 3; i++)
                 {
                     Locations[i].x = 78;
                 }
                 break;
-            case 2://down
-                do
+            case 2://down                
+                if (previousRoom != null && previousRoom.sourceDir == sourceDir) // if the last room was a straight line
                 {
-                    destinationDir = (int)Random.Range(0.0f, 3.1f);
-                } while (destinationDir == 2);
+                    do
+                    {
+                        destinationDir = (int)Random.Range(0.0f, 3.1f);
+                    } while ((destinationDir != 1 && destinationDir != 3) || destinationDir == 2);
+                }
+                else
+                {
+                    do
+                    {
+                        destinationDir = (int)Random.Range(0.0f, 3.1f);
+                    } while (destinationDir == 2);
+
+                }
                 for (int i = 0; i < 3; i++)
                 {
                     Locations[i].y = 1;
@@ -585,7 +618,21 @@ public class Room : MonoBehaviour
                 {
                     Locations[i].x = 1;
                 }
-                destinationDir = (int)Random.Range(0.0f, 2.9f);
+                if (previousRoom != null && previousRoom.sourceDir == sourceDir) // if the last room was a straight line
+                {
+                    do
+                    {
+                        destinationDir = (int)Random.Range(0.0f, 2.1f);
+                    } while ((destinationDir != 2 && destinationDir != 0) || destinationDir == 3);
+                }
+                else
+                {
+                    do
+                    {
+                        destinationDir = (int)Random.Range(0.0f, 2.1f);
+                    } while (destinationDir == 3);
+
+                }
                 break;
         }
         DrawLines();
