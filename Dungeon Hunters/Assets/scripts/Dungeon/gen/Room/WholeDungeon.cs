@@ -20,6 +20,7 @@ public class WholeDungeon : MonoBehaviour {
     public Button [] NavigationButtons;
     public Button[] RoomEndButtons;
     public Button[] CampButtons;
+    public Button NextTurn;
     public Text foodDisplay;
     public GameObject CharacterIndicator;
     public List<Mercenary> AllActiveMercenaries;
@@ -263,7 +264,7 @@ public class WholeDungeon : MonoBehaviour {
                 }
             }
         }
-       
+        UndrawTick();
         CalcDirections();
     }
 
@@ -274,6 +275,7 @@ public class WholeDungeon : MonoBehaviour {
             foreach (Button Butt in RoomEndButtons)
             {
                 Butt.gameObject.SetActive(false);
+                NextTurn.gameObject.SetActive(false);
                 foodDisplay.text = foodLeft.ToString();                
             }
             for (int i = 4; i < 8; i++)
@@ -293,15 +295,18 @@ public class WholeDungeon : MonoBehaviour {
             }            
             if (activeRoom.ActiveMonsters.Count <= 0)
             {
-                foreach(Button Butt in RoomEndButtons)
+                NextTurn.gameObject.SetActive(false);
+                foreach (Button Butt in RoomEndButtons)
                 {
                     Butt.gameObject.SetActive(true);
                     foodDisplay.text = foodLeft.ToString();
+                    portrait.Deactivate();
                     
                 }
             }
             else
             {
+                NextTurn.gameObject.SetActive(true);
                 foreach (Button Butt in RoomEndButtons)
                 {
                     Butt.gameObject.SetActive(false);
