@@ -336,14 +336,14 @@ public class WholeDungeon : MonoBehaviour {
         {
             foreach (Mercenary merc in AllActiveMercenaries)
             {
-                activeRoom.HighLightZones(1, merc.gridPosition, 0, 0);
+                activeRoom.HighLightZones(1, merc.gridPosition, 0, 0,0);
             }
         }
         else
         {
             foreach (Mercenary merc in AllActiveMercenaries)
             {
-                activeRoom.HighLightZones(0, merc.gridPosition, 0, 0);
+                activeRoom.HighLightZones(0, merc.gridPosition, 0, 0,0);
             }
         }
     }
@@ -352,11 +352,11 @@ public class WholeDungeon : MonoBehaviour {
     {//Draws or undraws a single character
         if (Active)
         {
-            activeRoom.HighLightZones(1, AllActiveMercenaries[Index].gridPosition, 0, 0);
+            activeRoom.HighLightZones(1, AllActiveMercenaries[Index].gridPosition, 0, 0,0);
         }
         else
         {
-            activeRoom.HighLightZones(0, AllActiveMercenaries[Index].gridPosition, 0, 0);
+            activeRoom.HighLightZones(0, AllActiveMercenaries[Index].gridPosition, 0, 0,0);
         }
     }
 
@@ -364,11 +364,11 @@ public class WholeDungeon : MonoBehaviour {
     {//Draws or removes the movement selector
         if (activating)
         {
-            activeRoom.HighLightZones(2, AllActiveMercenaries[ActiveMerc].gridPosition, 1, AllActiveMercenaries[ActiveMerc].Movement);           
+            activeRoom.HighLightZones(2, AllActiveMercenaries[ActiveMerc].gridPosition, 1, AllActiveMercenaries[ActiveMerc].Movement,0);           
         }
         else
         {            
-           activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 0, AllActiveMercenaries[ActiveMerc].Movement);            
+           activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 0, AllActiveMercenaries[ActiveMerc].Movement,0);            
         }
     }
     
@@ -377,11 +377,11 @@ public class WholeDungeon : MonoBehaviour {
         if (activating)
         {
             if(AllActiveMercenaries[ActiveMerc].Movement> 0)//can't attack with 0 movement.
-                activeRoom.HighLightZones(3, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement);
+                activeRoom.HighLightZones(3, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement,0);
         }
         else
         {
-            activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement);
+            activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement,0);
         }
     }
 
@@ -421,14 +421,14 @@ public class WholeDungeon : MonoBehaviour {
         {
             foreach (Monster mob in activeRoom.ActiveMonsters)
             {
-                activeRoom.HighLightZones(4, mob.gridPosition, 0, 0);
+                activeRoom.HighLightZones(4, mob.gridPosition, 0, 0,0);
             }
         }
         else
         {
             foreach (Monster mob in activeRoom.ActiveMonsters)
             {
-                activeRoom.HighLightZones(0, mob.gridPosition, 0, 0);
+                activeRoom.HighLightZones(0, mob.gridPosition, 0, 0,0);
             }
 
         }
@@ -443,7 +443,13 @@ public class WholeDungeon : MonoBehaviour {
                 MobTick(true);
                 break;
             case DisplayState.Walk:
+                int i = 0;
                 MovementTick(true);
+                foreach (Monster Mob in activeRoom.ActiveMonsters)
+                {
+                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2, i);
+                    i++;
+                }
                 CharacterTick(true);
                 MobTick(true);
                 break;
@@ -456,11 +462,13 @@ public class WholeDungeon : MonoBehaviour {
             case DisplayState.Stance:                
                 foreach (Mercenary Merc in AllActiveMercenaries)
                 {
-                    activeRoom.HighLightZones(7, Merc.gridPosition, 1, 2);
+                    activeRoom.HighLightZones(7, Merc.gridPosition, 1, 2,0);
                 }
+                int j = 0;
                 foreach (Monster Mob in activeRoom.ActiveMonsters)
                 {
-                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2);
+                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2, j);
+                    j++;
                 }
                 CharacterTick(true);
                 MobTick(true);
@@ -481,7 +489,14 @@ public class WholeDungeon : MonoBehaviour {
             case DisplayState.None:
                 break;
             case DisplayState.Walk:
-                MovementTick(false);
+                if (activeRoom != null)
+                {
+                    MovementTick(false);
+                    foreach (Monster Mob in activeRoom.ActiveMonsters)
+                    {
+                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2,-1);
+                    }
+                }
                 break;
             case DisplayState.Attack:
                 if(activeRoom!= null)
@@ -493,11 +508,11 @@ public class WholeDungeon : MonoBehaviour {
                 {
                     foreach (Mercenary Merc in AllActiveMercenaries)
                     {
-                        activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2);
+                        activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2,-1);
                     }
                     foreach (Monster Mob in activeRoom.ActiveMonsters)
                     {
-                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
+                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2,-1);
                     }
                 }
                 break;

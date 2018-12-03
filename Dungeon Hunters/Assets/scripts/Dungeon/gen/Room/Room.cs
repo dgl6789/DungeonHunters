@@ -727,11 +727,11 @@ public class Room : MonoBehaviour
 
     }
 
-    public void HighLightZones(int zoneType, Vector2Int startingLoc, int minDistance, int maxDistance)
+    public void HighLightZones(int zoneType, Vector2Int startingLoc, int minDistance, int maxDistance, int Mobindex)
     {
         if (maxDistance == 0)
         {
-            AllCells[startingLoc.x, startingLoc.y].Mystate = (TileState)zoneType;
+            AllCells[startingLoc.x, startingLoc.y].AddMode(zoneType);
             return;
         }
         List<Vector2Int> upEdge = new List<Vector2Int>(), leftEdge = new List<Vector2Int>(), rightEdge = new List<Vector2Int>(), downEdge = new List<Vector2Int>(), temp = new List<Vector2Int>();
@@ -757,7 +757,11 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in upEdge)
                 {
                     Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
-                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+                    AllCells[boundedLoc.x, boundedLoc.y].AddMode(zoneType);
+                    if(zoneType == 6)
+                    {
+                        AllCells[boundedLoc.x, boundedLoc.y].MonsterThreatening = Mobindex;
+                    }
 
                 }
             }
@@ -777,7 +781,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in rightEdge)
                 {
                     Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
-                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+                    AllCells[boundedLoc.x, boundedLoc.y].AddMode(zoneType);
                 }
             }
             rightEdge.Clear();
@@ -796,7 +800,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in downEdge)
                 {
                     Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
-                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+                    AllCells[boundedLoc.x, boundedLoc.y].AddMode(zoneType);
 
                 }
             }
@@ -817,7 +821,7 @@ public class Room : MonoBehaviour
                 foreach (Vector2Int loc in leftEdge)
                 {
                     Vector2Int boundedLoc = new Vector2Int(Mathf.Max(0, Mathf.Min(79, loc.x)), Mathf.Max(0, Mathf.Min(79, loc.y)));
-                    AllCells[boundedLoc.x, boundedLoc.y].Mystate = (TileState)zoneType;
+                    AllCells[boundedLoc.x, boundedLoc.y].AddMode(zoneType);
 
                 }
             }
@@ -836,19 +840,19 @@ public class Room : MonoBehaviour
 
         if (activating)
         {
-            HighLightZones(5, startingLoc, minDistance, maxDistance);
+            HighLightZones(5, startingLoc, minDistance, maxDistance,0);
 
             foreach (Monster mob in ActiveMonsters)
             {
                 if (minDistance <= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y) && maxDistance >= Mathf.Abs(mob.gridPosition.x - startingLoc.x) + Mathf.Abs(mob.gridPosition.y - startingLoc.y))
                 {
-                    AllCells[mob.gridPosition.x, mob.gridPosition.y].Mystate = TileState.AttackSelector;
+                    AllCells[mob.gridPosition.x, mob.gridPosition.y].AddMode( (int)TileState.AttackSelector);
                 }
             }
         }
         else
         {
-            HighLightZones(0, startingLoc, minDistance, maxDistance);
+            HighLightZones(0, startingLoc, minDistance, maxDistance,0);
         }
 
     }
@@ -1049,15 +1053,13 @@ public class Room : MonoBehaviour
                 {
                     if (currentRiver != targetRiver)
                     {//River Switch
-                        Debug.Log("River Switch");
+                    
                         while (targetRiver != currentRiver && mob.Movement > 0)
                         {//if we are on different rivers, seek to change river
                             currentIndex = RiverInformation[mob.gridPosition.x, mob.gridPosition.y].y;
                             float percentage;
                             percentage = (float)currentIndex / (float)LinesTiles[currentRiver].Count;
                             int temp = Mathf.Min(Mathf.Max((int)(currentIndex * percentage), 0), LinesTiles[targetRiver].Count-1);
-                            Debug.Log("target: " + LinesTiles[targetRiver].Count + " At " + temp);
-                            Debug.Log("local: " + LinesTiles[currentRiver].Count + " At " + currentIndex);
                             difference =  LinesTiles[targetRiver][temp] - LinesTiles[currentRiver][Mathf.Min(currentIndex, LinesTiles[currentRiver].Count -1)];
                             if (Mathf.Abs(difference.x) > Mathf.Abs(difference.y))
                             {
@@ -1086,13 +1088,14 @@ public class Room : MonoBehaviour
 
                     if (mob.Movement > 0 && !doStandard)
                     {//Follow River
-                        Debug.Log("River follow");
+                     
                         while (mob.Movement > 0 && Mathf.Abs(indexDiff) > 9)
                         {//if we can move, and should be using the follow-river method.
                             if (indexDiff > 1)
                             {//moving down river
-                                Debug.Log(LinesTiles[currentRiver].Count + " at " + currentIndex);
-                                difference = LinesTiles[currentRiver][Mathf.Max(1,currentIndex) - 1] - LinesTiles[currentRiver][currentIndex];//figure out the movement of the river center at my positon
+                                Mathf.Clamp(currentIndex, 1, LinesTiles[currentRiver].Count-1);
+                               
+                                difference = LinesTiles[currentRiver][currentIndex-1] - LinesTiles[currentRiver][currentIndex];//figure out the movement of the river center at my positon
                                 difference = mob.gridPosition + difference;//move the positon to it
                                 if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
                                 {
@@ -1104,6 +1107,7 @@ public class Room : MonoBehaviour
                             }
                             else
                             {
+                                Mathf.Clamp(currentIndex, 1, LinesTiles[currentRiver].Count-1);
                                 difference = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];//see previous block
                                 difference = mob.gridPosition + difference;
                                 if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
@@ -1121,7 +1125,7 @@ public class Room : MonoBehaviour
             }
             if (mob.Movement > 0 )
             {
-                Debug.Log("standard Movement");
+                
                 while (mob.Movement > 0 && distance > mob.MaxRange)
                 {
                     if (Mathf.Abs(Xdiff) > Mathf.Abs(Ydiff))

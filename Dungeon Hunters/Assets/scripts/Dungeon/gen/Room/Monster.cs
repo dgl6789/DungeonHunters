@@ -219,13 +219,11 @@ public class Monster : MonoBehaviour {
         IncDamage += (incAttack.WeaponStats.x - defenseQuality.x);//hardness difference- ability to not erode
         IncDamage += (incAttack.WeaponStats.y - defenseQuality.y);//Strength difference- ability for artifacts to not deform
         IncDamage += (incAttack.WeaponStats.z - defenseQuality.z);//toughness difference - ability for artifacts to not shatter
-        Debug.Log(IncDamage);
-
+      
         if (IncDamage > 0)
         {
             IncDamage = (int)(incAttack.baseDamage * (incAttack.Cohesion / 100.0f));//should probably switch to parabolic method later
 
-            Debug.Log(IncDamage);
             if (IncDamage > 0)
             {
                 Health -= IncDamage;
