@@ -1091,7 +1091,8 @@ public class Room : MonoBehaviour
                         {//if we can move, and should be using the follow-river method.
                             if (indexDiff > 1)
                             {//moving down river
-                                difference = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];//figure out the movement of the river center at my positon
+                                Debug.Log(LinesTiles[currentRiver].Count + " at " + currentIndex);
+                                difference = LinesTiles[currentRiver][Mathf.Max(1,currentIndex) - 1] - LinesTiles[currentRiver][currentIndex];//figure out the movement of the river center at my positon
                                 difference = mob.gridPosition + difference;//move the positon to it
                                 if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
                                 {

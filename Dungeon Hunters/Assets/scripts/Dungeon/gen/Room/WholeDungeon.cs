@@ -7,7 +7,8 @@ using Dungeon;
 
 
 public class WholeDungeon : MonoBehaviour {
-    enum DisplayState {None, Attack, Walk, Stance, Data }
+    enum DisplayState {None, Attack, Walk, Stance, Data}
+    public bool interactablePhase = false;
     private DisplayState myDisplayState = 0;
     public int foodLeft;
     public GameObject RoomPrefab;
@@ -36,6 +37,15 @@ public class WholeDungeon : MonoBehaviour {
         {
             NavigationButtons[i].gameObject.SetActive(false);
         }
+        foreach(Mercenary merc in AllActiveMercenaries)
+        {//ensure Mercenary stats are appropriately set.
+            if (merc.Health > merc.MaxHealth)
+                merc.Health = merc.MaxHealth;
+            if (merc.Stamina > merc.MaxStamina)
+                merc.Stamina = merc.MaxStamina;
+            if (merc.Morale > merc.MaxMorale)
+                merc.Morale = merc.MaxMorale;
+        }
         portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
     }
 
@@ -53,7 +63,7 @@ public class WholeDungeon : MonoBehaviour {
             dirty = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && interactablePhase)
         {
             UndrawTick();
             ActiveMerc--;
@@ -62,7 +72,7 @@ public class WholeDungeon : MonoBehaviour {
             dirty = true;
             portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
-        else if (Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.Q) && interactablePhase)
         {
             UndrawTick();
             ActiveMerc++;
@@ -70,25 +80,25 @@ public class WholeDungeon : MonoBehaviour {
             dirty = true;
             portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Walk;
             dirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Attack;
             dirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Stance;
             dirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Data;
@@ -293,20 +303,23 @@ public class WholeDungeon : MonoBehaviour {
             {
                 NavigationButtons[i].gameObject.SetActive(false);
             }            
-            if (activeRoom.ActiveMonsters.Count <= 0)
+            if (activeRoom.ActiveMonsters.Count <= 0)//If we are Entering Next Turn.
             {
+                CharacterIndicator.gameObject.SetActive(false);
+                ActiveMerc = 0;
                 NextTurn.gameObject.SetActive(false);
                 foreach (Button Butt in RoomEndButtons)
                 {
                     Butt.gameObject.SetActive(true);
                     foodDisplay.text = foodLeft.ToString();
                     portrait.Deactivate();
+                    interactablePhase = false;
                     
                 }
             }
             else
             {
-                NextTurn.gameObject.SetActive(true);
+                NextTurn.gameObject.SetActive(true);                
                 foreach (Button Butt in RoomEndButtons)
                 {
                     Butt.gameObject.SetActive(false);
@@ -391,11 +404,13 @@ public class WholeDungeon : MonoBehaviour {
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
             CharacterTick(ActiveMerc, true);
             ActiveMerc++;
-            if (ActiveMerc == AllActiveMercenaries.Count)
+            if (ActiveMerc == AllActiveMercenaries.Count)//if we are done moving mercenaries
             {
                 ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
                 activeRoom.PlaceMercs(forwardBack, false);
                 dirty = true;
+                interactablePhase = true;
+                CharacterIndicator.gameObject.SetActive(true);
             }
         }
     }
@@ -469,18 +484,22 @@ public class WholeDungeon : MonoBehaviour {
                 MovementTick(false);
                 break;
             case DisplayState.Attack:
+                if(activeRoom!= null)
                 activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2, 5, false);
                 
                 break;
             case DisplayState.Stance:
-                foreach (Mercenary Merc in AllActiveMercenaries)
+                if (activeRoom != null)
                 {
-                    activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2);
+                    foreach (Mercenary Merc in AllActiveMercenaries)
+                    {
+                        activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2);
+                    }
+                    foreach (Monster Mob in activeRoom.ActiveMonsters)
+                    {
+                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
+                    }
                 }
-                foreach (Monster Mob in activeRoom.ActiveMonsters)
-                {
-                    activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
-                }              
                 break;
         }
         MobTick(false);
