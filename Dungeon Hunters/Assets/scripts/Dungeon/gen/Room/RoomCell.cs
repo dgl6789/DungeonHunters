@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend, PlacementSelector }
+public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend, PlacementSelector, MoveAndTriggerAttack }
 
 public class RoomCell : MonoBehaviour {
     public int Height; // Displays how high the floor is from the cieling, for use in relative terraign generation.
     public bool Passable;// used for navigation
     public int Decoration, River, RiverIndex, RiverDistance; // used for display/World Gen
+    public int MonsterThreatening;
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
     public DungeonCamera DGcam;
@@ -18,6 +19,7 @@ public class RoomCell : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         tileCollider = gameObject.GetComponent<BoxCollider2D>();
+        MonsterThreatening = -1;
         
 
     }
@@ -51,6 +53,9 @@ public class RoomCell : MonoBehaviour {
             case TileState.ThreatenedByFriend:
                 cubeTemp.GetComponent<SpriteRenderer>().color = new Color(.4f, .76f, 1);
                 break;
+            case TileState.MoveAndTriggerAttack:
+                cubeTemp.GetComponent<SpriteRenderer>().color = Color.red;
+                break;
         }
 		
 	}
@@ -80,7 +85,11 @@ public class RoomCell : MonoBehaviour {
                     myDungeon.PlaceActiveMerc(Gridlocation);
                     break;
                 default:
+                case TileState.MoveAndTriggerAttack://if we are moving, run the code to move stuff
+                    myDungeon.MoveActiveMerc(Gridlocation);
+                    Debug.Log("Attack of Opportunity launched");
                     break;
+                    
             }
         }
     }
@@ -126,6 +135,18 @@ public class RoomCell : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    public void AddMode(int IncMod)
+    {
+        if(!(Mystate == TileState.ThreatenedByFoe && IncMod == (int)TileState.MovementSelector ) && !(Mystate == TileState.MovementSelector && IncMod == (int)TileState.ThreatenedByFoe))
+        {
+            Mystate = (TileState)IncMod;
+        }
+        else
+        {
+            Mystate = TileState.MoveAndTriggerAttack;
+        }
     }
 
     public void Reset()

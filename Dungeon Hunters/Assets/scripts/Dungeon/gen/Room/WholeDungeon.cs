@@ -7,7 +7,8 @@ using Dungeon;
 
 
 public class WholeDungeon : MonoBehaviour {
-    enum DisplayState {None, Attack, Walk, Stance, Data }
+    enum DisplayState {None, Attack, Walk, Stance, Data}
+    public bool interactablePhase = false;
     private DisplayState myDisplayState = 0;
     public int foodLeft;
     public GameObject RoomPrefab;
@@ -36,6 +37,15 @@ public class WholeDungeon : MonoBehaviour {
         {
             NavigationButtons[i].gameObject.SetActive(false);
         }
+        foreach(Mercenary merc in AllActiveMercenaries)
+        {//ensure Mercenary stats are appropriately set.
+            if (merc.Health > merc.MaxHealth)
+                merc.Health = merc.MaxHealth;
+            if (merc.Stamina > merc.MaxStamina)
+                merc.Stamina = merc.MaxStamina;
+            if (merc.Morale > merc.MaxMorale)
+                merc.Morale = merc.MaxMorale;
+        }
         portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
     }
 
@@ -53,7 +63,7 @@ public class WholeDungeon : MonoBehaviour {
             dirty = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && interactablePhase)
         {
             UndrawTick();
             ActiveMerc--;
@@ -62,7 +72,7 @@ public class WholeDungeon : MonoBehaviour {
             dirty = true;
             portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
-        else if (Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.Q) && interactablePhase)
         {
             UndrawTick();
             ActiveMerc++;
@@ -70,25 +80,25 @@ public class WholeDungeon : MonoBehaviour {
             dirty = true;
             portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Walk;
             dirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Attack;
             dirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Stance;
             dirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) && interactablePhase)
         {
             UndrawTick();
             myDisplayState = DisplayState.Data;
@@ -293,20 +303,23 @@ public class WholeDungeon : MonoBehaviour {
             {
                 NavigationButtons[i].gameObject.SetActive(false);
             }            
-            if (activeRoom.ActiveMonsters.Count <= 0)
+            if (activeRoom.ActiveMonsters.Count <= 0)//If we are Entering Next Turn.
             {
+                CharacterIndicator.gameObject.SetActive(false);
+                ActiveMerc = 0;
                 NextTurn.gameObject.SetActive(false);
                 foreach (Button Butt in RoomEndButtons)
                 {
                     Butt.gameObject.SetActive(true);
                     foodDisplay.text = foodLeft.ToString();
                     portrait.Deactivate();
+                    interactablePhase = false;
                     
                 }
             }
             else
             {
-                NextTurn.gameObject.SetActive(true);
+                NextTurn.gameObject.SetActive(true);                
                 foreach (Button Butt in RoomEndButtons)
                 {
                     Butt.gameObject.SetActive(false);
@@ -323,14 +336,14 @@ public class WholeDungeon : MonoBehaviour {
         {
             foreach (Mercenary merc in AllActiveMercenaries)
             {
-                activeRoom.HighLightZones(1, merc.gridPosition, 0, 0);
+                activeRoom.HighLightZones(1, merc.gridPosition, 0, 0,0);
             }
         }
         else
         {
             foreach (Mercenary merc in AllActiveMercenaries)
             {
-                activeRoom.HighLightZones(0, merc.gridPosition, 0, 0);
+                activeRoom.HighLightZones(0, merc.gridPosition, 0, 0,0);
             }
         }
     }
@@ -339,11 +352,11 @@ public class WholeDungeon : MonoBehaviour {
     {//Draws or undraws a single character
         if (Active)
         {
-            activeRoom.HighLightZones(1, AllActiveMercenaries[Index].gridPosition, 0, 0);
+            activeRoom.HighLightZones(1, AllActiveMercenaries[Index].gridPosition, 0, 0,0);
         }
         else
         {
-            activeRoom.HighLightZones(0, AllActiveMercenaries[Index].gridPosition, 0, 0);
+            activeRoom.HighLightZones(0, AllActiveMercenaries[Index].gridPosition, 0, 0,0);
         }
     }
 
@@ -351,11 +364,11 @@ public class WholeDungeon : MonoBehaviour {
     {//Draws or removes the movement selector
         if (activating)
         {
-            activeRoom.HighLightZones(2, AllActiveMercenaries[ActiveMerc].gridPosition, 1, AllActiveMercenaries[ActiveMerc].Movement);           
+            activeRoom.HighLightZones(2, AllActiveMercenaries[ActiveMerc].gridPosition, 1, AllActiveMercenaries[ActiveMerc].Movement,0);           
         }
         else
         {            
-           activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 0, AllActiveMercenaries[ActiveMerc].Movement);            
+           activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 0, AllActiveMercenaries[ActiveMerc].Movement,0);            
         }
     }
     
@@ -364,11 +377,11 @@ public class WholeDungeon : MonoBehaviour {
         if (activating)
         {
             if(AllActiveMercenaries[ActiveMerc].Movement> 0)//can't attack with 0 movement.
-                activeRoom.HighLightZones(3, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement);
+                activeRoom.HighLightZones(3, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement,0);
         }
         else
         {
-            activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement);
+            activeRoom.HighLightZones(0, AllActiveMercenaries[ActiveMerc].gridPosition, 3, AllActiveMercenaries[ActiveMerc].Movement,0);
         }
     }
 
@@ -391,11 +404,13 @@ public class WholeDungeon : MonoBehaviour {
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
             CharacterTick(ActiveMerc, true);
             ActiveMerc++;
-            if (ActiveMerc == AllActiveMercenaries.Count)
+            if (ActiveMerc == AllActiveMercenaries.Count)//if we are done moving mercenaries
             {
                 ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
                 activeRoom.PlaceMercs(forwardBack, false);
                 dirty = true;
+                interactablePhase = true;
+                CharacterIndicator.gameObject.SetActive(true);
             }
         }
     }
@@ -406,14 +421,14 @@ public class WholeDungeon : MonoBehaviour {
         {
             foreach (Monster mob in activeRoom.ActiveMonsters)
             {
-                activeRoom.HighLightZones(4, mob.gridPosition, 0, 0);
+                activeRoom.HighLightZones(4, mob.gridPosition, 0, 0,0);
             }
         }
         else
         {
             foreach (Monster mob in activeRoom.ActiveMonsters)
             {
-                activeRoom.HighLightZones(0, mob.gridPosition, 0, 0);
+                activeRoom.HighLightZones(0, mob.gridPosition, 0, 0,0);
             }
 
         }
@@ -428,7 +443,13 @@ public class WholeDungeon : MonoBehaviour {
                 MobTick(true);
                 break;
             case DisplayState.Walk:
+                int i = 0;
                 MovementTick(true);
+                foreach (Monster Mob in activeRoom.ActiveMonsters)
+                {
+                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2, i);
+                    i++;
+                }
                 CharacterTick(true);
                 MobTick(true);
                 break;
@@ -441,11 +462,13 @@ public class WholeDungeon : MonoBehaviour {
             case DisplayState.Stance:                
                 foreach (Mercenary Merc in AllActiveMercenaries)
                 {
-                    activeRoom.HighLightZones(7, Merc.gridPosition, 1, 2);
+                    activeRoom.HighLightZones(7, Merc.gridPosition, 1, 2,0);
                 }
+                int j = 0;
                 foreach (Monster Mob in activeRoom.ActiveMonsters)
                 {
-                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2);
+                    activeRoom.HighLightZones(6, Mob.gridPosition, 1, 2, j);
+                    j++;
                 }
                 CharacterTick(true);
                 MobTick(true);
@@ -466,21 +489,32 @@ public class WholeDungeon : MonoBehaviour {
             case DisplayState.None:
                 break;
             case DisplayState.Walk:
-                MovementTick(false);
+                if (activeRoom != null)
+                {
+                    MovementTick(false);
+                    foreach (Monster Mob in activeRoom.ActiveMonsters)
+                    {
+                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2,-1);
+                    }
+                }
                 break;
             case DisplayState.Attack:
+                if(activeRoom!= null)
                 activeRoom.HighLightTargets(AllActiveMercenaries[ActiveMerc].gridPosition, 2, 5, false);
                 
                 break;
             case DisplayState.Stance:
-                foreach (Mercenary Merc in AllActiveMercenaries)
+                if (activeRoom != null)
                 {
-                    activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2);
+                    foreach (Mercenary Merc in AllActiveMercenaries)
+                    {
+                        activeRoom.HighLightZones(0, Merc.gridPosition, 1, 2,-1);
+                    }
+                    foreach (Monster Mob in activeRoom.ActiveMonsters)
+                    {
+                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2,-1);
+                    }
                 }
-                foreach (Monster Mob in activeRoom.ActiveMonsters)
-                {
-                    activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2);
-                }              
                 break;
         }
         MobTick(false);
