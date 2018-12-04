@@ -26,17 +26,22 @@ public class WholeDungeon : MonoBehaviour {
     public GameObject CharacterIndicator;
     public List<Mercenary> AllActiveMercenaries;
     public List<Monster> AllActiveMonsters;
+    private List<GameObject> MercenaryDisplay;
+    private List<GameObject> MonsterDisplay;
     public CharPortrait portrait;
+    public GameObject MercenaryPrefab;
     public int ActiveMerc=0;
     public bool dirty= true;
 
 	// Use this for initialization
 	void Start () {
         CalcDirections();
+        MercenaryDisplay = new List<GameObject>();
+        MonsterDisplay = new List<GameObject>();
         for (int i = 4; i < 8; i++)
         {
             NavigationButtons[i].gameObject.SetActive(false);
-        }
+        }       
         foreach(Mercenary merc in AllActiveMercenaries)
         {//ensure Mercenary stats are appropriately set.
             if (merc.Health > merc.MaxHealth)
@@ -45,6 +50,7 @@ public class WholeDungeon : MonoBehaviour {
                 merc.Stamina = merc.MaxStamina;
             if (merc.Morale > merc.MaxMorale)
                 merc.Morale = merc.MaxMorale;
+            MercenaryDisplay.Add(Instantiate(MercenaryPrefab));           
         }
         portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
     }
@@ -306,6 +312,10 @@ public class WholeDungeon : MonoBehaviour {
             if (activeRoom.ActiveMonsters.Count <= 0)//If we are Entering Next Turn.
             {
                 CharacterIndicator.gameObject.SetActive(false);
+                foreach(GameObject obby in MercenaryDisplay)
+                {
+                    obby.SetActive(false);
+                }
                 ActiveMerc = 0;
                 NextTurn.gameObject.SetActive(false);
                 foreach (Button Butt in RoomEndButtons)
@@ -393,6 +403,7 @@ public class WholeDungeon : MonoBehaviour {
             CharacterTick(ActiveMerc, false);
             int totalMovement = (Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.x - index.x) + Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.y - index.y));
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
+            MercenaryDisplay[ActiveMerc].transform.position = new Vector3(index.x / 2.0f, index.y / 2.0f, 1);
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
             DrawTick();
         }
@@ -402,14 +413,17 @@ public class WholeDungeon : MonoBehaviour {
         if (ActiveMerc != -1)
         {//ensure that we aren't moving a character that can't be moved           
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
+            MercenaryDisplay[ActiveMerc].transform.position = new Vector3(index.x / 2.0f, index.y / 2.0f, 1);
             CharacterTick(ActiveMerc, true);
+            MercenaryDisplay[ActiveMerc].SetActive(true);
             ActiveMerc++;
             if (ActiveMerc == AllActiveMercenaries.Count)//if we are done moving mercenaries
             {
-                ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
+                ActiveMerc = 0;
                 activeRoom.PlaceMercs(forwardBack, false);
                 dirty = true;
                 interactablePhase = true;
+                MercenaryDisplay[ActiveMerc].SetActive(true);
                 CharacterIndicator.gameObject.SetActive(true);
             }
         }
@@ -604,7 +618,8 @@ public class WholeDungeon : MonoBehaviour {
             if (merc.Health <= 0)
             {//if a merc dies
                 UndrawTick();//undraw mercs
-                AllActiveMercenaries.Remove(merc);       // remove the relevant merc from the list          
+                AllActiveMercenaries.Remove(merc);       // remove the relevant merc from the list      
+                Destroy( MercenaryDisplay[AllActiveMercenaries.IndexOf(merc)]);
                 foreach (Monster OvertakenByBloodlust in activeRoom.ActiveMonsters)
                 {
                     OvertakenByBloodlust.Morale += 1;

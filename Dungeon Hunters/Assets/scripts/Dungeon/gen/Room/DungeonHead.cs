@@ -17,6 +17,7 @@ public class DungeonHead : MonoBehaviour
     [SerializeField] DungeonCamera DGcam;
     [SerializeField] WholeDungeon myDungeon;
     public GameObject LinePrefab;
+    public GameObject mobPrefab;
 
 
     // Use this for initialization

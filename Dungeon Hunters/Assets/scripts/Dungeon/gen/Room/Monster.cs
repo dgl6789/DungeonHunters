@@ -197,9 +197,9 @@ public class Monster : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {        
-
-	}
+	void Update () {
+        transform.position = new Vector3(gridPosition.x / 2.0f, gridPosition.y / 2.0f, 1);
+    }
 
     public Attack GenerateAttack()
     {

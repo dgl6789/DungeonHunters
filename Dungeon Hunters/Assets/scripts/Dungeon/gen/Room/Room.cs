@@ -25,6 +25,7 @@ public class Room : MonoBehaviour
     public Room nextRoom, previousRoom;
     public DungeonCamera DGcam;
     public WholeDungeon myDungeon;
+    public GameObject MobPrefab;
 
     // Use this for initialization
     void Start()
@@ -440,7 +441,7 @@ public class Room : MonoBehaviour
 
         while (mobPoints > minPoints)
         {//add monsters till we run out of 
-            GameObject tempObj = new GameObject();
+            GameObject tempObj = Instantiate(MobPrefab);
             tempObj.AddComponent<Monster>();
             Monster temp = tempObj.GetComponent<Monster>();
             templateIndex = Random.Range(0, Templates.Count);
@@ -452,7 +453,7 @@ public class Room : MonoBehaviour
         }
         if (mobPoints > 0)
         {
-            GameObject tempObj = new GameObject();
+            GameObject tempObj = Instantiate(MobPrefab);
             tempObj.AddComponent<Monster>();
             Monster temp = tempObj.GetComponent<Monster>();
             templateIndex = Random.Range(0, Templates.Count);
@@ -527,6 +528,7 @@ public class Room : MonoBehaviour
                 nextRoom.myDungeon = myDungeon;
                 nextRoom.AllCells = AllCells;
                 nextRoom.DGcam = DGcam;
+                nextRoom.MobPrefab = MobPrefab;
                 nextRoom.pointsForBuy = (int)((pointsForBuy + 1) * 1.25f);
                 if (!isLastCave)
                 {

@@ -116,8 +116,8 @@ public class RoomCell : MonoBehaviour {
                 RiverDistance = incRiverDistance;
                 Passable = true;
                 Height = deltaHeight;
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
-                cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.5f + 1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1);
+            cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
                 return true;
         }
         else if (Height == deltaHeight)
@@ -129,7 +129,7 @@ public class RoomCell : MonoBehaviour {
                 RiverDistance = incRiverDistance;
                 Passable = true;
                 Height = deltaHeight;
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1.0f / 5.0f * Height, 1);
+                cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.5f +  1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1);
                 cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
                 return true;
             }
