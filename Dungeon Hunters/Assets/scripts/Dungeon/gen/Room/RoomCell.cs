@@ -83,13 +83,13 @@ public class RoomCell : MonoBehaviour {
                     break;
                 case TileState.PlacementSelector://if we are Placeing mercs, place em down. This is different from moving, becasue there are no penalties.
                     myDungeon.PlaceActiveMerc(Gridlocation);
-                    break;
-                default:
+                    break;              
                 case TileState.MoveAndTriggerAttack://if we are moving, run the code to move stuff
                     myDungeon.MoveActiveMerc(Gridlocation);
                     Debug.Log("Attack of Opportunity launched");
                     break;
-                    
+                default:
+                    break;
             }
         }
     }

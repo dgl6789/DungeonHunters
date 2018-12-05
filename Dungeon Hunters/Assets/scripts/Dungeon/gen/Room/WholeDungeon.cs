@@ -52,7 +52,6 @@ public class WholeDungeon : MonoBehaviour {
                 merc.Morale = merc.MaxMorale;
             MercenaryDisplay.Add(Instantiate(MercenaryPrefab));           
         }
-        portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
     }
 
     private void Awake()
@@ -508,7 +507,7 @@ public class WholeDungeon : MonoBehaviour {
                     MovementTick(false);
                     foreach (Monster Mob in activeRoom.ActiveMonsters)
                     {
-                        activeRoom.HighLightZones(0, Mob.gridPosition, 1, 2,-1);
+                        activeRoom.HighLightZones(0, Mob.gridPosition, 0, 2,-1);
                     }
                 }
                 break;
@@ -737,6 +736,38 @@ public class WholeDungeon : MonoBehaviour {
             Debug.Log("Switching to stance " + (Stance)incStyle);
             AllActiveMercenaries[ActiveMerc].Movement -= 1;
             DrawTick();
+        }
+    }
+    public void HUDInput(int buttonNumber)
+    {
+        switch (buttonNumber)
+        {
+            case 1:
+                UndrawTick();
+                ActiveMerc--;
+                if (ActiveMerc < 0)
+                    ActiveMerc = AllActiveMercenaries.Count - 1;
+                dirty = true;
+                portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
+                break;
+            case 2:
+                UndrawTick();
+                myDisplayState = DisplayState.Attack;
+                dirty = true;
+                break;
+            case 3:
+                UndrawTick();
+                myDisplayState = DisplayState.Walk;
+                dirty = true;
+                break;
+            case 4:
+                UndrawTick();
+                ActiveMerc++;
+                ActiveMerc = ActiveMerc % AllActiveMercenaries.Count;
+                dirty = true;
+                portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
+                break;
+
         }
     }
 }

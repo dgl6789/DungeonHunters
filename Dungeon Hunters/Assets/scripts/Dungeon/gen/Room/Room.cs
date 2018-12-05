@@ -1095,7 +1095,7 @@ public class Room : MonoBehaviour
                         {//if we can move, and should be using the follow-river method.
                             if (indexDiff > 1)
                             {//moving down river
-                                Mathf.Clamp(currentIndex, 1, LinesTiles[currentRiver].Count-1);
+                                Mathf.Clamp(currentIndex, 1, LinesTiles[currentRiver].Count-2);
                                
                                 difference = LinesTiles[currentRiver][currentIndex-1] - LinesTiles[currentRiver][currentIndex];//figure out the movement of the river center at my positon
                                 difference = mob.gridPosition + difference;//move the positon to it
