@@ -44,12 +44,15 @@ public class WholeDungeon : MonoBehaviour {
         }       
         foreach(Mercenary merc in AllActiveMercenaries)
         {//ensure Mercenary stats are appropriately set.
-            if (merc.Health > merc.MaxHealth)
-                merc.Health = merc.MaxHealth;
-            if (merc.Stamina > merc.MaxStamina)
-                merc.Stamina = merc.MaxStamina;
-            if (merc.Morale > merc.MaxMorale)
-                merc.Morale = merc.MaxMorale;
+            if (merc.MaxHealth < 10)
+                merc.MaxHealth = 10;
+            merc.Health = merc.MaxHealth;
+            if (merc.MaxStamina < 10)
+                merc.MaxStamina = 10;
+            merc.Stamina = merc.MaxStamina;
+            if (merc.MaxStamina < 10)
+                merc.MaxStamina = 10;
+            merc.Morale = merc.MaxMorale;
             MercenaryDisplay.Add(Instantiate(MercenaryPrefab));           
         }
     }
@@ -402,7 +405,7 @@ public class WholeDungeon : MonoBehaviour {
             CharacterTick(ActiveMerc, false);
             int totalMovement = (Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.x - index.x) + Mathf.Abs(AllActiveMercenaries[ActiveMerc].gridPosition.y - index.y));
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
-            MercenaryDisplay[ActiveMerc].transform.position = new Vector3(index.x / 2.0f, index.y / 2.0f, 1);
+            MercenaryDisplay[ActiveMerc].transform.position = new Vector3(index.x / 2.0f, index.y / 2.0f, 1f);
             AllActiveMercenaries[ActiveMerc].Movement -= totalMovement;
             DrawTick();
         }
@@ -412,7 +415,7 @@ public class WholeDungeon : MonoBehaviour {
         if (ActiveMerc != -1)
         {//ensure that we aren't moving a character that can't be moved           
             AllActiveMercenaries[ActiveMerc].gridPosition = index;
-            MercenaryDisplay[ActiveMerc].transform.position = new Vector3(index.x / 2.0f, index.y / 2.0f, 1);
+            MercenaryDisplay[ActiveMerc].transform.position = new Vector3(index.x / 2.0f, index.y / 2.0f, 1f);
             CharacterTick(ActiveMerc, true);
             MercenaryDisplay[ActiveMerc].SetActive(true);
             ActiveMerc++;

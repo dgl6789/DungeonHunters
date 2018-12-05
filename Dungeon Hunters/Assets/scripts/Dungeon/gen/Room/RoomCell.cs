@@ -117,7 +117,7 @@ public class RoomCell : MonoBehaviour {
                 Passable = true;
                 Height = deltaHeight;
                 cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.5f + 1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1);
-            cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+                cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, 5+Height);
                 return true;
         }
         else if (Height == deltaHeight)
@@ -130,7 +130,7 @@ public class RoomCell : MonoBehaviour {
                 Passable = true;
                 Height = deltaHeight;
                 cubeTemp.GetComponent<SpriteRenderer>().material.color = new Color(1.5f +  1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1.5f + 1.0f / 20.0f * Height, 1);
-                cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+                cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, 5+Height);
                 return true;
             }
         }
@@ -139,13 +139,13 @@ public class RoomCell : MonoBehaviour {
 
     public void AddMode(int IncMod)
     {
-        if(!(Mystate == TileState.ThreatenedByFoe && IncMod == (int)TileState.MovementSelector ) && !(Mystate == TileState.MovementSelector && IncMod == (int)TileState.ThreatenedByFoe))
+        //if(!(Mystate == TileState.ThreatenedByFoe && IncMod == (int)TileState.MovementSelector ) && !(Mystate == TileState.MovementSelector && IncMod == (int)TileState.ThreatenedByFoe))
         {
             Mystate = (TileState)IncMod;
         }
-        else
+       // else
         {
-            Mystate = TileState.MoveAndTriggerAttack;
+       //     Mystate = TileState.MoveAndTriggerAttack;
         }
     }
 
