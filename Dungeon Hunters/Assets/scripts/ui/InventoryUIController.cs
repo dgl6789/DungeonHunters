@@ -168,6 +168,7 @@ public class InventoryUIController : MonoBehaviour {
         lastMousedOverItem = null;
         
         mouseHovering = false;
+        UpdateFocusedInventory(null);
     }
 
     public void MouseEnter(RectTransform pGrid) {
@@ -268,7 +269,7 @@ public class InventoryUIController : MonoBehaviour {
         if (SelectedItem == null) return;
 
         // Make sure the selected item always draws over the other items
-        SelectedItem.transform.SetAsLastSibling();
+        SelectedItem.transform.SetParent(AppUI.Instance.CommonUIParent);
 
         // We have the item object that should be held.
         CursorController.Instance.PickupInventoryItem();
@@ -363,7 +364,7 @@ public class InventoryUIController : MonoBehaviour {
     /// Load the stronghold's inventory into the stronghold inventory panel
     /// </summary>
     public void LoadStrongholdInventory() {
-        Debug.Log("Loaded the Stronghold inventory.");
+        LoadInventory(StrongholdController.Instance.StrongholdInventory, AppUI.Instance.StrongholdInventoryGridParent);
     }
 
     /// <summary>
@@ -427,6 +428,13 @@ public class InventoryUIController : MonoBehaviour {
     /// </summary>
     public void UnloadMercenaryInventory() {
         UnloadInventory(AppUI.Instance.MercInventoryGridParent);
+    }
+
+    /// <summary>
+    /// Unload the inventory currently loaded into the stronghold inventory panel
+    /// </summary>
+    public void UnloadStrongholdInventory() {
+        UnloadInventory(AppUI.Instance.StrongholdInventoryGridParent);
     }
 
     /// <summary>

@@ -65,7 +65,9 @@ namespace App.UI {
         [Header("Transforms")]
 
         public RectTransform MercInventoryGridParent;
-        
+        public RectTransform StrongholdInventoryGridParent;
+        public RectTransform LootInventoryGridParent;
+
         public Transform MapOverlayParent;
         public RectTransform CommonUIParent;
 

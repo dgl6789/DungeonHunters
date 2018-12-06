@@ -909,6 +909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f86b08d637b56b4ea13b885d679da79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FollowMouse: 0
+  Type: 0
   EquipmentBase: {fileID: 224959104326826422}
   ItemTitle: {fileID: 114301208122423250}
   ItemPowerLevel: {fileID: 114056013801537000}
@@ -1014,7 +1016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.54407895, g: 0.47939658, b: 0.5943396, a: 0.85490197}
+  m_Color: {r: 0.54407895, g: 0.47939658, b: 0.5943396, a: 0.972549}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
