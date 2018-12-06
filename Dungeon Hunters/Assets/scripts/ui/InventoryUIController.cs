@@ -92,7 +92,7 @@ public class InventoryUIController : MonoBehaviour {
         // Should just recalculate the tooltip's position.
         else if (mousedOver != null && mousedOver == lastMousedOverItem) {
             if (!tooltip) LoadTooltip(mousedOver);
-            tooltip.position = GetTooltipPosition(mousedOver);
+            tooltip.position = Tooltip.GetTooltipPosition(TooltipType.Item, mousedOver);
         }
 
         lastMousedOverItem = mousedOver;
@@ -103,7 +103,7 @@ public class InventoryUIController : MonoBehaviour {
     /// </summary>
     /// <param name="pItem">Item whose data should be loaded into the tooltip.</param>
     void LoadTooltip(Item pItem) {
-        Vector2 position = GetTooltipPosition(pItem);
+        Vector2 position = Tooltip.GetTooltipPosition(TooltipType.Item, pItem);
 
         // Instantiate a new tooltip for the moused over item
         tooltip = Instantiate(AppUI.Instance.ItemTooltipObject, position, Quaternion.identity, AppUI.Instance.CommonUIParent).GetComponent<RectTransform>();
@@ -116,53 +116,6 @@ public class InventoryUIController : MonoBehaviour {
     public void UnloadTooltip() {
         if (tooltip) Destroy(tooltip.gameObject);
         tooltip = null;
-    }
-
-    /// <summary>
-    /// Get the correct position of the active tooltip basesd on the mouse position and tooltip rect.
-    /// </summary>
-    /// <returns>The position of the tooltip.</returns>
-    Vector2 GetTooltipPosition(Item pItem) {
-        // Just update the tooltip's position 
-        // It should be anchored to the mouse such that no part of it is off screen
-        Vector3 mp = Input.mousePosition;
-        Vector2 position = new Vector2();
-        Rect targetRect = GetTargetTooltipRect(pItem);
-        targetRect.size = Vector2.Scale(targetRect.size, AppUI.Instance.UICanvas.transform.lossyScale);
-
-        if (mp.y + targetRect.height > Screen.height) {
-            // Choose one of the top corners instead.
-            if (mp.x - targetRect.width < 0) {
-                // Should follow the top left corner
-                position = new Vector2(mp.x + (targetRect.width / 2), mp.y - (targetRect.height / 2));
-            } else {
-                // Should follow the top right corner
-                position = new Vector2(mp.x - (targetRect.width / 2), mp.y - (targetRect.height / 2));
-            }
-        } else {
-            // Choose one of the bottom corners
-            if (mp.x - targetRect.width < 0) {
-                // Should follow the bottom left corner
-                position = new Vector2(mp.x + (targetRect.width / 2), mp.y + (targetRect.height / 2));
-            } else {
-                // Should follow the bottom right corner
-                position = new Vector2(mp.x - (targetRect.width / 2), mp.y + (targetRect.height / 2));
-            }
-        }
-        
-        return position;
-    }
-
-    private Rect GetTargetTooltipRect(Item pItem) {
-        Rect targetRect = AppUI.Instance.ItemTooltipObject.GetComponent<RectTransform>().rect;
-
-        switch(pItem.Type) {
-            case ItemType.Resource:
-                targetRect.yMax -= AppUI.Instance.ItemTooltipObject.GetComponent<ItemTooltipUIObject>().EquipmentBase.rect.height;
-                break;
-        }
-
-        return targetRect;
     }
 
     public void ToggleEquipMousedOverItem() {
@@ -217,8 +170,9 @@ public class InventoryUIController : MonoBehaviour {
         mouseHovering = false;
     }
 
-    public void MouseEnter() {
+    public void MouseEnter(RectTransform pGrid) {
         mouseHovering = true;
+        UpdateFocusedInventory(pGrid);
     }
 
     public void ClickCloseTopInventoryButton() {
@@ -268,11 +222,7 @@ public class InventoryUIController : MonoBehaviour {
         FocusedInventory = inv;
         FocusedGrid = pGridParent;
     }
-
-    public void UpdateFocusedGrid(RectTransform pGrid) {
-        FocusedGrid = pGrid;
-    }
-
+    
     Vector2Int GetInventorySlotFromScreenPoint(Vector2 pScreenPoint, RectTransform pGridParent) {
 
         UpdateFocusedInventory(pGridParent);
@@ -381,6 +331,16 @@ public class InventoryUIController : MonoBehaviour {
         // Toggle the inventory panel's visibility
         AppUI.Instance.BottomInventoryPanel.SetBool("Open", bottomInventoryOpen);
         AppUI.Instance.InventoryInstructions.gameObject.SetActive(bottomInventoryOpen || topInventoryOpen);
+    }
+     
+    public void DisposeInventoryItem() {
+        if (SelectedItem != null) {
+            Item item = SelectedItem.GetComponent<ItemObject>().Data;
+            item.Inventory.RemoveItem(item);
+
+            Destroy(SelectedItem.gameObject);
+            SelectedItem = null;
+        } else return;
     }
 
     /// <summary>

@@ -29,6 +29,7 @@ TextureImporter:
     21300048: sheet_ui_24
     21300050: sheet_ui_25
     21300052: sheet_ui_26
+    21300054: sheet_ui_27
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -607,8 +608,8 @@ TextureImporter:
         serializedVersion: 2
         x: 1
         y: 2
-        width: 16
-        height: 16
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -650,13 +651,33 @@ TextureImporter:
         width: 13
         height: 13
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: e161cd3d27a69164a85215c694c811d0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_ui_27
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 10
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d911985638a103d4da5b458792230790
       vertices: []
       indices: 
       edges: []

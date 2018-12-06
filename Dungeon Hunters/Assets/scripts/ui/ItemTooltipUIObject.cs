@@ -6,7 +6,7 @@ using TMPro;
 using App;
 
 namespace App.UI {
-    public class ItemTooltipUIObject : MonoBehaviour {
+    public class ItemTooltipUIObject : Tooltip {
 
         public RectTransform EquipmentBase;
 

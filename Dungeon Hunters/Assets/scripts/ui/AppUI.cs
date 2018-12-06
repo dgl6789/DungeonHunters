@@ -82,17 +82,24 @@ namespace App.UI {
         public GameObject MercenaryLocationPin;
         public GameObject ItemObject;
         public GameObject ItemTooltipObject;
+        public GameObject infoTooltipObject;
 
         public Item towershield;
         public Item armor;
         public Item berryswitch;
         public Item meat;
 
+        private List<GameObject> informationalTooltips;
+
         public void Awake() {
             if (Instance == null) Instance = this;
             else if (Instance != this) Destroy(gameObject);
 
             AcceptingKeyInput = true;
+        }
+
+        public void Start() {
+            informationalTooltips = new List<GameObject>();
         }
 
         private void Update()
@@ -206,6 +213,23 @@ namespace App.UI {
             rect.x -= (transform.pivot.x * size.x);
             rect.y -= ((1.0f - transform.pivot.y) * size.y);
             return rect;
+        }
+
+        public void CreateInformationalTooltip(string pText) {
+            InfoTooltipUIObject tip = Instantiate(infoTooltipObject, Tooltip.GetTooltipPosition(TooltipType.Info), Quaternion.identity, CommonUIParent).GetComponent<InfoTooltipUIObject>();
+            tip.FollowMouse = true;
+            tip.SetText(pText);
+
+            informationalTooltips.Add(tip.gameObject);
+        }
+
+        public void DestroyInformationalTooltips() {
+            int c = informationalTooltips.Count;
+
+            for(int i = 0; i < c; i++) {
+                Destroy(informationalTooltips[0]);
+                informationalTooltips.RemoveAt(0);
+            }
         }
     }
 }

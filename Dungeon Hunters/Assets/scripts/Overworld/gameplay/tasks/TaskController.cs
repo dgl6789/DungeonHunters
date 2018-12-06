@@ -159,6 +159,8 @@ namespace App {
 
             AppUI.Instance.UpdateMercInteractionButton(m);
 
+            AppUI.Instance.SwitchPage(0);
+
             // reset selectedtask
             selectedTask = TaskType.NONE;
 
