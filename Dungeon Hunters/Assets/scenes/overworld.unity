@@ -314,6 +314,10 @@ MonoBehaviour:
   myDungeon: {fileID: 1417395316}
   LinePrefab: {fileID: 359367132}
   mobPrefab: {fileID: 0}
+  North: 0
+  East: 0
+  South: 0
+  West: 0
 --- !u!1 &32278550
 GameObject:
   m_ObjectHideFlags: 0
@@ -3026,8 +3030,8 @@ MonoBehaviour:
   Body: 2
   Mind: 1
   Spirit: 4
-  DTier: 3
-  OTier: 3
+  DTier: 5
+  OTier: 5
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -14203,8 +14207,8 @@ MonoBehaviour:
   Body: 4
   Mind: 1
   Spirit: 2
-  DTier: 3
-  OTier: 3
+  DTier: 5
+  OTier: 5
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}
@@ -20479,8 +20483,8 @@ MonoBehaviour:
   Body: 2
   Mind: 1
   Spirit: 4
-  DTier: 3
-  OTier: 3
+  DTier: 5
+  OTier: 5
   defenseQuality: {x: 0, y: 0, z: 0}
   offenseQuality: {x: 0, y: 0, z: 0}
   Skills: {x: 0, y: 0, z: 0}

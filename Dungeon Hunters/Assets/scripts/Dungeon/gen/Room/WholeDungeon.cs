@@ -141,9 +141,7 @@ public class WholeDungeon : MonoBehaviour {
     }
 
     public void TraverseRooms(bool isFoward,int Dir)
-    {//Code to move from room to room
-     //REQUIRES CAMERA CODE TO INDICATE CHANGE OR MOVEMENT
-     //Not sure how to do it though, probably for DOM
+    {//Code to move from room to room    
         portrait.Activate(ActiveMerc, AllActiveMercenaries[ActiveMerc]);
 
         if (inLandingPhase) {            
@@ -156,10 +154,11 @@ public class WholeDungeon : MonoBehaviour {
                     if(landingRoom.NorthBranch != null)
                     {
                         activeRoom = landingRoom.NorthBranch;
-                        activeRoom.RebuildCave();
+                        activeRoom.RebuildCave();                        
                     }
                     else
-                    {                        
+                    {      
+                        landingRoom.North = true;                  
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
                         Temp.CounterToEnd = Random.Range(3,3);
@@ -175,6 +174,7 @@ public class WholeDungeon : MonoBehaviour {
                     }
                     else
                     {
+                        landingRoom.East = true;
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
                         Temp.CounterToEnd = Random.Range(3,3);
@@ -190,6 +190,7 @@ public class WholeDungeon : MonoBehaviour {
                     }
                     else
                     {
+                        landingRoom.South = true;
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
                         Temp.CounterToEnd = Random.Range(3,3);
@@ -205,6 +206,7 @@ public class WholeDungeon : MonoBehaviour {
                     }
                     else
                     {
+                        landingRoom.West = true;
                         Room Temp = Instantiate(RoomPrefab).GetComponent<Room>();
                         Temp.transform.SetParent(gameObject.transform);
                         Temp.CounterToEnd = Random.Range(3,3);
@@ -307,9 +309,29 @@ public class WholeDungeon : MonoBehaviour {
             {
                 NavigationButtons[i].gameObject.SetActive(false);
             }
-            for (int i = 0; i < 4; i++)
+            if (!landingRoom.North)
             {
-                NavigationButtons[i].gameObject.SetActive(true);
+                NavigationButtons[0].gameObject.SetActive(true);
+            }
+            if (!landingRoom.East)
+            {
+                NavigationButtons[1].gameObject.SetActive(true);
+            }
+            if (!landingRoom.South)
+            {
+                NavigationButtons[2].gameObject.SetActive(true);
+            }
+            if (!landingRoom.West)
+            {
+                NavigationButtons[3].gameObject.SetActive(true);
+            }
+
+            if(landingRoom.West && landingRoom.East && landingRoom.North && landingRoom.South)
+            {//Dungeon Completed.
+
+                SceneSwitcher.Instance.EnableScene("Overworld");
+                Debug.Log("Dungeon Completed");
+                SceneSwitcher.Instance.DisableScene("Dungeon");
             }
         }
         else
@@ -351,18 +373,21 @@ public class WholeDungeon : MonoBehaviour {
 
     void CharacterTick(bool activating)
     {
-        if (activating)
+        if (activeRoom != null)
         {
-            foreach (Mercenary merc in AllActiveMercenaries)
+            if (activating)
             {
-                activeRoom.HighLightZones(1, merc.gridPosition, 0, 0,0);
+                foreach (Mercenary merc in AllActiveMercenaries)
+                {
+                    activeRoom.HighLightZones(1, merc.gridPosition, 0, 0, 0);
+                }
             }
-        }
-        else
-        {
-            foreach (Mercenary merc in AllActiveMercenaries)
+            else
             {
-                activeRoom.HighLightZones(0, merc.gridPosition, 0, 0,0);
+                foreach (Mercenary merc in AllActiveMercenaries)
+                {
+                    activeRoom.HighLightZones(0, merc.gridPosition, 0, 0, 0);
+                }
             }
         }
     }
@@ -440,20 +465,22 @@ public class WholeDungeon : MonoBehaviour {
 
     public void MobTick(bool activating)
     {
-        if (activating)
+        if (activeRoom != null)
         {
-            foreach (Monster mob in activeRoom.ActiveMonsters)
+            if (activating)
             {
-                activeRoom.HighLightZones(4, mob.gridPosition, 0, 0,0);
+                foreach (Monster mob in activeRoom.ActiveMonsters)
+                {
+                    activeRoom.HighLightZones(4, mob.gridPosition, 0, 0, 0);
+                }
             }
-        }
-        else
-        {
-            foreach (Monster mob in activeRoom.ActiveMonsters)
+            else
             {
-                activeRoom.HighLightZones(0, mob.gridPosition, 0, 0,0);
+                foreach (Monster mob in activeRoom.ActiveMonsters)
+                {
+                    activeRoom.HighLightZones(0, mob.gridPosition, 0, 0, 0);
+                }
             }
-
         }
     }
 
@@ -663,13 +690,17 @@ public class WholeDungeon : MonoBehaviour {
 
     public void LootAndLeave()
     {
-        Debug.Log("returning to the Fortress, Loot in hand.");
+       
         foreach (Button Butt in RoomEndButtons)
         {
             Butt.gameObject.SetActive(false);
             foodDisplay.text = foodLeft.ToString();
             
         }
+        SceneSwitcher.Instance.EnableScene("Overworld");
+        Debug.Log("Left With Loot");
+        SceneSwitcher.Instance.DisableScene("Dungeon");
+        
     }
 
     public void CampPhase()

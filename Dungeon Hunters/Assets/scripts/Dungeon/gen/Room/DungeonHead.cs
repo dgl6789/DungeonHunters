@@ -17,7 +17,7 @@ public class DungeonHead : MonoBehaviour
     [SerializeField] WholeDungeon myDungeon;
     public GameObject LinePrefab;
     public GameObject mobPrefab;
-
+    public bool North = false, East = false, South = false, West = false;
 
     // Use this for initialization
     void Start()
