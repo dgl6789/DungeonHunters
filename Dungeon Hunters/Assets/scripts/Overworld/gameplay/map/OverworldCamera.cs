@@ -48,6 +48,7 @@ namespace Overworld {
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, targetCamSize, zoomSmoothing * Time.deltaTime);
             transform.position = Vector3.Lerp(transform.position, targetPos, speedSmoothing * Time.deltaTime);
 
+            if(SceneSwitcher.Instance.overWorldActive)
             TileSelector.Instance.Refocus();
 
             // Set whether the Y position or zoom has changed (for the scroll effect)

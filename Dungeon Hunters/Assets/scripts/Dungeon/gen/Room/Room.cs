@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+using Overworld;
 public class Room : MonoBehaviour
 {
     public int pointsForBuy;                        //used in generation.   
@@ -23,7 +23,6 @@ public class Room : MonoBehaviour
     public bool reCon = false;                      //use to Recontruct a map
     private Vector2Int minBound, maxBound;          //useless post-gen
     public Room nextRoom, previousRoom;
-    public DungeonCamera DGcam;
     public WholeDungeon myDungeon;
     public GameObject MobPrefab;
 
@@ -527,7 +526,6 @@ public class Room : MonoBehaviour
                 nextRoom.Locations = Locations;
                 nextRoom.myDungeon = myDungeon;
                 nextRoom.AllCells = AllCells;
-                nextRoom.DGcam = DGcam;
                 nextRoom.MobPrefab = MobPrefab;
                 nextRoom.pointsForBuy = (int)((pointsForBuy + 1) * 1.25f);
                 if (!isLastCave)
@@ -708,7 +706,7 @@ public class Room : MonoBehaviour
                 temp += river[0];
             }
             temp = new Vector2Int(temp.x / 3, temp.y / 3);
-            DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
+            Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
 
 
         }
@@ -719,7 +717,7 @@ public class Room : MonoBehaviour
                 temp += river[river.Count - 1];
             }
             temp = new Vector2Int(temp.x / 3, temp.y / 3);
-            DGcam.SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
+            Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(new Vector3(temp.x / 2, temp.y / 2, 0));
         }
         
 

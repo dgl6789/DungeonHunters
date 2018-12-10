@@ -35,7 +35,17 @@ namespace App.Data {
             AssetDatabase.SaveAssets();
             Action = action;
         }
-    
+        public void SetDungeoneerAction()
+        {
+            EncounterDungeoneerAction action = CreateInstance<EncounterDungeoneerAction>();
+            action.name = "Dungeoneer Action [" + parentIndex + "]";
+
+            DestroyImmediate(Action, true);
+            AssetDatabase.AddObjectToAsset(action, this);
+            AssetDatabase.SaveAssets();
+            Action = action;
+        }
+
         public void SetContestAction() {
             EncounterContestAction action = CreateInstance<EncounterContestAction>();
             action.name = "Contest Action [" + parentIndex + "]";

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Dungeon;
-
+using App;
+using App.Data;
 
 
 public class WholeDungeon : MonoBehaviour {
@@ -60,6 +61,7 @@ public class WholeDungeon : MonoBehaviour {
     private void Awake()
     {
         CalcDirections();
+        
     }
     // Update is called once per frame
     void Update () {
@@ -69,6 +71,11 @@ public class WholeDungeon : MonoBehaviour {
         {
             DrawTick();
             dirty = false;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.O)){
+            TakeDataFromOverworld();
         }
 
         if (Input.GetKeyDown(KeyCode.E) && interactablePhase)
@@ -772,5 +779,11 @@ public class WholeDungeon : MonoBehaviour {
                 break;
 
         }
+    }
+
+    public void TakeDataFromOverworld()
+    {
+        MercenaryData temp = EncounterController.Instance.ActiveMercenary;
+        Debug.Log(temp.Stats.Body);
     }
 }

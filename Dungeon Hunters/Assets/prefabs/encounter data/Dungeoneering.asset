@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a182593b06950554882cf631bf8ec83f, type: 3}
+  m_Name: Dungeoneering
+  m_EditorClassIdentifier: 
+  Tags: 
+  Steps:
+  - {fileID: 114590583015010256}
+--- !u!114 &114493247749690362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6484744cd4bfc541993dcaad3189ca4, type: 3}
+  m_Name: Option 0-0
+  m_EditorClassIdentifier: 
+  SuccessStepIndex: -1
+  FailureStepIndex: -1
+  Text: Delve Now
+  Action: {fileID: 114945167071166946}
+--- !u!114 &114590583015010256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d8cf5e9b2a2a64b85153bb4ec67bfc, type: 3}
+  m_Name: Step 0
+  m_EditorClassIdentifier: 
+  Index: 0
+  Text: You arrive at the dungeon...
+  Options:
+  - {fileID: 114493247749690362}
+--- !u!114 &114945167071166946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d8c6fa188d7854886c8d34074884d8, type: 3}
+  m_Name: Dungeoneer Action [0]
+  m_EditorClassIdentifier: 

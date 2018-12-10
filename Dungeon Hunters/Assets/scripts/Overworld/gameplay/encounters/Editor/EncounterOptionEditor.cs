@@ -22,6 +22,12 @@ namespace App.Data {
                 (serializedObject.targetObject as EncounterOption).SetCheckAction();
             }
 
+            if (GUILayout.Button("Dungeoneer", EditorStyles.miniButtonMid))
+            {
+                (serializedObject.targetObject as EncounterOption).SetDungeoneerAction();
+            }
+
+
             if (GUILayout.Button("Contest", EditorStyles.miniButtonRight)) {
                 (serializedObject.targetObject as EncounterOption).SetContestAction();
             }

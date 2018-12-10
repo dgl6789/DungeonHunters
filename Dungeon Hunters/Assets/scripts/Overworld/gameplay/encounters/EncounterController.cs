@@ -22,6 +22,8 @@ namespace App {
         [HideInInspector] public MercenaryData ActiveMercenary;
         int currentEncounterStep;
 
+        public EncounterEvent DungeoneeringEvent;
+
         private void Awake() {
             if (Instance == null) Instance = this;
             else Destroy(this);

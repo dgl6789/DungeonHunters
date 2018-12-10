@@ -55,6 +55,11 @@ namespace App {
                 lDayLimit += HexFunctions.Instance.GetRoughTerrainFactor(t.Type);
             }
 
+            if(pType.Equals(TaskType.DUNGEONEER))
+            {
+                return new Notification(pType, EncounterController.Instance.DungeoneeringEvent, ParseNotificationLabel(pType, pMercenary), lDayLimit, pMercenary, pTile);
+            }
+
             // Return the generated notification.
             return new Notification(pType, pEndEvent, ParseNotificationLabel(pType, pMercenary), lDayLimit, pMercenary, pTile);
         }

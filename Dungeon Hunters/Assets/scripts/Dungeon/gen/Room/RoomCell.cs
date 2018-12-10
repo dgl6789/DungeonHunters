@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Overworld;
 
 public enum TileState {None, Ally, MovementSelector, AttackSelector, Enemy , AttackRange, ThreatenedByFoe, ThreatenedByFriend, PlacementSelector, MoveAndTriggerAttack }
 
@@ -11,7 +12,6 @@ public class RoomCell : MonoBehaviour {
     public int MonsterThreatening;
     public Vector2Int Gridlocation; // Simply its absolute coordinates within grid/hex system.
     public GameObject cubeTemp;
-    public DungeonCamera DGcam;
     [SerializeField] private WholeDungeon myDungeon;
     public TileState Mystate;
     [SerializeField] private BoxCollider2D tileCollider;
@@ -64,7 +64,7 @@ public class RoomCell : MonoBehaviour {
     {
         //Add enums here for movement and attack. This is gonna be the basis for selecting options.
 
-        DGcam.SetTargetPosition(gameObject.transform.position);
+        Camera.main.GetComponent<OverworldCamera>().SetTargetPosition(gameObject.transform.position);
     }
 
     private void OnMouseOver()

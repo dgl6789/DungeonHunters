@@ -14,7 +14,6 @@ public class DungeonHead : MonoBehaviour
     private Vector2Int minBound, maxBound;          //useless post-gen
     public Vector3Int[,] RiverInformation;
     public Room NorthBranch, SouthBranch, EastBranch, WestBranch;
-    [SerializeField] DungeonCamera DGcam;
     [SerializeField] WholeDungeon myDungeon;
     public GameObject LinePrefab;
     public GameObject mobPrefab;
@@ -211,7 +210,6 @@ public class DungeonHead : MonoBehaviour
                 NorthBranch.Locations = new Vector2[] { Locations[3], Locations[4], Locations[5] };
                 NorthBranch.myDungeon = myDungeon;
                 NorthBranch.AllCells = AllCells;
-                NorthBranch.DGcam = DGcam;      
                 NorthBranch.ConvertFromExtend(incMobList);
                 NorthBranch.AssignMonsters(incMobList);
                 break;
@@ -223,7 +221,6 @@ public class DungeonHead : MonoBehaviour
                 EastBranch.Locations = new Vector2[] { Locations[0], Locations[1], Locations[2] };
                 EastBranch.myDungeon = myDungeon;
                 EastBranch.AllCells = AllCells;
-                EastBranch.DGcam = DGcam;
                 EastBranch.ConvertFromExtend(incMobList);
                 EastBranch.AssignMonsters(incMobList);
                 break;
@@ -234,8 +231,7 @@ public class DungeonHead : MonoBehaviour
                 SouthBranch.Trajectories = new Vector3[] { -Trajectories[3], -Trajectories[4], -Trajectories[5] };
                 SouthBranch.Locations = new Vector2[] { Locations[3], Locations[4], Locations[5] };
                 SouthBranch.myDungeon = myDungeon;
-                SouthBranch.AllCells = AllCells;
-                SouthBranch.DGcam = DGcam;              
+                SouthBranch.AllCells = AllCells;    
                 SouthBranch.ConvertFromExtend(incMobList);
                 SouthBranch.AssignMonsters(incMobList);
                 break;
@@ -247,7 +243,6 @@ public class DungeonHead : MonoBehaviour
                 WestBranch.Locations = new Vector2[] { Locations[0], Locations[1], Locations[2] };
                 WestBranch.myDungeon = myDungeon;
                 WestBranch.AllCells = AllCells;
-                WestBranch.DGcam = DGcam;            
                 WestBranch.ConvertFromExtend(incMobList);
                 WestBranch.AssignMonsters(incMobList);
                 break;
