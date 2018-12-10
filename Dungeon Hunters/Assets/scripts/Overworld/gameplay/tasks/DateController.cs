@@ -10,6 +10,8 @@ namespace App.UI {
 
         [SerializeField, ReadOnly] public Date CurrentDate;
 
+        public float RandomEncounterChance;
+
         // Use this for initialization
         void Awake() {
             // Put the single in singleton
@@ -21,14 +23,10 @@ namespace App.UI {
         }
 
         public void AdvanceDate() {
-            if (!NotificationController.Instance.HasRequiredNotifications) {
+            if (!NotificationController.Instance.HasNotifications) {
                 AdvanceNotifications();
-            } else if (NotificationController.Instance.HasRequiredNotifications) {
+            } else {
                 // Otherwise show the message that says there are notifications remaining.
-            } else if (NotificationController.Instance.HasOptionalNotifications) {
-                // Print a warning that advancing the day will throw out optional notifications.
-                // If the button is pressed again, advance.
-                AdvanceNotifications();
             }
         }
 
@@ -49,6 +47,16 @@ namespace App.UI {
             NotificationController.Instance.UpdateNotificationBadgeText();
 
             AppUI.Instance.DateText.text = CurrentDate.ToString();
+
+            foreach(MercenaryData m in MercenaryController.Instance.Mercenaries) {
+                if(m.IsTraveling) {
+                    if(Random.Range(0f, 1f) < RandomEncounterChance) {
+                        NotificationController.Instance.AddNotification(
+                            new Notification(TaskType.RANDOM, EncounterController.Instance.GetRandomEncounter(), TaskController.Instance.ParseNotificationLabel(TaskType.RANDOM, m), 0, m, m.Location)
+                        );
+                    }
+                }
+            }
         }
     }
 }

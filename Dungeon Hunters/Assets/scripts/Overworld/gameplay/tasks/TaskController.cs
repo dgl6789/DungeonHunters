@@ -7,7 +7,7 @@ using App.Data;
 using UnityEngine.UI;
 
 namespace App {
-    public enum TaskType { NONE, DUNGEONEER, SCOUT, FORAGE, TRAIN }
+    public enum TaskType { NONE, DUNGEONEER, SCOUT, FORAGE, TRAIN, RANDOM }
 
     public class TaskController : MonoBehaviour {
 
@@ -45,22 +45,18 @@ namespace App {
         /// Given a task type, mercenary, and tile, generate a notification that can be parsed and sent to the UI.
         /// </summary>
         /// <returns>Notification object containing an event.</returns>
-        public Notification GenerateNotification(TaskType pType, MercenaryData pMercenary, HexTile pTile) {
+        public Notification GenerateNotification(TaskType pType, MercenaryData pMercenary, HexTile pTile, EncounterEvent pEndEvent = null) {
             // Get a random event object from the event manifest for the given type. It should contain information as to
             // whether the event is clear-required.
 
-            // Get the event from the manifest.
-            EncounterEvent e = EncountersManifest.Encounters[Random.Range(0, EncountersManifest.Encounters.Length)];
-
-            // Calculate the day limit based on how long it will take the mercenary to get there from its current tile
-            int lDayLimit = e.ExtraDayTimer;
-
+            int lDayLimit = 0;
+            
             foreach(HexTile t in pMercenary.CurrentPath) {
                 lDayLimit += HexFunctions.Instance.GetRoughTerrainFactor(t.Type);
             }
 
             // Return the generated notification.
-            return new Notification(pType, e, ParseNotificationLabel(pType, pMercenary), lDayLimit, e.IsRequired, pMercenary, pTile);
+            return new Notification(pType, pEndEvent, ParseNotificationLabel(pType, pMercenary), lDayLimit, pMercenary, pTile);
         }
 
         /// <summary>
@@ -75,6 +71,7 @@ namespace App {
                 case TaskType.FORAGE: s += " is foraging for materials."; break;
                 case TaskType.SCOUT: s += " is scouting a new area."; break;
                 case TaskType.TRAIN: s += " is training in the wild."; break;
+                case TaskType.RANDOM: s += " encountered something in the wild!"; break;
             }
 
             return s;
@@ -155,7 +152,7 @@ namespace App {
             AppUI.Instance.SelectedMercenary.SetPath(MercenaryController.Instance.GetTaskPath(m.Location, tile));
 
             // Generate a corresponding notification and push it to the panel
-            NotificationController.Instance.AddNotification(GenerateNotification(selectedTask, m, tile));
+            NotificationController.Instance.AddNotification(GenerateNotification(selectedTask, m, tile, EncounterController.Instance.GetRandomEncounter()));
 
             AppUI.Instance.UpdateMercInteractionButton(m);
 
@@ -165,6 +162,18 @@ namespace App {
             selectedTask = TaskType.NONE;
 
             yield return null;
+        }
+
+        EncounterTags[] GetEncounterTagsFromTaskType(TaskType pType) {
+            switch(pType) {
+                default:
+                case TaskType.FORAGE:
+                    return new EncounterTags[] { EncounterTags.FIGHTING, EncounterTags.FORAGING };
+                case TaskType.SCOUT:
+                    return new EncounterTags[] { EncounterTags.FIGHTING };
+                case TaskType.TRAIN:
+                    return new EncounterTags[] { EncounterTags.FIGHTING };
+            }
         }
     }
 }

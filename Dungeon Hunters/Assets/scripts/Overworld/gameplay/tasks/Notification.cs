@@ -26,9 +26,6 @@ namespace App {
             get { return label; }
         }
 
-        private bool isRequired;
-        public bool IsRequired {  get { return isRequired; } }
-
         private int dayLimit;
         public int DayLimit { get { return dayLimit; } }
 
@@ -37,13 +34,12 @@ namespace App {
             get { return type; }
         }
 
-        public Notification(TaskType pType, EncounterEvent pEvent, string pLabel, int pDayLimit = 0, bool pIsRequired = false, MercenaryData pMercenary = null, HexTile pTile = null) {
+        public Notification(TaskType pType, EncounterEvent pEvent, string pLabel, int pDayLimit = 0, MercenaryData pMercenary = null, HexTile pTile = null) {
             mercenary = pMercenary;
             tile = pTile;
             type = pType;
             myEvent = pEvent;
-
-            isRequired = pIsRequired;
+            
             dayLimit = pDayLimit;
 
             label = pLabel;
@@ -57,7 +53,8 @@ namespace App {
         }
 
         public void Resolve() {
-            Debug.Log("Resolved.");
+            // Get the EncounterEvent associated with this Notification and begin the encounter resolution.
+            EncounterController.Instance.InitializeNewEncounter(myEvent, mercenary);
         }
     }
 }

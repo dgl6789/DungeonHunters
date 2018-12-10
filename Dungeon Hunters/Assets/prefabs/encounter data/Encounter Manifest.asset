@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: Encounter Manifest
   m_EditorClassIdentifier: 
   Encounters:
-  - {fileID: 11400000, guid: 1035659d3a6034d4892805c998977c0b, type: 2}
+  - {fileID: 11400000, guid: 16e4eec31c5aa61468c9635ac43fe2d5, type: 2}

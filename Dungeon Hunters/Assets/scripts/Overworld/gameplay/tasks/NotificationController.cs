@@ -14,13 +14,13 @@ namespace App {
         [SerializeField] GameObject NotificationContainer;
         [SerializeField] GameObject NotificationObject;
 
-        public bool HasRequiredNotifications {
+        public bool HasNotifications {
             get {
                 // The notification controller unlocks the next day
                 // when there are no notifications in the list that
                 // are required and have no time remaining.
                 foreach(Notification n in Notifications) {
-                    if (n.IsRequired && n.DayLimit == 0)
+                    if (n.DayLimit == 0)
                         return true;
                 }
 
@@ -33,28 +33,11 @@ namespace App {
                 int num = 0;
 
                 foreach (Notification n in Notifications) {
-                    if (n.IsRequired && n.DayLimit == 0)
+                    if (n.DayLimit == 0)
                         num++;
                 }
 
                 return num;
-            }
-        }
-
-        public bool HasOptionalNotifications
-        {
-            get
-            {
-                // Return whether there are notifications
-                // that will go away if the day is advanced
-                // (but won't block advancement entirely).
-                foreach (Notification n in Notifications)
-                {
-                    if (!n.IsRequired && n.DayLimit == 0)
-                        return true;
-                }
-
-                return false;
             }
         }
 
@@ -82,7 +65,7 @@ namespace App {
 
             string s = NeedsResolutionCount == 1 ? NeedsResolutionCount + " Notification Remaining" : NeedsResolutionCount + " Notifications Remaining";
 
-            AppUI.Instance.AdvanceDayButton.interactable = !HasRequiredNotifications;
+            AppUI.Instance.AdvanceDayButton.interactable = !HasNotifications;
 
             AppUI.Instance.NotificationCount.text = s;
         }
@@ -108,7 +91,7 @@ namespace App {
                     (NotificationContainer.GetComponent<RectTransform>().rect.yMax - NotificationObject.GetComponent<RectTransform>().rect.height / 2) - i * (rect.rect.height + 3));
             }
 
-            AppUI.Instance.AdvanceDayButton.interactable = !HasRequiredNotifications;
+            AppUI.Instance.AdvanceDayButton.interactable = !HasNotifications;
         }
 
         /// <summary>
@@ -118,14 +101,14 @@ namespace App {
         /// <param name="index">index of the notification to check in the notifications list</param>
         public void ClickNotification(int index) {
             // Should focus on the tile the merc is currently on and open the merc's page
-            if(Notifications[index].IsRequired && Notifications[index].DayLimit != 0) {
+            if(Notifications[index].DayLimit != 0) {
                 TileSelector.Instance.SetTarget(Notifications[index].Mercenary.Location);
 
                 AppUI.Instance.SetSelectedMercenary(Notifications[index].Mercenary);
                 AppUI.Instance.SwitchPage(2);
             } 
             // Should resolve the notification
-            else if(Notifications[index].DayLimit == 0) {
+            else {
                 Notifications[index].Resolve();
 
                 MercenaryData m = Notifications[index].Mercenary;

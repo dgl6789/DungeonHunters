@@ -2,65 +2,52 @@
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEditor;
 
 namespace App.Data
 {
+    public enum EncounterTags { FORAGING, FIGHTING, MYSTICISM }
+
+    [Serializable]
     [CreateAssetMenu(fileName = "Encounter Data", menuName = "Data/Encounter", order = 3)]
     public class EncounterEvent : ScriptableObject {
-        public int ExtraDayTimer;
-        public bool IsRequired;
-        public string Name;
 
-        public string[] Functionality;
-
-        // Also holds data that can spawn an encounter dialog.
-        Dictionary<int, KeyValuePair<string, List<Option>>> EncounterData;
-
-        void Awake()
-        {
-            ExtraDayTimer = 0;
-            IsRequired = true;
-
-            EncounterData = new Dictionary<int, KeyValuePair<string, List<Option>>>();
-
-            // Get encounter data from the encounter manifest.
-
-            Name = "Encounter Name";
-        }
-
-        public void BeginEncounter()
-        {
-            // Initialize the encounter dialog with the initial text
-
-            // Spawn the initial options
-        }
+        public EncounterTags[] Tags;
         
-        public void AdvanceEncounter(Option pOptionChosen)
-        {
-            // Call the function attached to the option
-            Type manifest = Type.GetType("OptionManifest");
-            MethodInfo method = manifest.GetMethod(pOptionChosen.OptionCallbackName);
+        public List<EncounterStep> Steps = new List<EncounterStep>();
 
-            // Call the function
-            
-            // change the text
+        // Add an empty encounter step object to the inspector.
+        public void AddStep() {
+            EncounterStep step = CreateInstance<EncounterStep>();
+            step.name = "Step " + Steps.Count;
+            step.Index = Steps.Count;
 
-            // Spawn new options
+            AssetDatabase.AddObjectToAsset(step, this);
+            AssetDatabase.SaveAssets();
+
+            Steps.Add(step);
         }
 
-        private void SpawnOptions(int pDialogIndex)
-        {
-            // Clear existing option buttons
-
-            // Iterate through the options at this index and create new option buttons.
+        public void RemoveStep(int index) {
+            if (index < 0 || index > Steps.Count - 1) return;
             
+            Steps[index].RemoveAllOptions();
+            
+            DestroyImmediate(Steps[index], true);
+            AssetDatabase.SaveAssets();
+
+            Steps.RemoveAt(index);
+
+            UpdateStepNames();
         }
 
-        public void EndEncounter()
-        {
-            // Clear existing option buttons
+        public void UpdateStepNames() {
+            for (int i = 0; i < Steps.Count; i++) {
+                Steps[i].name = "Step " + i;
+                Steps[i].Index = i;
+            }
 
-            // Clean up the encounter dialog
+            AssetDatabase.SaveAssets();
         }
     }
 }

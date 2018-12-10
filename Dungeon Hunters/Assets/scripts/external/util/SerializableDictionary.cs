@@ -9,11 +9,11 @@ namespace Numeralien.Utilities {
         [SerializeField] List<TValue> _v = new List<TValue>();
 
         //Unity doesn't know how to serialize a Dictionary
-        [SerializeField] Dictionary<TKey, TValue> _dict = new Dictionary<TKey, TValue>();
+        Dictionary<TKey, TValue> _dict = new Dictionary<TKey, TValue>();
 
         public void OnBeforeSerialize() {
-            _k.Clear();
-            _v.Clear();
+            //_k.Clear();
+            //_v.Clear();
 
             foreach (KeyValuePair<TKey, TValue> p in _dict) {
                 _k.Add(p.Key);

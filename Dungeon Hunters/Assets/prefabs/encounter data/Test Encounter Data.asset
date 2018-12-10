@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a182593b06950554882cf631bf8ec83f, type: 3}
+  m_Name: Test Encounter Data
+  m_EditorClassIdentifier: 
+  Tags: 00000000
+  Steps:
+  - {fileID: 114921597125613234}
+  - {fileID: 114813301593528512}
+  - {fileID: 114831502564730556}
+  - {fileID: 114324436738515646}
+  - {fileID: 114751085510776016}
+--- !u!114 &114017307091963296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022e07aed12b51d4cb0d98ac7ac593ee, type: 3}
+  m_Name: Basic Action [4]
+  m_EditorClassIdentifier: 
+--- !u!114 &114075205558902098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022e07aed12b51d4cb0d98ac7ac593ee, type: 3}
+  m_Name: Basic Action [2]
+  m_EditorClassIdentifier: 
+--- !u!114 &114324436738515646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d8cf5e9b2a2a64b85153bb4ec67bfc, type: 3}
+  m_Name: Step 3
+  m_EditorClassIdentifier: 
+  Index: 3
+  Text: Nice! You bound up the rocks effortlessly.
+  Options:
+  - {fileID: 114900625806062134}
+--- !u!114 &114332810722314794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6484744cd4bfc541993dcaad3189ca4, type: 3}
+  m_Name: Option 2-0
+  m_EditorClassIdentifier: 
+  SuccessStepIndex: -1
+  FailureStepIndex: -1
+  Text: Continue.
+  Action: {fileID: 114075205558902098}
+--- !u!114 &114392045142596724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6484744cd4bfc541993dcaad3189ca4, type: 3}
+  m_Name: Option 4-0
+  m_EditorClassIdentifier: 
+  SuccessStepIndex: -1
+  FailureStepIndex: -1
+  Text: Continue.
+  Action: {fileID: 114938601328076146}
+--- !u!114 &114479959739803834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6484744cd4bfc541993dcaad3189ca4, type: 3}
+  m_Name: Option 0-0
+  m_EditorClassIdentifier: 
+  SuccessStepIndex: 2
+  FailureStepIndex: 2
+  Text: Go around.
+  Action: {fileID: 114620816448661782}
+--- !u!114 &114620816448661782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022e07aed12b51d4cb0d98ac7ac593ee, type: 3}
+  m_Name: Basic Action [0]
+  m_EditorClassIdentifier: 
+--- !u!114 &114686633206646866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022e07aed12b51d4cb0d98ac7ac593ee, type: 3}
+  m_Name: Basic Action [3]
+  m_EditorClassIdentifier: 
+--- !u!114 &114751085510776016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d8cf5e9b2a2a64b85153bb4ec67bfc, type: 3}
+  m_Name: Step 4
+  m_EditorClassIdentifier: 
+  Index: 4
+  Text: You tried to go up the cliffs, but you simply aren't athletic enough.
+  Options:
+  - {fileID: 114392045142596724}
+--- !u!114 &114813301593528512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d8cf5e9b2a2a64b85153bb4ec67bfc, type: 3}
+  m_Name: Step 1
+  m_EditorClassIdentifier: 
+  Index: 1
+  Text: 
+  Options: []
+--- !u!114 &114815181319835122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6484744cd4bfc541993dcaad3189ca4, type: 3}
+  m_Name: Option 0-1
+  m_EditorClassIdentifier: 
+  SuccessStepIndex: 3
+  FailureStepIndex: 4
+  Text: Try to climb the rocks.
+  Action: {fileID: 114962115575083492}
+--- !u!114 &114831502564730556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d8cf5e9b2a2a64b85153bb4ec67bfc, type: 3}
+  m_Name: Step 2
+  m_EditorClassIdentifier: 
+  Index: 2
+  Text: You went around the rocks. Nice and safe.
+  Options:
+  - {fileID: 114332810722314794}
+--- !u!114 &114900625806062134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6484744cd4bfc541993dcaad3189ca4, type: 3}
+  m_Name: Option 3-0
+  m_EditorClassIdentifier: 
+  SuccessStepIndex: -1
+  FailureStepIndex: -1
+  Text: Continue.
+  Action: {fileID: 114686633206646866}
+--- !u!114 &114921597125613234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d8cf5e9b2a2a64b85153bb4ec67bfc, type: 3}
+  m_Name: Step 0
+  m_EditorClassIdentifier: 
+  Index: 0
+  Text: You come upon a rocky cliffside. You can try to scale it, or go around.
+  Options:
+  - {fileID: 114479959739803834}
+  - {fileID: 114815181319835122}
+--- !u!114 &114938601328076146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022e07aed12b51d4cb0d98ac7ac593ee, type: 3}
+  m_Name: Basic Action [0]
+  m_EditorClassIdentifier: 
+--- !u!114 &114962115575083492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0ffaa3fa9d09a4c8de56efb3ecd71d, type: 3}
+  m_Name: Check Action [0]
+  m_EditorClassIdentifier: 
+  Skill: 4
+  CheckDifficulty: 1

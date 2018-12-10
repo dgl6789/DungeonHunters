@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Overworld;
+using App.Data;
 
 namespace App {
-    public enum MercenarySkills { Constitution, Endurance, Stealth, Medicine, Athletics, Knowledge, Smithing, Magic, Survival, Insight, Coercion, Deception, Intimidation, Performance, Spot }
-
     public class MercenaryData {
 
         public GameObject LocationMarker;
@@ -26,11 +25,10 @@ namespace App {
         private string name;
         public string Name { get { return name; } }
 
-        private int mind, body, spirit, rank;
-        public int Mind { get { return mind; } }
-        public int Body { get { return body; } }
-        public int Spirit { get { return spirit; } }
-        public int Rank { get { return rank; } }
+        private StatBlock stats;
+        public StatBlock Stats {
+            get { return stats; }
+        }
 
         private int equipmentPower;
         public int EquipmentPower {
@@ -38,23 +36,19 @@ namespace App {
         }
         public int MaxEquipmentPower {
             get {
-                return Rank * 10;
+                return Stats.Rank * 10;
             }
+        }
+
+        public bool IsTraveling {
+            get { return CurrentPath != null; }
         }
 
         public Sprite Portrait;
 
-        public List<MercenarySkills> Skills;
-
-        public MercenaryData(string pName, int pMind, int pBody, int pSpirit, List<MercenarySkills> pSkills, int pRank = 1, Inventory pInventory = null) {
+        public MercenaryData(string pName, StatBlock pStats, int pRank = 1, Inventory pInventory = null) {
             name = pName;
-            mind = pMind;
-            body = pBody;
-            spirit = pSpirit;
-            rank = pRank;
-
-            Skills = new List<MercenarySkills>();
-            Skills.AddRange(pSkills);
+            stats = pStats;
 
             Equipment = new List<Item>();
 

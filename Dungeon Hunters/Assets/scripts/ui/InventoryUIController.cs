@@ -357,7 +357,7 @@ public class InventoryUIController : MonoBehaviour {
         AppUI.Instance.MercenaryNameInventory.text = AppUI.Instance.SelectedMercenary.Name;
         AppUI.Instance.MercenaryEquipPowerInventory.text = "Equipment Power\n" + AppUI.Instance.SelectedMercenary.Inventory.EquippedPowerLevel + " / " + AppUI.Instance.SelectedMercenary.MaxEquipmentPower;
         AppUI.Instance.MercenaryPowerLevelInventory.text = "Power " + AppUI.Instance.SelectedMercenary.Inventory.PowerLevel;
-        AppUI.Instance.MercenaryRankInventory.text = "Rank " + AppUI.Instance.SelectedMercenary.Rank;
+        AppUI.Instance.MercenaryRankInventory.text = "Rank " + AppUI.Instance.SelectedMercenary.Stats.Rank;
     }
 
     /// <summary>

@@ -18,8 +18,8 @@ namespace App.UI {
             Data = pData;
 
             NameField.text = pData.Name;
-            RankField.text = "Rank " + pData.Rank;
-            StatsField.text = pData.Mind + " / " + pData.Body + " / " + pData.Spirit;
+            RankField.text = "Rank " + pData.Stats.Rank;
+            StatsField.text = pData.Stats.Mind + " / " + pData.Stats.Body + " / " + pData.Stats.Spirit;
             // Portrait.sprite = pData.Portrait;
         }
     }
