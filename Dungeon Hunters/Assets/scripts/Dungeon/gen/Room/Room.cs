@@ -401,7 +401,7 @@ public class Room : MonoBehaviour
         {
             AllCells[tile.x, tile.y].IncrimentHeight(tile.z, 0, 0, 0);//Faster operation for defined maps.
         }
-        BuildOres();
+        BuildOres(true);
     }
     void AssignOres()
     {
@@ -421,7 +421,7 @@ public class Room : MonoBehaviour
             OreTiles.Add(temp);//Add it to the list
             orePoints -= currentVein;//and expend those points
         }
-        BuildOres();
+        BuildOres(true);
     }
 
     public void AssignMonsters(List<Monster> Templates)
@@ -466,14 +466,24 @@ public class Room : MonoBehaviour
 
     }
 
-    void BuildOres()
+    void BuildOres(bool Activating)
     {
-        foreach (Vector4 tile in OreTiles)
+        if (Activating)
         {
-            AllCells[(int)tile.x, (int)tile.y].AssignOreValue((int)tile.w);//Faster operation for defined maps.
+            foreach (Vector4 tile in OreTiles)
+            {
+                AllCells[(int)tile.x, (int)tile.y].AssignOreValue((int)tile.w);//Faster operation for defined maps.
+            }
+        }
+        else
+        {
+            foreach (Vector4 tile in OreTiles)
+            {
+                AllCells[(int)tile.x, (int)tile.y].AssignOreValue(0);//Faster operation for defined maps.
+            }
+
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -508,6 +518,7 @@ public class Room : MonoBehaviour
         {
             AllCells[tile.x, tile.y].Reset();
         }
+        BuildOres(false);
     }
 
     public void ExtendCave(List<Monster> incMobList, bool isLastCave)

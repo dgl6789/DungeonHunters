@@ -410,9 +410,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 381
+        y: 380
         width: 22
-        height: 38
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -429,10 +429,10 @@ TextureImporter:
       name: bronze_shortsword
       rect:
         serializedVersion: 2
-        x: 19
-        y: 381
-        width: 16
-        height: 39
+        x: 22
+        y: 380
+        width: 22
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -449,10 +449,10 @@ TextureImporter:
       name: bismuth_Shortsword
       rect:
         serializedVersion: 2
-        x: 37
-        y: 381
-        width: 16
-        height: 39
+        x: 44
+        y: 380
+        width: 22
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -469,10 +469,10 @@ TextureImporter:
       name: crudeiron_shortsword
       rect:
         serializedVersion: 2
-        x: 56
-        y: 381
-        width: 18
-        height: 39
+        x: 66
+        y: 380
+        width: 22
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -489,10 +489,10 @@ TextureImporter:
       name: blacksteel_Shortsword
       rect:
         serializedVersion: 2
-        x: 76
-        y: 381
-        width: 18
-        height: 39
+        x: 88
+        y: 379
+        width: 22
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -509,10 +509,10 @@ TextureImporter:
       name: enchanted_blacksteel_shortsword
       rect:
         serializedVersion: 2
-        x: 96
-        y: 381
-        width: 18
-        height: 39
+        x: 110
+        y: 380
+        width: 22
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

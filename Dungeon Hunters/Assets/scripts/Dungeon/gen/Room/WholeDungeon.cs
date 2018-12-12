@@ -122,13 +122,13 @@ public class WholeDungeon : MonoBehaviour {
         {//reset merc data on every turn
             merc.Stamina += merc.Movement; //decrease stamina for "Extra" moves
             merc.Stamina = Mathf.Min(merc.Stamina, merc.MaxStamina);
-            merc.Movement = 5;
+            merc.Movement = 10;
         }
         foreach(Monster mob in activeRoom.ActiveMonsters)
         {
             mob.Stamina += mob.Movement; //decrease stamina for "Extra" moves
             mob.Stamina = Mathf.Min(mob.Stamina, mob.MaxStamina);
-            mob.Movement = 5;
+            mob.Movement = 10;
         }
         UndrawTick();
         activeRoom.EnemyUpdate(AllActiveMercenaries);
@@ -811,9 +811,10 @@ public class WholeDungeon : MonoBehaviour {
     {
         foreach (MercenaryData mercData in incMercList)
         {
-            Mercenary temp = new Mercenary();
-            temp.ConvertFromOverworld(mercData);
-            AllActiveMercenaries.Add(temp);
+            GameObject MercObject = new GameObject();
+            MercObject.AddComponent<Mercenary>();
+            MercObject.GetComponent<Mercenary>().ConvertFromOverworld(mercData);
+            AllActiveMercenaries.Add(MercObject.GetComponent<Mercenary>());
         }
        
     }

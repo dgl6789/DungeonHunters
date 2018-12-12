@@ -15,9 +15,11 @@ public class RoomCell : MonoBehaviour {
     [SerializeField] private WholeDungeon myDungeon;
     public TileState Mystate;
     [SerializeField] private BoxCollider2D tileCollider;
+    [SerializeField] private Sprite OreSpritePrefab;
+    private GameObject OreTile;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         tileCollider = gameObject.GetComponent<BoxCollider2D>();
         MonsterThreatening = -1;
         
@@ -159,38 +161,59 @@ public class RoomCell : MonoBehaviour {
 
     //Temporarily disabled for new sprites
     public void AssignOreValue(int incValue){
-       /* switch (incValue)
+        if (incValue >= 1)
         {
-            case 1://Copper?
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.green;
-                break;
-            case 2://Tin?
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.white;
-                break;
-            case 3://Strengthening Agent?
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.magenta;
-                break;
-            case 4://Hardening Agent?
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.magenta;
-                break;
-            case 5://Firmening Agent?
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.magenta;
-                break;
-            case 6://Iron
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.grey;
-                break; 
-            case 7://Silver
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.clear;
-                break;
-            case 8://Gold
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.yellow;
-                break;
-            case 9://Gem
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.cyan;
-                break;
-            case 10://Aluminum?
-                cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.red;
-                break;
-        }*/
+            if(OreTile == null)
+            {
+                
+                OreTile = new GameObject();
+                OreTile.transform.localScale = transform.localScale;
+                OreTile.transform.parent = gameObject.transform;
+                OreTile.transform.localPosition = new Vector3(0, 0, -.2f);
+                OreTile.AddComponent<SpriteRenderer>();
+                OreTile.GetComponent<SpriteRenderer>().sprite = OreSpritePrefab;
+
+            }
+            switch (incValue)
+            {
+                case 1://Copper?
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.green;
+                    break;
+                case 2://Tin?
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.white;
+                    break;
+                case 3://Strengthening Agent?
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.magenta;
+                    break;
+                case 4://Hardening Agent?
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.magenta;
+                    break;
+                case 5://Firmening Agent?
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.magenta;
+                    break;
+                case 6://Iron
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.grey;
+                    break;
+                case 7://Silver
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.clear;
+                    break;
+                case 8://Gold
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.yellow;
+                    break;
+                case 9://Gem
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.cyan;
+                    break;
+                case 10://Aluminum?
+                    OreTile.GetComponent<SpriteRenderer>().material.color = Color.red;
+                    break;
+            }
+        }
+        else
+        {
+            if(OreTile != null)
+            {
+                Destroy(OreTile);
+            }
+        }
     }
 }

@@ -218,7 +218,7 @@ public class Mercenary : MonoBehaviour {
 
         foreach(Item artifact in incData.Equipment)
         {
-            int dBoost = 5, oBoost = 5;//PLAYTEST GOD-MODE
+            int dBoost = 0, oBoost = 0;
             switch (artifact.Type)
             {
                 case ItemType.Armor:
@@ -237,6 +237,10 @@ public class Mercenary : MonoBehaviour {
             DTier += dBoost;
             OTier += oBoost;
         }
+        DTier = 5;//PLAYTEST GOD-MODE
+        OTier = 5;
+        WeaponCohesion = 100;
+        ArmourCohesion = 100;
 
         RecalcStats();
         RecalcSkills();
