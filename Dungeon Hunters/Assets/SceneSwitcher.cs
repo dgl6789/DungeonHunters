@@ -8,7 +8,7 @@ public class SceneSwitcher : MonoBehaviour {
     [HideInInspector] public bool overWorldActive;
     
     [SerializeField] Transform overworld;
-    [SerializeField] Transform dungeon;
+    public Transform dungeon;
 
 
 	// Use this for initialization

@@ -16,6 +16,12 @@ TextureImporter:
     21300022: items_9
     21300024: iron_halberd
     21300026: fandralberry_switch
+    21300028: Copper_Sword
+    21300030: bronze_shortsword
+    21300032: bismuth_Shortsword
+    21300034: crudeiron_shortsword
+    21300036: blacksteel_Shortsword
+    21300038: enchanted_blacksteel_shortsword
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -395,6 +401,126 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f3958a0e089a74f41b7ebeb0b3e0837b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Copper_Sword
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 381
+        width: 12
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78a886482fdcd10499c6ca0865bf9b89
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bronze_shortsword
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 381
+        width: 16
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9bc539f5d471c34f88df43ba53f7820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bismuth_Shortsword
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 381
+        width: 16
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ac5bd4bb3a3ad040a3143b52e063f25
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crudeiron_shortsword
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 381
+        width: 18
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7395be9773f0ea143b131ed00ac441cc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blacksteel_Shortsword
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 381
+        width: 18
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 953e872b2147d6a45a2145ad6c6ca38d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enchanted_blacksteel_shortsword
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 381
+        width: 18
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0ab3396f118177449829436bfc5f60a
       vertices: []
       indices: 
       edges: []

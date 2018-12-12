@@ -1,27 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Overworld;
+using App;
 
 
-    public class Mercenary : MonoBehaviour {
 
-        public Vector2Int gridPosition;//Position in the grid
-        public int Health, Stamina, Morale, WeaponCohesion, ArmourCohesion, Movement;
-        public int MaxHealth, MaxStamina, MaxMorale, Body, Mind, Spirit, DTier, OTier;
-        public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein
-        public DamageType weaponType;
-        public Stance Style;
-        public bool Recalc;
-        // Use this for initialization
-        void Start() {
+public class Mercenary : MonoBehaviour {
+
+    public Vector2Int gridPosition;//Position in the grid
+    public int Health, Stamina, Morale, WeaponCohesion, ArmourCohesion, Movement;
+    public int MaxHealth, MaxStamina, MaxMorale, Body, Mind, Spirit, DTier, OTier;
+    public Vector3Int defenseQuality, offenseQuality, Skills;//Quality of Defensive Armaments, Offensive Armaments, and skill therein
+    public Inventory mercInventory;
+    public DamageType weaponType;
+    public Stance Style;
+    public bool Recalc;
+    // Use this for initialization
+    void Start() {
 
         RecalcStats();
         RecalcSkills();
 
         }
 
-        // Update is called once per frame
-        void Update() {
+    // Update is called once per frame
+    void Update() {
             if (Recalc) {
                 Recalc = false;
                 RecalcStats();
@@ -29,7 +33,7 @@ using UnityEngine;
 
         }
 
-        public Attack GenerateAttack()
+    public Attack GenerateAttack()
         {
             Attack temp;
             temp.Rating = Skills.x + (Stamina - 25);//Combine offensive skill with basic Stamina Bonus
@@ -40,7 +44,7 @@ using UnityEngine;
             return temp;
         }
 
-        public bool RecieveAttack(Attack incAttack)
+    public bool RecieveAttack(Attack incAttack)
         {//This is being kept exceedingly simple for now - but realistically there should be a quality modifier on weapons and armour.
          //differences in these ratings should decrease damage - regardless of what deforms - but decrease the quality of the artifact for its subsequent uses
             int IncDamage = incAttack.Rating - (Skills.y + (Stamina - 25));//Decrease the attack by our defense rating and stamina bonus
@@ -61,10 +65,10 @@ using UnityEngine;
             }
             return false;
         }
-       
+    
     
 
-        void RecalcStats()//Generate Stats on the 
+    void RecalcStats()//Generate Stats on the 
         {
             //set base combat stats on char stats
             MaxHealth = 10 + Body * 2;
@@ -179,26 +183,64 @@ using UnityEngine;
 
             RecalcSkills();
         }
-        void RecalcSkills() {
-            Skills = new Vector3Int((Body * 2 + Mind) * 10, (Body + Mind) * 20, (Body + Mind * 2) * 10);
-            switch (Style) {
-                case Stance.Offensive:
-                    Skills.x = Skills.x * 2;//Twice the attack
-                    Skills.y = Skills.y / 2;//Half the Defense, reposte Unchanged
+    void RecalcSkills()
+    {
+        Skills = new Vector3Int((Body * 2 + Mind) * 10, (Body + Mind) * 20, (Body + Mind * 2) * 10);
+        switch (Style)
+        {
+            case Stance.Offensive:
+                Skills.x = Skills.x * 2;//Twice the attack
+                Skills.y = Skills.y / 2;//Half the Defense, reposte Unchanged
+                break;
+            case Stance.Standard:
+                Skills.x = (int)(Skills.x * 1.5f);//Attack and defense increased, reposte decreased
+                Skills.y = (int)(Skills.y * 1.5f);
+                Skills.z = Skills.z / 2;
+                break;
+            case Stance.Parry:
+                Skills.x = Skills.x / 2;//half the attack
+                Skills.y = (int)(Skills.y * 1.5f);
+                Skills.z = Skills.z * 2;//twice the reposte
+                break;
+        }
+
+
+    }
+
+    
+
+    public void ConvertFromOverworld(MercenaryData incData)
+    {
+        Body = incData.Stats.Body;
+        Mind = incData.Stats.Mind;
+        Spirit = incData.Stats.Spirit;
+        mercInventory = incData.Inventory;
+
+        foreach(Item artifact in incData.Equipment)
+        {
+            int dBoost = 0, oBoost = 0;
+            switch (artifact.Type)
+            {
+                case ItemType.Armor:
+                    if (artifact.BasePower > DTier) DTier = artifact.BasePower;                        
                     break;
-                case Stance.Standard:
-                    Skills.x = (int)(Skills.x * 1.5f);//Attack and defense increased, reposte decreased
-                    Skills.y = (int)(Skills.y * 1.5f);
-                    Skills.z = Skills.z / 2;
+                case ItemType.Weapon:
+                    if (artifact.BasePower > OTier) OTier = artifact.BasePower;
                     break;
-                case Stance.Parry:
-                    Skills.x = Skills.x / 2;//half the attack
-                    Skills.y = (int)(Skills.y * 1.5f);
-                    Skills.z = Skills.z * 2;//twice the reposte
+                case ItemType.Trinket:
+                    if (artifact.name.Contains("defenceboost")) dBoost++;
+                    if (artifact.name.Contains("attackboost")) oBoost++;
+                    break;
+                case ItemType.Resource:
                     break;
             }
-
-
+            DTier += dBoost;
+            OTier += oBoost;
         }
+
+        RecalcStats();
+        RecalcSkills();
+    }
+
     }
 

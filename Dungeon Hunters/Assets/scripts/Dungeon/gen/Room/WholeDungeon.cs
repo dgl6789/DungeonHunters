@@ -73,11 +73,6 @@ public class WholeDungeon : MonoBehaviour {
             dirty = false;
         }
 
-
-        if (Input.GetKeyDown(KeyCode.O)){
-            TakeDataFromOverworld();
-        }
-
         if (Input.GetKeyDown(KeyCode.E) && interactablePhase)
         {
             UndrawTick();
@@ -812,9 +807,14 @@ public class WholeDungeon : MonoBehaviour {
         }
     }
 
-    public void TakeDataFromOverworld()
+    public void TakeDataFromOverworld(List<MercenaryData> incMercList)
     {
-        MercenaryData temp = EncounterController.Instance.ActiveMercenary;
-        Debug.Log(temp.Stats.Body);
+        foreach (MercenaryData mercData in incMercList)
+        {
+            Mercenary temp = new Mercenary();
+            temp.ConvertFromOverworld(mercData);
+            AllActiveMercenaries.Add(temp);
+        }
+       
     }
 }

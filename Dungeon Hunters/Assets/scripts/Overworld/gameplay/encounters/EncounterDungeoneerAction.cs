@@ -12,7 +12,11 @@ namespace App.Data
             SceneSwitcher.Instance.EnableScene("Dungeon");
 
             // call that method we made in WholeDungeon.cs
-            Debug.Log(EncounterController.Instance.ActiveMercenary);
+            List<MercenaryData> mercList = new List<MercenaryData>();
+            mercList.Add(EncounterController.Instance.ActiveMercenary);                    
+
+            SceneSwitcher.Instance.dungeon.gameObject.GetComponentInChildren<WholeDungeon>().TakeDataFromOverworld(mercList);
+            
 
             SceneSwitcher.Instance.DisableScene("Overworld");
             return true;
