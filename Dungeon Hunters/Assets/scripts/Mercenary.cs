@@ -218,7 +218,7 @@ public class Mercenary : MonoBehaviour {
 
         foreach(Item artifact in incData.Equipment)
         {
-            int dBoost = 0, oBoost = 0;
+            int dBoost = 5, oBoost = 5;//PLAYTEST GOD-MODE
             switch (artifact.Type)
             {
                 case ItemType.Armor:

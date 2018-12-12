@@ -409,9 +409,9 @@ TextureImporter:
       name: Copper_Sword
       rect:
         serializedVersion: 2
-        x: 3
+        x: 0
         y: 381
-        width: 12
+        width: 22
         height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
