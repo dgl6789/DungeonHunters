@@ -21,6 +21,7 @@ public class RoomCell : MonoBehaviour {
     // Use this for initialization
     void Start () {
         tileCollider = gameObject.GetComponent<BoxCollider2D>();
+        transform.position = new Vector3(transform.position.x, transform.position.y, 1.5f);
         MonsterThreatening = -1;
         
 
@@ -155,7 +156,7 @@ public class RoomCell : MonoBehaviour {
     {
         Passable = false;
         Height = 0;
-        cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, Height);
+        cubeTemp.transform.position = new Vector3(cubeTemp.transform.position.x, cubeTemp.transform.position.y, 1.5f);
         cubeTemp.GetComponent<SpriteRenderer>().material.color = Color.black;
     }
 

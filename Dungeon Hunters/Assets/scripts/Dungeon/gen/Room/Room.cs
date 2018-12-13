@@ -1118,8 +1118,8 @@ public class Room : MonoBehaviour
                             }
                             else
                             {
-                                Mathf.Clamp(currentIndex, 1, LinesTiles[currentRiver].Count-1);
-                                difference = LinesTiles[currentRiver][currentIndex - 1] - LinesTiles[currentRiver][currentIndex];//see previous block
+                                Mathf.Clamp(currentIndex, 1, LinesTiles[currentRiver].Count-2);
+                                difference =LinesTiles[currentRiver][currentIndex] - LinesTiles[currentRiver][currentIndex - 1];//see previous block
                                 difference = mob.gridPosition + difference;
                                 if (AllCells[difference.x, difference.y].Height > 0)//If the block is passible, move into it.
                                 {
