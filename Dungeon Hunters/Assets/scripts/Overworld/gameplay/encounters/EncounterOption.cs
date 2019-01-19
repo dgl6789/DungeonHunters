@@ -15,7 +15,8 @@ namespace App.Data {
 
         private int parentIndex;
         public int ParentIndex { set { parentIndex = value; } }
-    
+
+#if UNITY_EDITOR
         public void SetBasicAction() {
             EncounterAction action = CreateInstance<EncounterAction>();
             action.name = "Basic Action [" + parentIndex + "]";
@@ -55,5 +56,6 @@ namespace App.Data {
             AssetDatabase.SaveAssets();
             Action = action;
         }
+#endif
     }
 }

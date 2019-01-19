@@ -13,6 +13,7 @@ namespace App.Data {
         
         public List<EncounterOption> Options = new List<EncounterOption>();
 
+#if UNITY_EDITOR
         // Add an empty option to the encounter step in the inspector.
         public void AddOption() {
             EncounterOption option = CreateInstance<EncounterOption>();
@@ -52,5 +53,6 @@ namespace App.Data {
 
             Options.Clear();
         }
+#endif
     }
 }

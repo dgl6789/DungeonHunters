@@ -12,7 +12,7 @@ namespace App.UI {
 
         [HideInInspector] public bool leftPanelOpen;
 
-        [SerializeField, ReadOnly] bool AcceptingKeyInput = true;
+        [SerializeField] bool AcceptingKeyInput = true;
 
         public static AppUI Instance;
 

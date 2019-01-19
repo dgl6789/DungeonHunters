@@ -22357,11 +22357,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoomSpeed: 3
-  ZoomBounds: {x: 3, y: 20}
+  ZoomBounds: {x: 3, y: 10}
   speedSmoothing: 5
   zoomSmoothing: 5
-  PanBoundsX: {x: -80, y: 80}
-  PanBoundsY: {x: -80, y: 80}
+  PanBoundsX: {x: -40, y: 40}
+  PanBoundsY: {x: -40, y: 40}
   Cursor: {fileID: 536546406}
 --- !u!114 &2056457711
 MonoBehaviour:

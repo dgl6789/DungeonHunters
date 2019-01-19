@@ -16,6 +16,7 @@ namespace App.Data
         
         public List<EncounterStep> Steps = new List<EncounterStep>();
 
+#if UNITY_EDITOR
         // Add an empty encounter step object to the inspector.
         public void AddStep() {
             EncounterStep step = CreateInstance<EncounterStep>();
@@ -49,5 +50,6 @@ namespace App.Data
 
             AssetDatabase.SaveAssets();
         }
+#endif
     }
 }

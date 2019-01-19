@@ -8,7 +8,7 @@ namespace App.UI {
 
         public static DateController Instance;
 
-        [SerializeField, ReadOnly] public Date CurrentDate;
+        [SerializeField] public Date CurrentDate;
 
         public float RandomEncounterChance;
 

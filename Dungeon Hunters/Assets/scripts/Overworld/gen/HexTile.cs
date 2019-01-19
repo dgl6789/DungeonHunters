@@ -18,7 +18,6 @@ namespace Overworld {
         // 5 - Blight
         // 6 - Water Glint
 
-        [ReadOnly]
         public HexData Data;
 
         Vector3 displayPosition;
@@ -43,7 +42,7 @@ namespace Overworld {
             }
         }
 
-        [SerializeField, ReadOnly] TileType type;
+        [SerializeField] TileType type;
         public TileType Type {
             get { return type; }
             set {
